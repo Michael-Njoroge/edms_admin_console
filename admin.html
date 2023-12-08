@@ -391,7 +391,18 @@ function createGroup() {
     console.error('Error:', error);
   });
 }
- 
+
+
+// Function to update the table row numbers dynamically
+function updateRowNumbers() {
+    const rows = document.querySelectorAll('#tab tbody tr');
+    rows.forEach((row, index) => {
+        // Update the first cell (index 0) in each row with the new row number
+        row.cells[0].textContent = index + 1;
+    });
+}
+
+
 // Fuction to call and display data
  async function getData() {
 
@@ -403,16 +414,6 @@ const bearerToken = localStorage.getItem('edms_token');
 if (!bearerToken) {
     console.error('Unauthorized');
     return;
-}
-
-
-// Function to update the table row numbers dynamically
-function updateRowNumbers() {
-    const rows = document.querySelectorAll('#tab tbody tr');
-    rows.forEach((row, index) => {
-        // Update the first cell (index 0) in each row with the new row number
-        row.cells[0].textContent = index + 1;
-    });
 }
 
 // Fetch groups
@@ -452,7 +453,6 @@ data.data.data.forEach(group => {
 
    
 });
-
     // Call updateRowNumbers after appending rows to the table body
     updateRowNumbers();
 }
