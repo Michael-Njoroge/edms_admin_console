@@ -18,7 +18,9 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-2.2.4/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/sc-1.4.2/datatables.min.css" />
-     
+     <!-- Toast -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
  
  <body onload="fetchUserInfoAndUpdateNavbar(); getData()">
@@ -235,6 +237,24 @@
                </thead>
                <tbody id="tbody"></tbody>
              </table>
+             <br>
+
+              <!-- *******************Group Memberships Table***************** -->
+              <div class="card-header">
+                <h4 class="card-title"><b>Group Memberships</b></h4>
+              </div>
+              <table id="groupMembershipsTable" class="table table-hover table-bordered" cellspacing="3" style="justify-content: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%;">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>User</th>
+                    <th>Group</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="groupMembershipsTbody"></tbody>
+              </table>
+
              </div>
              
            </div>
@@ -386,6 +406,8 @@ function createGroup() {
 
     // Update the dropdowns after deleting the group
     populateDropdowns();
+
+    toastr.success('Group created successfully');
   })
   .catch(error => {
     console.error('Error:', error);
@@ -408,7 +430,6 @@ function updateRowNumbers() {
 
 // Retrieve the Bearer token from localStorage
 const bearerToken = localStorage.getItem('edms_token');
-
 
 // Check if the token is present in localStorage
 if (!bearerToken) {
@@ -438,8 +459,8 @@ data.data.data.forEach(group => {
     row.innerHTML += `<td>${group.group_name}</td>`;
     row.innerHTML += `<td>${group.group_admin_id}</td>`;
 
-    // Users (assuming there's a users array)
-    const users = group.users.map(user => user.username).join(', ');
+    // Users
+    const users = group.users.length;
     row.innerHTML += `<td>${users}</td>`;
 
       row.innerHTML += `<td style="font-size:21px; ">
@@ -621,6 +642,8 @@ function submitEditForm() {
 
         // Update the dropdowns after editing the group
       populateDropdowns();
+
+      toastr.success('Group updated successfully');
     })
     .catch(error => {
         console.error('Error:', error);
@@ -657,6 +680,8 @@ function deleteGroup(groupId) {
         getData();
         // Update the dropdowns after deleting the group
         populateDropdowns();
+
+        toastr.success('Group deleted successfully');
       } else {
         console.error('Failed to delete group:', data.message);
       }
@@ -666,7 +691,6 @@ function deleteGroup(groupId) {
     });
 }
 
- 
 </script>
 
  
