@@ -23,7 +23,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
  
- <body onload="fetchUserInfoAndUpdateNavbar(); getData()">
+ <body onload="fetchUserInfoAndUpdateNavbar(); getData(); getGroupMembershipsData()">
  
 <nav class="mnb navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
@@ -243,7 +243,7 @@
               <div class="card-header">
                 <h4 class="card-title"><b>Group Memberships</b></h4>
               </div>
-              <table id="groupMembershipsTable" class="table table-hover table-bordered" cellspacing="3" style="justify-content: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%;">
+              <table id="groupMembershipsTab" class="table table-hover table-bordered" cellspacing="3" style=" justify-content: center;  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%;">
                 <thead>
                   <tr>
                     <th>#</th>
@@ -254,6 +254,7 @@
                 </thead>
                 <tbody id="groupMembershipsTbody"></tbody>
               </table>
+
 
              </div>
              
@@ -690,6 +691,61 @@ function deleteGroup(groupId) {
       $('#confirmDeleteModal').modal('hide');
     });
 }
+
+
+
+
+
+// Function to fetch and display group memberships data
+async function getGroupMembershipsData() {
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem('edms_token');
+
+  // Fetch group memberships
+  const membershipsResponse = await fetch('http://127.0.0.1:8000/api/groupmemberships', {
+    headers: {
+      'Authorization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  const membershipsData = await membershipsResponse.json();
+
+  // Call the function to update the table with the received data
+  updateGroupMembershipsTable(membershipsData.data.data);
+}
+
+// Function to update the Group Memberships table with new data
+function updateGroupMembershipsTable(data) {
+  // Get the table body element
+  const membershipsTableBody = document.getElementById('groupMembershipsTbody');
+
+  // Clear the existing table rows
+  membershipsTableBody.innerHTML = '';
+
+  // Iterate through the data and append rows to the table
+  data.forEach((membership, index) => {
+    const row = document.createElement('tr');
+
+    // Group membership information
+    row.innerHTML += `<td>${index + 1}</td>`;
+    row.innerHTML += `<td>${membership.user.username}</td>`;
+    row.innerHTML += `<td>${membership.group.group_name}</td>`;
+
+    row.innerHTML += `<td style="font-size:21px; ">
+      <center>
+        <a href="#" data-toggle="modal" data-target="#removeMembershipModal" onclick="prepareToRemoveMembership(${membership.id})" title="remove"><i class="fa fa-trash"></i></a>
+      </center>
+    </td>`;
+
+    membershipsTableBody.appendChild(row);
+  });
+}
+
+// Call the function to fetch and display group memberships data when the page loads
+getGroupMembershipsData();
+
+
 
 </script>
 
