@@ -177,7 +177,7 @@
       </div>
       <div class="modal-footer border-top-0 d-flex justify-content-center">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger" id="deleteGroupBtn">Delete</button>
+        <button type="button" class="btn btn-danger" id="deleteGroupBtn" onclick="deleteGroup()">Delete</button>
       </div>
     </div>
   </div>
@@ -247,8 +247,12 @@
 
 <script type="text/JavaScript">
 
-  // Define the variable to store the group ID to be deleted
-let groupToDeleteId;
+// Function to prepare for group deletion by setting the group ID to be deleted
+function prepareToDeleteGroup(groupId) {
+  // Set the group ID to the global variable
+  groupToDeleteId = groupId;
+
+}
 
 $(document).ready(function() {
   // Handle click events for list items
@@ -373,8 +377,15 @@ function createGroup() {
     //close the modal after successful submission
     $('#form').modal('hide');
 
+    // Clear the add group form
+    $('#createForm')[0].reset();
+
+
     //refresh the data by calling the getData() function
     getData();
+
+    // Update the dropdowns after deleting the group
+    populateDropdowns();
   })
   .catch(error => {
     console.error('Error:', error);
@@ -423,7 +434,7 @@ data.data.data.forEach(group => {
       row.innerHTML += `<td style="font-size:21px; ">
         <center>
           <a href="#" data-toggle="modal" data-target="#editForm" onclick="editGroup(${group.id})" data-groupid="${group.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
-          <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" title="delete"><i class="fa fa-trash"> </i></a>
+          <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"> <i class="fa fa-trash"></i></a>
         </center>
     </td>`;
    
@@ -526,6 +537,8 @@ function assignUsersToGroup() {
   });
 }
 
+
+//function to edit group
 function editGroup(groupId) {
 
   // Retrieve the Bearer token from localStorage
@@ -613,8 +626,8 @@ function deleteGroup(groupId) {
   }
 
   // Make a DELETE request to delete the group
-  fetch(`http://127.0.0.1:8000/api/groups/delete/${groupId}`, {
-    method: 'DELETE',
+  fetch(`http://127.0.0.1:8000/api/groups/delete/${groupToDeleteId}`, {
+    method: 'GET',
     headers: {
       'Authorization': `Bearer ${bearerToken}`,
       'Content-Type': 'application/json',
@@ -623,17 +636,18 @@ function deleteGroup(groupId) {
     .then(response => response.json())
     .then(data => {
       // Check the response and handle accordingly
-      if (data.data.data.success) {
-        // Refresh the data by calling the getData() function
+      if (data.success) {
+       // Clear the add group form
+       $('#createForm')[0].reset();
+
+         // Refresh the data by calling the getData() function
         getData();
+        // Update the dropdowns after deleting the group
+        populateDropdowns();
       } else {
         console.error('Failed to delete group:', data.message);
       }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    })
-    .finally(() => {
+    }).finally(() => {
       // Hide the confirmation modal
       $('#confirmDeleteModal').modal('hide');
     });
