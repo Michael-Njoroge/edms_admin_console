@@ -31,9 +31,9 @@
          
           <a id="user-name" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Loading...</a>
           <ul class="dropdown-menu">
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Upgrade</a></li>
-            <li><a href="#">Help</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Upload Signature</a></li>
+            <li><a href="#">Upload Stamp</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#">Logout</a></li>
           </ul>
@@ -405,6 +405,16 @@ if (!bearerToken) {
     return;
 }
 
+
+// Function to update the table row numbers dynamically
+function updateRowNumbers() {
+    const rows = document.querySelectorAll('#tab tbody tr');
+    rows.forEach((row, index) => {
+        // Update the first cell (index 0) in each row with the new row number
+        row.cells[0].textContent = index + 1;
+    });
+}
+
 // Fetch groups
 const records = await fetch('http://127.0.0.1:8000/api/groups', {
     headers: {
@@ -437,13 +447,16 @@ data.data.data.forEach(group => {
           <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"> <i class="fa fa-trash"></i></a>
         </center>
     </td>`;
-   
 
     tableBody.appendChild(row);
- 
- 
+
+   
 });
+
+    // Call updateRowNumbers after appending rows to the table body
+    updateRowNumbers();
 }
+
 
 // Function to fetch and populate dropdowns with existing groups and users
 async function populateDropdowns() {
