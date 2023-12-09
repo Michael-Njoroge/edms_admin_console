@@ -102,7 +102,7 @@
             <div class="card elevation-3">
 
               <button type="button" data-toggle="modal" data-target="#form" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 150px; margin-bottom: 15px; ">Add New Group</button>
-              <span><button type="button" data-toggle="modal" data-target="#assignUsersModal" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 200px; margin-bottom: 15px; ">Assign User Group</button></span>
+              <span><button type="button" data-toggle="modal" data-target="#assignUsersModal" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 200px; margin-bottom: 15px; ">Assign User to Group</button></span>
 
 <!-- ******************************Create Group modal********************************** -->
 <div class="modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -226,7 +226,7 @@
             <div class="card-header">
               <h4 class="card-title"><b>Groups</b></h4>
             </div>
-                  <table id="tab" class="table table-hover table-bordered" cellspacing="3" style=" justify-content: center;  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%;" >
+                  <table id="tab" class="table table-hover table-bordered" cellspacing="3" style="  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;" >
                <thead>
                 <tr>
                   <th>#</th>
@@ -599,7 +599,7 @@ function editGroup(groupId) {
     .then(response => response.json())
     .then(data => {
         // Populate the edit form fields
-        $('#edit_group_id').val(data.data.data.id);
+        $('#edit_group_id').val(data.data.data.group_admin_id);
         $('#edit_group_name').val(data.data.data.group_name);
 
    
@@ -782,6 +782,7 @@ async function getGroupMembershipsData() {
   // Call updateRowNumbers after appending rows to the table body
   updateRowNumbers();
 }
+
  
 </script>
 
