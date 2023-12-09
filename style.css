@@ -7,15 +7,22 @@
    width: 100%;
 }
 .msb .navbar-nav li {
-  padding-left: 10px;  
-  padding-right: 10px;  
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .msb .navbar-nav a {
   color: rgb(37, 37, 37) !important;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
+.msb .navbar-nav .fa {
+  margin-right: 9px;  
+} 
  
-
 body {
     margin-top: 50px;
     background-color: whitesmoke;
@@ -35,7 +42,7 @@ body {
   
   /*main side bar*/
   .msb {
-    width: 140px;
+    width: 152px;
     background-color: white;
     position: fixed;
      left: 0;
@@ -75,7 +82,9 @@ body {
     }
      li:hover{
       background-color: white; /* Change the background color on hover */
-      border-bottom: 3px solid #ffa600; /* Add a gray bottom border on hover */
+      border-bottom: 1px solid #ffa600; /* Add a gray bottom border on hover */
+      align-items: center;
+      padding: 10px;
   
     }
   
