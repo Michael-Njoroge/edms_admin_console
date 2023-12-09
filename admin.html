@@ -33,7 +33,7 @@
          
           <a id="user-name" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Loading...</a>
           <ul class="dropdown-menu">
-            <li><a href="#">Profile</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#form">Profile</a></li>
             <li><a href="#">Upload Signature</a></li>
             <li><a href="#">Upload Stamp</a></li>
             <li role="separator" class="divider"></li>
@@ -415,11 +415,18 @@ function createGroup() {
   });
 }
 
-
 // Function to update the table row numbers dynamically
 function updateRowNumbers() {
-    const rows = document.querySelectorAll('#tab tbody tr');
-    rows.forEach((row, index) => {
+    // Update the rows in the "tab" table
+    const tabRows = document.querySelectorAll('#tab tbody tr');
+    tabRows.forEach((row, index) => {
+        // Update the first cell (index 0) in each row with the new row number
+        row.cells[0].textContent = index + 1;
+    });
+
+    // Update the rows in the "groupMembershipsTab" table
+    const groupMembershipsRows = document.querySelectorAll('#groupMembershipsTab tbody tr');
+    groupMembershipsRows.forEach((row, index) => {
         // Update the first cell (index 0) in each row with the new row number
         row.cells[0].textContent = index + 1;
     });
@@ -563,9 +570,12 @@ function assignUsersToGroup() {
     $('#assignUsersModal').modal('hide');
     $('#assignUsersForm')[0].reset();
 
+    toastr.success('User Assigned to Group successfully');
 
     // Refresh the data by calling the getData() function
     getData();
+
+    getGroupMembershipsData()
   })
   .catch(error => {
     console.error('Error:', error);
@@ -640,6 +650,7 @@ function submitEditForm() {
 
         //refresh the data by calling the getData() function
         getData();
+        getGroupMembershipsData()
 
         // Update the dropdowns after editing the group
       populateDropdowns();
@@ -679,6 +690,9 @@ function deleteGroup(groupId) {
 
          // Refresh the data by calling the getData() function
         getData();
+
+        getGroupMembershipsData()
+
         // Update the dropdowns after deleting the group
         populateDropdowns();
 
@@ -691,9 +705,6 @@ function deleteGroup(groupId) {
       $('#confirmDeleteModal').modal('hide');
     });
 }
-
-
-
 
 
 // Function to fetch and display group memberships data
@@ -711,42 +722,66 @@ async function getGroupMembershipsData() {
 
   const membershipsData = await membershipsResponse.json();
 
-  // Call the function to update the table with the received data
-  updateGroupMembershipsTable(membershipsData.data.data);
-}
+  console.log(membershipsData);
 
-// Function to update the Group Memberships table with new data
-function updateGroupMembershipsTable(data) {
   // Get the table body element
   const membershipsTableBody = document.getElementById('groupMembershipsTbody');
-
   // Clear the existing table rows
   membershipsTableBody.innerHTML = '';
 
+  // Function to fetch user data based on user_id
+  const fetchUserData = async (userId) => {
+    const userResponse = await fetch(`http://127.0.0.1:8000/api/user/show/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${bearerToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    const userData = await userResponse.json();
+    return userData.data.data.username;
+  };
+
+  // Function to fetch group data based on group_id
+  const fetchGroupData = async (groupId) => {
+    const groupResponse = await fetch(`http://127.0.0.1:8000/api/group/show/${groupId}`, {
+      headers: {
+        'Authorization': `Bearer ${bearerToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    const groupData = await groupResponse.json();
+    return groupData.data.data.group_name;
+  };
+
   // Iterate through the data and append rows to the table
-  data.forEach((membership, index) => {
+  for (const membership of membershipsData.data.data) {
     const row = document.createElement('tr');
 
-    // Group membership information
-    row.innerHTML += `<td>${index + 1}</td>`;
-    row.innerHTML += `<td>${membership.user.username}</td>`;
-    row.innerHTML += `<td>${membership.group.group_name}</td>`;
+    // Group information
+    row.innerHTML += `<td>${membership.id}</td>`;
+
+    // Fetch user data based on user_id
+    const username = await fetchUserData(membership.user_id);
+    // Fetch group data based on group_id
+    const groupName = await fetchGroupData(membership.group_id);
+
+    row.innerHTML += `<td>${username}</td>`;
+    row.innerHTML += `<td>${groupName}</td>`;
 
     row.innerHTML += `<td style="font-size:21px; ">
-      <center>
-        <a href="#" data-toggle="modal" data-target="#removeMembershipModal" onclick="prepareToRemoveMembership(${membership.id})" title="remove"><i class="fa fa-trash"></i></a>
-      </center>
+        <center>
+          <a href="#" data-toggle="modal" data-target="#editForm" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
+          <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" title="delete"> <i class="fa fa-trash"></i></a>
+        </center>
     </td>`;
 
     membershipsTableBody.appendChild(row);
-  });
+  }
+
+  // Call updateRowNumbers after appending rows to the table body
+  updateRowNumbers();
 }
-
-// Call the function to fetch and display group memberships data when the page loads
-getGroupMembershipsData();
-
-
-
+ 
 </script>
 
  
