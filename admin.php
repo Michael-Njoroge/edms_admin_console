@@ -5,25 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
  
+  <!-- Main css -->
 <link rel="stylesheet" href="style.css">
+
     <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- Bootstrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<!-- Datatables javascript -->
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-2.2.4/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/sc-1.4.2/datatables.min.css" />
+
      <!-- Toast -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
  
- <body onload="getData(); getGroupMembershipsData()">
+<body onload="getData(); getGroupMembershipsData()">
  
 <nav class="mnb navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
@@ -47,6 +52,7 @@
     </div>
   </div>
 </nav>
+
 <!--msb: main sidebar-->
 <div class="msb" id="msb">
 		<nav class="navbar" role="navigation">
@@ -72,13 +78,35 @@
                 <center>
 				<ul class="nav navbar-nav" >
 
-					<li  class="active"  ><a href="#" ><i class="fa fa-dashboard"></i> Dashboard</a></li>
-					<li><a href="#"><i class="fa fa-puzzle-piece"></i> Users</a></li>
-					<li><a href="#"><i class="fa fa-heart"></i> Groups</a></li>
-					<li><a href="#"><i class="fa fa-star"></i>Membership</a></li>
+          <li>
+            <input type="radio" name="sidebar_tab1" id="sidebar_tab1" value="1" checked="1"/>
+            <label for="sidebar_tab1"><i class="fa fa-dashboard"></i> Dashboard</label>
+          </li>
+
+          <li>
+            <input type="radio" name="sidebar_tab1" id="sidebar_tab2" value="2"/>
+            <label for="sidebar_tab2">
+                <i class="fa fa-puzzle-piece"></i> Users
+            </label>
+          </li>
+
+        <li>
+          <input type="radio" name="sidebar_tab1" id="sidebar_tab3" value="3"/>
+          <label for="sidebar_tab3"><i class="fa fa-group"></i> Groups</label>
+        </li>
+
+        <li>
+          <input type="radio" name="sidebar_tab1" id="sidebar_tab4" value="4"/>
+          <label for="sidebar_tab4"><i class="fa fa-star"></i> Membership</label>
+      </li>
+
+      <li>
+        <input type="radio" name="sidebar_tab1" id="sidebar_tab5" value="5"/>
+          <label for="sidebar_tab5"><i class="fa fa-signal"></i> Link</label>
+      </li>
  
-					<li><a href="#"><span class="glyphicon glyphicon-signal"></span> Link</a></li>
-				</ul>
+ 
+ 				</ul>
                 
 			</div><!-- /.navbar-collapse -->
 		</nav>  
@@ -298,15 +326,21 @@ function prepareToDeleteGroup(groupId) {
 }
 
 $(document).ready(function() {
-  // Handle click events for list items
-  $('.msb .navbar-nav li').on('click', function() {
+  // Handle change events for radio buttons
+  $('.msb .navbar-nav li input[type="radio"]').on('change', function() {
     // Remove the 'active' class from all list items
     $('.msb .navbar-nav li').removeClass('active');
 
-    // Add the 'active' class to the clicked list item
-    $(this).addClass('active');
+    // Add the 'active' class to the parent list item of the clicked radio button
+    $(this).closest('li').addClass('active');
+  });
+
+  // Set the initial active state based on the default checked radio button
+  $('.msb .navbar-nav li input[type="radio"]:checked').each(function() {
+    $(this).closest('li').addClass('active');
   });
 });
+
 // $(document).ready(function() {
 //   var table = $('#groupMembershipsTab').DataTable({
 //     scrollX: false,

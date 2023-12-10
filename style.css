@@ -1,23 +1,32 @@
-.msb .navbar-nav .active a {
-  background-color: #355B11 !important;  
-  color: white !important; 
+.msb .navbar-nav li input[type="radio"]:checked + label{
+  background-color: #355B11 !important;
+  color: white !important;
   border-radius: 5px;
-   padding-top: 10px;  
-  padding-bottom: 10px;  
-   width: 100%;
+  padding: 10px; /* Add padding to both sides */
+   box-sizing: border-box; /* Include padding in the width calculation */
+   display: flex;
+  align-items: center;
+ 
 }
-.msb .navbar-nav li {
-  padding: 5px 10px;
+.msb .navbar-nav li label {
+  text-decoration: none;
+  padding: 10px;
+  text-align: left;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  position: relative;
+  cursor: pointer;
+  width: 150px;
 }
-.msb .navbar-nav a {
-  color: rgb(37, 37, 37) !important;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  width: 100%;
+ 
+.msb .navbar-nav li input[type="radio"] {
+  display: none;
+}
+
+.msb .navbar-nav li label:hover {
+  background-color: #f0f0f0;
+  border-bottom: 3px solid #ffa600;
 }
 .msb .navbar-nav .fa {
   margin-right: 9px;  
@@ -31,7 +40,12 @@ body {
     letter-spacing: 0.01em;
     color: black;
    }
-  
+   .ic {
+    font-size: 16px;
+    margin-right: 5px;
+    font-weight: 300px;
+    display: inline-block;
+  }
   
   .navbar-default {
      margin-left: 1150px;
@@ -54,46 +68,7 @@ body {
     height: 100%;
     z-index: 1;
     box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
-    .navbar {
-      border: none;
-      margin-left: 0;
-      background-color: inherit;
-       
-    }
- 
-    .navbar-header {
-      width: 100%;
-       margin-bottom: 20px;
-      background: #fff;
-    }
-    .navbar-nav {
-      .panel {
-        border: 0 none;
-        box-shadow: none;
-        margin: 0;
-        background: inherit;
-      }
-      li {
-        display: block;
-        width: 100%;
-       
-      }
    
-    }
-     li:hover{
-      background-color: white; /* Change the background color on hover */
-      border-bottom: 1px solid #ffa600; /* Add a gray bottom border on hover */
-      align-items: center;
-      padding: 10px;
-  
-    }
-  
-  }
-  ul.nv,
-  ul.ns {
-    position: relative;
-    padding: 0;
-    list-style: none;  
   }
   .nv {  
     li {
@@ -105,30 +80,9 @@ body {
         content: "";      
         display: table;
       }
-      a {
-        color: black;
-        padding: 10px 25px;
-        display: block;
-        vertical-align: middle;
-        
-        .ic {
-          font-size: 16px;
-          margin-right: 5px;
-          font-weight: 300;
-          display: inline-block;
-        }
-      }
+     
     }
-    /*ns: nav-sub*/
-    .ns {
-      li {
-        a {
-          padding: 10px 50px;
-        }
-      }
-      
-    }
-    
+ 
   }
  
   
@@ -152,32 +106,3 @@ body {
     border-collapse: collapse;
 }
  
-  /*globals*/
-  a,
-  a:focus,
-  a:hover {
-   text-decoration: none;
-  }
-  
-  .inbox {
-    .container-fluid {
-      padding-left: 0;
-      padding-right: 0;
-    }
-    
-    ul, li {
-      margin: 0;
-      padding: 0;
-    }
-    ul {    
-      li {
-        list-style: none;
-        a {
-          display: block;
-          padding: 10px 20px;
-        }
-      }
-    }
-  }
- 
-  
