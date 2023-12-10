@@ -129,9 +129,6 @@
            <div class="col-md-12">
             <div class="card elevation-3">
 
-              <button type="button" data-toggle="modal" data-target="#form" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 150px; margin-bottom: 15px; ">Add New Group</button>
-              <span><button type="button" data-toggle="modal" data-target="#assignUsersModal" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 200px; margin-bottom: 15px; ">Assign User to Group</button></span>
-
               <!-- ******************************Create Group modal********************************** -->
               <div class="modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -271,10 +268,14 @@
 
 
 
-<!-- *******************Groups Table***************** -->
+            <!-- *******************Groups Table***************** -->
+            <div id="groupsTableContainer" class="table-container">
             <div class="card-header">
+              <button type="button" data-toggle="modal" data-target="#form" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 150px; margin-bottom: 15px; ">Add New Group</button>
+              <span><button type="button" data-toggle="modal" data-target="#assignUsersModal" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 200px; margin-bottom: 15px; ">Assign User to Group</button></span>
+
               <h4 class="card-title"><b>Groups</b></h4>
-            </div>
+              </div>
                   <table id="tab" class="table table-hover table-bordered" cellspacing="3" style="  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;" >
                <thead>
                 <tr>
@@ -288,8 +289,10 @@
                <tbody id="tbody"></tbody>
              </table>
              <br>
+            </div>
 
               <!-- *******************Group Memberships Table***************** -->
+              <div id="groupMembershipsTableContainer" class="table-container" style="display: none;">
               <div class="card-header">
                 <h4 class="card-title"><b>Group Memberships</b></h4>
               </div>
@@ -304,8 +307,7 @@
                 </thead>
                 <tbody id="groupMembershipsTbody"></tbody>
               </table>
-
-
+              </div>
              </div>
              
            </div>
@@ -325,21 +327,24 @@ function prepareToDeleteGroup(groupId) {
 
 }
 
+// Function to handle table display based on selected radio button
 $(document).ready(function() {
-  // Handle change events for radio buttons
-  $('.msb .navbar-nav li input[type="radio"]').on('change', function() {
-    // Remove the 'active' class from all list items
-    $('.msb .navbar-nav li').removeClass('active');
+      // Handle click events for radio buttons
+      $('input[name="sidebar_tab1"]').on('change', function() {
+        var value = $(this).val();
 
-    // Add the 'active' class to the parent list item of the clicked radio button
-    $(this).closest('li').addClass('active');
-  });
+        // Hide all tables
+        $('.table-container').hide();
 
-  // Set the initial active state based on the default checked radio button
-  $('.msb .navbar-nav li input[type="radio"]:checked').each(function() {
-    $(this).closest('li').addClass('active');
-  });
-});
+        // Show the corresponding table based on the selected radio button
+        if (value === '3') {
+          $('#groupsTableContainer').show();
+        } else if (value === '4') {
+          $('#groupMembershipsTableContainer').show();
+        }
+        // Add more conditions for other radio buttons if needed
+      });
+    });
 
 // $(document).ready(function() {
 //   var table = $('#groupMembershipsTab').DataTable({
