@@ -532,6 +532,11 @@ function assignUsersToGroup() {
     // Fetch form data
     const groupId = $('#assign_group').val();
     const userIds = $('#assign_users').val();
+
+     // Disable the submit button and show loading text
+  const submitButton = $('#assignUsersBtn');
+  submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Assigning...');
+
   
     // Construct the request payload
     const requestData = {
@@ -567,7 +572,11 @@ function assignUsersToGroup() {
     })
     .catch(error => {
       console.error('Error:', error);
-    });
+    })
+    .finally(() => {
+        // Enable the submit button and revert the text
+        submitButton.prop('disabled', false).html('Assign Users');
+      });
   }
   
  
