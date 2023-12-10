@@ -382,6 +382,10 @@ function submitEditForm() {
     const groupName = $('#edit_group_name').val();
     const group_id = $('#edit_group_id').val();
 
+    // Disable the submit button and show loading text
+    const submitButton = $('#editSubmitBtn');
+    submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Updating...');
+
     // Construct the request payload
     const requestData = {
         group_name: groupName,
@@ -418,7 +422,10 @@ function submitEditForm() {
         getGroupMembershipsData()
 
         // Update the dropdowns after editing the group
-      populateDropdowns();
+        populateDropdowns();
+
+        // Enable the submit button and revert the text
+        submitButton.prop('disabled', false).html('Submit');
 
       toastr.success('Group updated successfully');
     })
