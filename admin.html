@@ -274,6 +274,43 @@
           </div>
         </div>
 
+          <!-- *************************Edit Group Membership Modal****************************** -->
+            <div class="modal fade" id="editGroupMembershipModal" tabindex="-1" role="dialog" aria-labelledby="editGroupMembershipModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title" id="editGroupMembershipModalLabel">Edit Group Membership</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form id="editGroupMembershipForm" onsubmit="event.preventDefault(); submitEditGroupMembership();">
+                    <div class="modal-body">
+                      <input type="hidden" class="form-control" id="editMembershipId">
+                      
+                      <div class="form-group">
+                        <label for="editMembershipGroup">Select Group</label>
+                        <select class="form-control" id="editMembershipGroup" name="editMembershipGroup">
+                          <!-- Populate with group options dynamically -->
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="editMembershipUser">Select User</label>
+                        <select class="form-control" id="editMembershipUser" name="editMembershipUser">
+                          <!-- Populate with user options dynamically -->
+                        </select>
+                      </div>
+                    </div>
+                    <div class="modal-footer border-top-0 d-flex justify-content-center">
+                      <button type="submit" class="btn" id="editMembershipBtn" style="background: #355B11; color: white;">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+
 
 
             <!-- *******************Groups Table***************** -->

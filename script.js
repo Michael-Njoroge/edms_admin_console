@@ -191,6 +191,12 @@ function createGroup() {
   const groupName = $('#group_name').val();
   const adminId = $('#admin_id').val();
 
+   // Validate form fields
+   if (!groupName || !adminId) {
+    toastr.error('Please fill out all fields.');
+    return;
+  }
+
   // Disable the submit button and show loading text
   const submitButton = $('#submitBtn');
   submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Loading...');
@@ -250,6 +256,10 @@ function createGroup() {
 }
 
 //FUNCTION TO SHOW EDIT MODAL BASED ON GROUP ID
+
+// Store the original values when the edit modal is opened
+let originalGroupName, originalGroupAdminId;
+
 function editGroup(groupId) {
   
     // Retrieve the Bearer token from localStorage
@@ -263,6 +273,10 @@ function editGroup(groupId) {
       })
       .then(response => response.json())
       .then(data => {
+        // Store the original values
+        originalGroupName = data.data.data.group_name;
+        originalGroupAdminId = data.data.data.group_admin_id;
+
           // Populate the edit form fields
           $('#edit_group_id').val(data.data.data.id);
           $('#edit_group_admin_id').val(data.data.data.group_admin_id);        
@@ -284,16 +298,27 @@ function submitEditForm() {
     const groupName = $('#edit_group_name').val();
     const group_id = $('#edit_group_id').val();
 
+      // Check if values have changed
+      const changesDetected = groupName !== originalGroupName || groupId !== originalGroupAdminId;
+
+        // Disable or enable the submit button based on changes
+        let submitButton = $('#editSubmitBtn');
+        submitButton.prop('disabled', !changesDetected);
+
+        // If no changes detected, return early
+        if (!changesDetected) {
+            return;
+        }
+ 
     // Disable the submit button and show loading text
-    const submitButton = $('#editSubmitBtn');
+    submitButton = $('#editSubmitBtn');
     submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Updating...');
 
     // Construct the request payload
     const requestData = {
         group_name: groupName,
         group_admin_id: groupId,
-        // Add other fields as needed
-    };
+     };
 
     // Retrieve the Bearer token from localStorage
     const bearerToken = localStorage.getItem('edms_token');
@@ -462,7 +487,7 @@ async function getGroupMembershipsData() {
 
     row.innerHTML += `<td style="font-size:21px; ">
         <center>
-          <a href="#" data-toggle="modal" data-target="#editForm" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
+          <a href="#" data-toggle="modal" data-target="#editGroupMembershipModal" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
           <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" title="delete"> <i class="fa fa-trash"></i></a>
         </center>
     </td>`;
@@ -493,6 +518,10 @@ async function populateDropdowns() {
        
       const assignGroupDropdown = $('#assign_group');
       assignGroupDropdown.empty();
+
+      // Add default "Select" option
+      assignGroupDropdown.append('<option value="" disabled selected>Select Group</option>');
+
       groupsData.data.data.forEach(group => {
         assignGroupDropdown.append(`<option value="${group.id}">${group.group_name}</option>`);
       });
@@ -516,6 +545,10 @@ async function populateDropdowns() {
       const usersInGroup = selectedGroup ? selectedGroup.users.map(user => user.id) : [];
   
       assignUsersDropdown.empty();
+
+      // Add default "Select" option
+      assignUsersDropdown.append('<option value="" disabled selected>Select User</option>');
+
       usersData.data.data.forEach(user => {
         assignUsersDropdown.append(`<option value="${user.id}">${user.username}</option>`);
       });
@@ -532,6 +565,12 @@ function assignUsersToGroup() {
     // Fetch form data
     const groupId = $('#assign_group').val();
     const userIds = $('#assign_users').val();
+
+        // Check if both group and user options are selected
+    if (!groupId || !userIds || userIds.length === 0) {
+        toastr.error('Please select both a group and at least one user.');
+        return;
+    }
 
      // Disable the submit button and show loading text
   const submitButton = $('#assignUsersBtn');
