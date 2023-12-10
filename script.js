@@ -1,5 +1,5 @@
  
- 
+
 // Function to prepare for group deletion by setting the group ID to be deleted
 function prepareToDeleteGroup(groupId) {
   // Set the group ID to the global variable
@@ -119,6 +119,10 @@ function createGroup() {
   const groupName = $('#group_name').val();
   const adminId = $('#admin_id').val();
 
+  // Disable the submit button and show loading text
+  const submitButton = $('#submitBtn');
+  submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Loading...');
+
   // Construct the request payload
   const requestData = {
     group_name: groupName,
@@ -161,10 +165,16 @@ function createGroup() {
     // Update the dropdowns after deleting the group
     populateDropdowns();
 
+    // Enable the submit button and revert the text
+    submitButton.prop('disabled', false).html('Submit');
+
     toastr.success('Group created successfully');
   })
   .catch(error => {
     console.error('Error:', error);
+
+    // Enable the submit button and revert the text
+    submitButton.prop('disabled', false).html('Submit');
   });
 }
 
