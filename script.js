@@ -445,6 +445,10 @@ function deleteGroup(groupId) {
     return;
   }
 
+  // Disable the delete button and show loading text
+  const deleteButton = $('#deleteGroupBtn');
+  deleteButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Deleting...');
+
   // Make a DELETE request to delete the group
   fetch(`http://127.0.0.1:8000/api/groups/delete/${groupToDeleteId}`, {
     method: 'GET',
@@ -473,6 +477,9 @@ function deleteGroup(groupId) {
         console.error('Failed to delete group:', data.message);
       }
     }).finally(() => {
+         // Enable the delete button and revert the text
+      deleteButton.prop('disabled', false).html('Delete');
+
       // Hide the confirmation modal
       $('#confirmDeleteModal').modal('hide');
     });
