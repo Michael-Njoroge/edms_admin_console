@@ -1,13 +1,13 @@
  
 
-// Function to prepare for group deletion by setting the group ID to be deleted
+// FUNCTION TO PREPARE FOR GROUP DELETION BY SETTING THE GROUP ID TO BE DELETED
 function prepareToDeleteGroup(groupId) {
   // Set the group ID to the global variable
   groupToDeleteId = groupId;
 
 }
 
-// Function to handle table display based on selected radio button
+// FUNCTION TO HANDLE TABLE DISPLAY BASED ON SELECTED RADIO BUTTON
 $(document).ready(function() {
       // Handle click events for radio buttons
       $('input[name="sidebar_tab1"]').on('change', function() {
@@ -34,7 +34,7 @@ $(document).ready(function() {
 //     fixedHeader: true
 //   });});
 
-// Function to fetch user information based on the logged-in user's ID
+// FUNCTION TO FETCH USER INFORMATION BASED ON THE LOGGED-IN USER'S ID
 function fetchUserInfoAndUpdateNavbar() {
     // Retrieve the Bearer token from localStorage
     const bearerToken = localStorage.getItem('edms_token');
@@ -70,7 +70,7 @@ function fetchUserInfoAndUpdateNavbar() {
     });
 }
 
-// Function to update the user's name in the navigation bar
+// FUNCTION TO UPDATE THE USER'S NAME IN THE NAVIGATION BAR
 function updateUserNameInNavbar(userName) {
     // Update the user's name in the navigation bar
     const userNameElement = document.getElementById('user-name');
@@ -79,7 +79,7 @@ function updateUserNameInNavbar(userName) {
     }
 }
 
-// Function to update the profile modal
+// FUNCTION TO UPDATE THE PROFILE MODAL
 function updateProfileModal(userData) {
   const profileUsernameElement = document.getElementById('profile-username');
   const profileNameElement = document.getElementById('profile-name');
@@ -103,17 +103,13 @@ function parseJwt(token) {
 // Call fetchUserInfoAndUpdateNavbar before the document is ready
 fetchUserInfoAndUpdateNavbar();
 
-// Execute the rest of the script when the document is ready
-$(document).ready(function() {
-    // ... your existing code ...
-
-    // Call populateDropdowns when the document is ready
-    populateDropdowns();
-});
+// Call populateDropdowns when the document is ready
+populateDropdowns();
+ 
 
 
 
-// Function to handle form submission and create a new group
+// FUNCTION TO HANDLE FORM SUBMISSION AND CREATE A NEW GROUP
 function createGroup() {
   // Fetch form data
   const groupName = $('#group_name').val();
@@ -178,7 +174,7 @@ function createGroup() {
   });
 }
 
-// Function to update the table row numbers dynamically
+// FUNCTION TO UPDATE THE TABLE ROW NUMBERS DYNAMICALLY
 function updateRowNumbers() {
     // Update the rows in the "tab" table
     const tabRows = document.querySelectorAll('#tab tbody tr');
@@ -196,7 +192,7 @@ function updateRowNumbers() {
 }
 
 
-// Fuction to call and display data
+// FUCTION TO CALL AND DISPLAY GROUP DATA
  async function getData() {
 
 // Retrieve the Bearer token from localStorage
@@ -250,7 +246,7 @@ data.data.data.forEach(group => {
 }
 
 
-// Function to fetch and populate dropdowns with existing groups and users
+// *********FUNCTION TO FETCH AND POPULATE DROPDOWNS WITH EXISTING GROUPS AND USERS ************* //
 async function populateDropdowns() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem('edms_token');
@@ -270,8 +266,6 @@ async function populateDropdowns() {
     groupsData.data.data.forEach(group => {
       assignGroupDropdown.append(`<option value="${group.id}">${group.group_name}</option>`);
     });
-
-    
 
     // Fetch existing users
     const usersResponse = await fetch('http://127.0.0.1:8000/api/users', {
@@ -302,7 +296,7 @@ $(document).ready(function() {
   populateDropdowns();
 });
 
-// Function to handle form submission and assign users to a group
+// FUNCTION TO HANDLE FORM SUBMISSION AND ASSIGN USERS TO A GROUP
 function assignUsersToGroup() {
   // Fetch form data
   const groupId = $('#assign_group').val();
@@ -346,7 +340,7 @@ function assignUsersToGroup() {
 }
 
 
-//function to edit group
+//FUNCTION TO SHOW EDIT MODAL BASED ON GROUP ID
 function editGroup(groupId) {
 
   // Retrieve the Bearer token from localStorage
@@ -375,7 +369,7 @@ function editGroup(groupId) {
 }
 
 
-// Function to submit the edit form
+// FUNCTION TO SUBMIT THE EDIT FORM
 function submitEditForm() {
     // Fetch form data
     const groupId = $('#edit_group_admin_id').val();
@@ -434,7 +428,7 @@ function submitEditForm() {
     });
 }
 
-// Function to handle group deletion
+// FUNCTION TO HANDLE GROUP DELETION
 function deleteGroup(groupId) {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem('edms_token');
@@ -486,7 +480,7 @@ function deleteGroup(groupId) {
 }
 
 
-// Function to fetch and display group memberships data
+// FUNCTION TO FETCH AND DISPLAY GROUP MEMBERSHIPS DATA
 async function getGroupMembershipsData() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem('edms_token');
