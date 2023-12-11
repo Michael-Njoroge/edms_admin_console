@@ -46,7 +46,7 @@ $(document).ready(function() {
       } else if (value === '4') {
         $('#groupMembershipsTableContainer').show();
       }
-      // Add more conditions for other radio buttons if needed
+      // Add more conditions for other radio buttons  
     });
   });
 
@@ -134,55 +134,64 @@ populateDropdowns();
 
 // FUCTION TO CALL AND DISPLAY GROUP DATA
 async function getData() {
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem('edms_token');
 
-    // Retrieve the Bearer token from localStorage
-    const bearerToken = localStorage.getItem('edms_token');
-    
-    // Check if the token is present in localStorage
-    if (!bearerToken) {
-        console.error('Unauthorized');
-        return;
-    }
-    
-    // Fetch groups
-    const records = await fetch('http://127.0.0.1:8000/api/groups', {
-        headers: {
-            'Authorization': `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json'
-        }
-    });
-     
-    const data = await records.json();
-     
-    const tableBody = document.getElementById('tbody');
-    
-    tableBody.innerHTML = '';
-    
-    data.data.data.forEach(group => {
-        const row = document.createElement('tr');
-    
-        // Group information
-        row.innerHTML += `<td>${group.id}</td>`;
-        row.innerHTML += `<td>${group.group_name}</td>`;
-        row.innerHTML += `<td>${group.group_admin_id}</td>`;
-    
-        // Users
-        const users = group.users.length;
-        row.innerHTML += `<td>${users}</td>`;
-    
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+      console.error('Unauthorized');
+      return;
+  }
+
+  // Fetch groups
+  const records = await fetch('http://127.0.0.1:8000/api/groups', {
+      headers: {
+          'Authorization': `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json'
+      }
+  });
+
+  const data = await records.json();
+
+  const tableBody = document.getElementById('tbody');
+
+  tableBody.innerHTML = '';
+
+  data.data.data.forEach(group => {
+      const row = document.createElement('tr');
+
+      // Group information
+      row.innerHTML += `<td>${group.id}</td>`;
+      row.innerHTML += `<td>${group.group_name}</td>`;
+      row.innerHTML += `<td>${group.group_admin_id}</td>`;
+
+      // Users
+      const users = group.users.length;
+      row.innerHTML += `<td>${users}</td>`;
+
+      // Check if the group is not a seed group (disable delete for groups with id 1 and 2)
+      if (group.id === 1 || group.id === 2) {
           row.innerHTML += `<td style="font-size:21px; ">
-            <center>
-              <a href="#" data-toggle="modal" data-target="#editForm" onclick="editGroup(${group.id})" data-groupid="${group.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
-              <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"> <i class="fa fa-trash"></i></a>
-            </center>
-        </td>`;
-    
-        tableBody.appendChild(row);
-    
-    });
-        // Call updateRowNumbers after appending rows to the table body
-        updateRowNumbers();
-    }
+                <center>
+                    <a href="#" data-toggle="modal" data-target="#editForm" onclick="editGroup(${group.id})" data-groupid="${group.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
+                    <i class="fa fa-trash" style="color: lightgrey; cursor: not-allowed;" title="Cannot delete this group" aria-disabled="true"></i>
+                </center>
+            </td>`;
+      } else {
+          row.innerHTML += `<td style="font-size:21px; ">
+                <center>
+                    <a href="#" data-toggle="modal" data-target="#editForm" onclick="editGroup(${group.id})" data-groupid="${group.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
+                    <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"><i class="fa fa-trash"></i></a>
+                </center>
+            </td>`;
+      }
+
+      tableBody.appendChild(row);
+  });
+
+  // Call updateRowNumbers after appending rows to the table body
+  updateRowNumbers();
+}
     
 
 // FUNCTION TO HANDLE FORM SUBMISSION AND CREATE A NEW GROUP
@@ -274,6 +283,11 @@ function editGroup(groupId) {
       .then(response => response.json())
       .then(data => {
 
+        // Store the original values
+        originalGroupName = data.data.data.group_name;
+        originalGroupAdminId = data.data.data.group_admin_id;
+
+
           // Populate the edit form fields
           $('#edit_group_id').val(data.data.data.id);
           $('#edit_group_admin_id').val(data.data.data.group_admin_id);        
@@ -295,18 +309,18 @@ function submitEditForm() {
     const groupName = $('#edit_group_name').val();
     const group_id = $('#edit_group_id').val();
 
-   // Store the original values
-   originalGroupName = $('#edit_group_name').val();
-   originalGroupAdminId =  $('#edit_group_admin_id').val();
-
+    console.log('Original Group Name:', originalGroupName);
+    console.log('Current Group Name:', groupName);
+   
+ 
      // Check if values have changed
-     if (groupName === originalGroupName && groupId === originalGroupAdminId) {
+     if (groupName === originalGroupName) {
       toastr.warning('No changes detected.');
       return;
   }
 
     // Disable the submit button and show loading text
-    submitButton = $('#editSubmitBtn');
+    const submitButton = $('#editSubmitBtn');
     submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Updating...');
 
     // Construct the request payload
@@ -320,7 +334,7 @@ function submitEditForm() {
 
     // Check if the token is present in localStorage
     if (!bearerToken) {
-        console.error('Unauthorized');
+      toastr.error('Unauthorized.');
         return;
     }
 
