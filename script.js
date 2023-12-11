@@ -82,6 +82,9 @@ function fetchUserInfoAndUpdateNavbar() {
     .then(data => {
         // Update the user's name in the navigation bar
         updateUserNameInNavbar(data.data.data.name);
+
+         // Update the profile modal
+         updateProfileModal(data.data.data);
  
         // Call populateDropdowns once user information is retrieved
         populateDropdowns();
@@ -104,12 +107,16 @@ function updateUserNameInNavbar(userName) {
 function updateProfileModal(userData) {
   const profileUsernameElement = document.getElementById('profile-username');
   const profileNameElement = document.getElementById('profile-name');
+  const profileModalTitleElement = document.getElementById('profileModalLabel');
 
   if (profileUsernameElement && profileNameElement) {
     profileUsernameElement.innerText = userData.username;
  
     profileNameElement.innerText = userData.name;
   }
+
+    // Update the modal title to include the name
+    profileModalTitleElement.innerText = `${userData.name} Profile`;
 }
 
 // Function to parse a JWT
