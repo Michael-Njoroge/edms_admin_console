@@ -273,9 +273,6 @@ function editGroup(groupId) {
       })
       .then(response => response.json())
       .then(data => {
-        // Store the original values
-        originalGroupName = data.data.data.group_name;
-        originalGroupAdminId = data.data.data.group_admin_id;
 
           // Populate the edit form fields
           $('#edit_group_id').val(data.data.data.id);
@@ -298,18 +295,16 @@ function submitEditForm() {
     const groupName = $('#edit_group_name').val();
     const group_id = $('#edit_group_id').val();
 
-      // Check if values have changed
-      const changesDetected = groupName !== originalGroupName || groupId !== originalGroupAdminId;
+   // Store the original values
+   originalGroupName = $('#edit_group_name').val();
+   originalGroupAdminId =  $('#edit_group_admin_id').val();
 
-        // Disable or enable the submit button based on changes
-        let submitButton = $('#editSubmitBtn');
-        submitButton.prop('disabled', !changesDetected);
+     // Check if values have changed
+     if (groupName === originalGroupName && groupId === originalGroupAdminId) {
+      toastr.warning('No changes detected.');
+      return;
+  }
 
-        // If no changes detected, return early
-        if (!changesDetected) {
-            return;
-        }
- 
     // Disable the submit button and show loading text
     submitButton = $('#editSubmitBtn');
     submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Updating...');
