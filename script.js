@@ -4,7 +4,7 @@
 
 // FUNCTION TO UPDATE THE TABLE ROW NUMBERS DYNAMICALLY
 function updateRowNumbers() {
-    // Update the rows in the "tab" table
+    // Update the rows in the "groupsTab" table
     const tabRows = document.querySelectorAll('#tab tbody tr');
     tabRows.forEach((row, index) => {
         // Update the first cell (index 0) in each row with the new row number
@@ -19,6 +19,7 @@ function updateRowNumbers() {
     });
 }
 
+// FUNCTION TO HANDLE DATATABLES
 // $(document).ready(function() {
 //   var table = $('#groupMembershipsTab').DataTable({
 //     scrollX: false,
@@ -521,17 +522,73 @@ async function getGroupMembershipsData() {
     row.innerHTML += `<td>${groupName}</td>`;
 
     row.innerHTML += `<td style="font-size:21px; ">
-        <center>
-          <a href="#" data-toggle="modal" data-target="#editGroupMembershipModal" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
-          <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" title="delete"> <i class="fa fa-trash"></i></a>
-        </center>
+    <center>
+       <a href="#" onclick="confirmDeleteGroupMembership(${membership.id})" title="delete"> <i class="fa fa-trash"></i></a>
+    </center>
     </td>`;
 
     membershipsTableBody.appendChild(row);
   }
 
+  
   // Call updateRowNumbers after appending rows to the table body
   updateRowNumbers();
+}
+
+// Add this function to handle the click event of the delete button in each row
+function confirmDeleteGroupMembership(membershipId) {
+
+  // Set the membership ID in the hidden input field of the confirmation modal
+ document.getElementById('deleteMembershipId').value = membershipId;
+
+   // Show the confirmation modal
+   $('#confirmDeleteMmebershipModal').modal('show');
+ }
+
+  // Add this function to handle the click event of the delete button in the confirmation modal
+  async function deleteGroupMembership() {
+
+    // Retrieve the membership ID from the hidden input field
+ const membershipId = document.getElementById('deleteMembershipId').value;
+
+ try {
+      // Retrieve the Bearer token from localStorage
+      const bearerToken = localStorage.getItem('edms_token');
+
+       // Perform the API call to delete the group membership
+    const apiUrl = `http://127.0.0.1:8000/api/groupmemberships/delete/${membershipId}`;
+
+   const response = await fetch(apiUrl, {
+     method: 'GET',
+     headers: {
+       'Authorization': `Bearer ${bearerToken}`,
+       'Content-Type': 'application/json'
+     },
+   });
+
+   const data = await response.json();
+
+   // Handle the response, update the UI, or show a success message
+   console.log('Group membership deleted successfully:', data);
+
+   // Close the confirmation modal
+   $('#confirmDeleteMmebershipModal').modal('hide');
+
+   toastr.success('Group Membership Deleted Successfully');
+
+   // Refresh the table or update the UI as needed
+   getGroupMembershipsData();
+
+    // Refresh the data by calling the getData() function
+    getData();
+   
+ } catch (error) {
+   console.error('Error deleting group membership:', error);
+
+    // Close the confirmation modal
+   $('#confirmDeleteMmebershipModal').modal('hide');
+   
+ }
 }
 
 

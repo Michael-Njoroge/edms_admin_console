@@ -1,10 +1,4 @@
-#editSubmitBtn:disabled {
-  background: #ccc; /* Change to your desired faded color */
-  cursor: not-allowed;
-  opacity: 0.7;
-  filter: grayscale(80%);
-}
-
+ 
 .msb .navbar-nav li input[type="radio"]:checked + label{
   background-color: #355B11 !important;
   color: white !important;
