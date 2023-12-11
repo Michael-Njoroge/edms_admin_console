@@ -552,6 +552,11 @@ function confirmDeleteGroupMembership(membershipId) {
  const membershipId = document.getElementById('deleteMembershipId').value;
 
  try {
+
+        // Disable the delete button
+        const deleteButton = $('#deleteGroupMembershipBtn');
+        deleteButton.prop('disabled', true);
+      
       // Retrieve the Bearer token from localStorage
       const bearerToken = localStorage.getItem('edms_token');
 
@@ -674,7 +679,7 @@ function assignUsersToGroup() {
       group_id: groupId,
       user_id: userIds,
     };
-  
+
     // Retrieve the Bearer token from localStorage
     const bearerToken = localStorage.getItem('edms_token');
   
