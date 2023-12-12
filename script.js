@@ -69,6 +69,11 @@ $(document).ready(function() {
 
      // Trigger the change event to display the corresponding table
      $('input[name="sidebar_tab1"][value="' + lastSelectedTab + '"]').change();
+
+     // Trigger display of "Permissions" table on page load
+    if (lastSelectedTab === '5') {
+        $('#groupPermissionsTableContainer').show();
+    }
  
   });
 
@@ -717,7 +722,7 @@ function assignUsersToGroup() {
       });
   }
 
-  
+
   // Async function to fetch data from the API
   async function fetchData() {
 
@@ -753,8 +758,61 @@ function assignUsersToGroup() {
       newRow.insertCell(1).textContent = permission.folder_id;
       newRow.insertCell(2).textContent = permission.group.group_name;
       newRow.insertCell(3).innerHTML = `<input type="checkbox" ${permission.view_users ? 'checked' : ''} disabled>`;
-      newRow.insertCell(4).innerHTML = `<input type="checkbox" ${permission.add_user ? 'checked' : ''} disabled>`;
-      // Add more cells for other permissions using the same pattern
+    newRow.insertCell(4).innerHTML = `<input type="checkbox" ${permission.add_user ? 'checked' : ''} disabled>`;
+    newRow.insertCell(5).innerHTML = `<input type="checkbox" ${permission.assign_user_group ? 'checked' : ''} disabled>`;
+    newRow.insertCell(6).innerHTML = `<input type="checkbox" ${permission.view_user ? 'checked' : ''} disabled>`;
+    newRow.insertCell(7).innerHTML = `<input type="checkbox" ${permission.update_user ? 'checked' : ''} disabled>`;
+    newRow.insertCell(8).innerHTML = `<input type="checkbox" ${permission.delete_user ? 'checked' : ''} disabled>`;
+    newRow.insertCell(9).innerHTML = `<input type="checkbox" ${permission.view_groups ? 'checked' : ''} disabled>`;
+    newRow.insertCell(10).innerHTML = `<input type="checkbox" ${permission.add_group ? 'checked' : ''} disabled>`;
+    newRow.insertCell(11).innerHTML = `<input type="checkbox" ${permission.view_group ? 'checked' : ''} disabled>`;
+    newRow.insertCell(12).innerHTML = `<input type="checkbox" ${permission.update_group ? 'checked' : ''} disabled>`;
+    newRow.insertCell(13).innerHTML = `<input type="checkbox" ${permission.delete_group ? 'checked' : ''} disabled>`;
+    newRow.insertCell(14).innerHTML = `<input type="checkbox" ${permission.view_group_memberships ? 'checked' : ''} disabled>`;
+    newRow.insertCell(15).innerHTML = `<input type="checkbox" ${permission.add_group_membership ? 'checked' : ''} disabled>`;
+    newRow.insertCell(16).innerHTML = `<input type="checkbox" ${permission.view_group_membership ? 'checked' : ''} disabled>`;
+    newRow.insertCell(17).innerHTML = `<input type="checkbox" ${permission.update_group_membership ? 'checked' : ''} disabled>`;
+    newRow.insertCell(18).innerHTML = `<input type="checkbox" ${permission.delete_group_membership ? 'checked' : ''} disabled>`;
+    newRow.insertCell(19).innerHTML = `<input type="checkbox" ${permission.view_group_permissions ? 'checked' : ''} disabled>`;
+    newRow.insertCell(20).innerHTML = `<input type="checkbox" ${permission.add_group_permission ? 'checked' : ''} disabled>`;
+    newRow.insertCell(21).innerHTML = `<input type="checkbox" ${permission.view_group_permission ? 'checked' : ''} disabled>`;
+    newRow.insertCell(22).innerHTML = `<input type="checkbox" ${permission.update_group_permission ? 'checked' : ''} disabled>`;
+    newRow.insertCell(23).innerHTML = `<input type="checkbox" ${permission.delete_group_permission ? 'checked' : ''} disabled>`;
+    newRow.insertCell(24).innerHTML = `<input type="checkbox" ${permission.view_folders ? 'checked' : ''} disabled>`;
+    newRow.insertCell(25).innerHTML = `<input type="checkbox" ${permission.create_folder ? 'checked' : ''} disabled>`;
+    newRow.insertCell(26).innerHTML = `<input type="checkbox" ${permission.open_folder ? 'checked' : ''} disabled>`;
+    newRow.insertCell(27).innerHTML = `<input type="checkbox" ${permission.update_folder ? 'checked' : ''} disabled>`;
+    newRow.insertCell(28).innerHTML = `<input type="checkbox" ${permission.delete_folder ? 'checked' : ''} disabled>`;
+    newRow.insertCell(29).innerHTML = `<input type="checkbox" ${permission.view_documents ? 'checked' : ''} disabled>`;
+    newRow.insertCell(30).innerHTML = `<input type="checkbox" ${permission.add_document ? 'checked' : ''} disabled>`;
+    newRow.insertCell(31).innerHTML = `<input type="checkbox" ${permission.view_document ? 'checked' : ''} disabled>`;
+    newRow.insertCell(32).innerHTML = `<input type="checkbox" ${permission.update_document ? 'checked' : ''} disabled>`;
+    newRow.insertCell(33).innerHTML = `<input type="checkbox" ${permission.delete_document ? 'checked' : ''} disabled>`;
+    newRow.insertCell(34).innerHTML = `<input type="checkbox" ${permission.view_fields ? 'checked' : ''} disabled>`;
+    newRow.insertCell(35).innerHTML = `<input type="checkbox" ${permission.add_field ? 'checked' : ''} disabled>`;
+    newRow.insertCell(36).innerHTML = `<input type="checkbox" ${permission.view_field ? 'checked' : ''} disabled>`;
+    newRow.insertCell(37).innerHTML = `<input type="checkbox" ${permission.update_field ? 'checked' : ''} disabled>`;
+    newRow.insertCell(38).innerHTML = `<input type="checkbox" ${permission.delete_field ? 'checked' : ''} disabled>`;
+    newRow.insertCell(39).innerHTML = `<input type="checkbox" ${permission.view_docfields ? 'checked' : ''} disabled>`;
+    newRow.insertCell(40).innerHTML = `<input type="checkbox" ${permission.create_docfield ? 'checked' : ''} disabled>`;
+    newRow.insertCell(41).innerHTML = `<input type="checkbox" ${permission.view_docfield ? 'checked' : ''} disabled>`;
+    newRow.insertCell(42).innerHTML = `<input type="checkbox" ${permission.update_docfield ? 'checked' : ''} disabled>`;
+    newRow.insertCell(43).innerHTML = `<input type="checkbox" ${permission.delete_docfield ? 'checked' : ''} disabled>`;
+    newRow.insertCell(44).innerHTML = `<input type="checkbox" ${permission.view_worksteps ? 'checked' : ''} disabled>`;
+    newRow.insertCell(45).innerHTML = `<input type="checkbox" ${permission.add_workstep ? 'checked' : ''} disabled>`;
+    newRow.insertCell(46).innerHTML = `<input type="checkbox" ${permission.view_workstep ? 'checked' : ''} disabled>`;
+    newRow.insertCell(47).innerHTML = `<input type="checkbox" ${permission.update_workstep ? 'checked' : ''} disabled>`;
+    newRow.insertCell(48).innerHTML = `<input type="checkbox" ${permission.delete_workstep ? 'checked' : ''} disabled>`;
+    newRow.insertCell(49).innerHTML = `<input type="checkbox" ${permission.view_possible_actions ? 'checked' : ''} disabled>`;
+    newRow.insertCell(50).innerHTML = `<input type="checkbox" ${permission.add_possible_action ? 'checked' : ''} disabled>`;
+    newRow.insertCell(51).innerHTML = `<input type="checkbox" ${permission.view_possible_action ? 'checked' : ''} disabled>`;
+    newRow.insertCell(52).innerHTML = `<input type="checkbox" ${permission.update_possible_action ? 'checked' : ''} disabled>`;
+    newRow.insertCell(53).innerHTML = `<input type="checkbox" ${permission.delete_possible_action ? 'checked' : ''} disabled>`;
+    newRow.insertCell(54).innerHTML = `<input type="checkbox" ${permission.view_workstep_results ? 'checked' : ''} disabled>`;
+    newRow.insertCell(55).innerHTML = `<input type="checkbox" ${permission.add_workstep_result ? 'checked' : ''} disabled>`;
+    newRow.insertCell(56).innerHTML = `<input type="checkbox" ${permission.view_workstep_result ? 'checked' : ''} disabled>`;
+    newRow.insertCell(57).innerHTML = `<input type="checkbox" ${permission.rewind_workstep_result ? 'checked' : ''} disabled>`;
+    newRow.insertCell(58).innerHTML = `<input type="checkbox" ${permission.delete_workstep_result ? 'checked' : ''} disabled>`;
 
       const editCell = newRow.insertCell();
       editCell.innerHTML = `<button type="button" onclick="editPermissions(${permission.id})">Edit</button>`;
