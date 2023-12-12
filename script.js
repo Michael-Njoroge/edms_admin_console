@@ -855,15 +855,22 @@ async function getFolderName(folderId) {
 
  // Function to populate folders dynamically
  function populateFolderOptions() {
+
+  const bearerToken = localStorage.getItem('edms_token');
+
   // Make AJAX requests to fetch folder data (replace URL with your actual endpoint)
   $.ajax({
-      url: 'http://127.0.0.1:8000/api/folders', // Update with your actual folder API endpoint
+      url: 'http://127.0.0.1:8000/api/folders/1', // Update with your actual folder API endpoint
       type: 'GET',
       dataType: 'json',
+      headers: {
+        'Authorization': `Bearer ${bearerToken}`,
+        'Content-Type': 'application/json',
+      },
       success: function (folderData) {
           const folderSelect = document.getElementById('folderSelect');
           folderSelect.innerHTML = '';
-          folderData.data.forEach(function (folder) {
+          folderData.data.data.forEach(function (folder) {
               const option = document.createElement('option');
               option.value = folder.id;
               option.text = folder.name;  // You can replace this with the actual folder name
@@ -878,15 +885,21 @@ async function getFolderName(folderId) {
 
 // Function to populate groups dynamically
 function populateGroupOptions() {
+  const bearerToken = localStorage.getItem('edms_token');
+
   // Make AJAX requests to fetch group data (replace URL with your actual endpoint)
   $.ajax({
       url: 'http://127.0.0.1:8000/api/groups', // Update with your actual group API endpoint
       type: 'GET',
       dataType: 'json',
+      headers: {
+        'Authorization': `Bearer ${bearerToken}`,
+        'Content-Type': 'application/json',
+      },
       success: function (groupData) {
           const groupSelect = document.getElementById('groupSelect');
           groupSelect.innerHTML = '';
-          groupData.data.forEach(function (group) {
+          groupData.data.data.forEach(function (group) {
               const option = document.createElement('option');
               option.value = group.id;
               option.text = group.group_name;  // You can replace this with the actual group name
@@ -901,15 +914,21 @@ function populateGroupOptions() {
 
 // Function to populate permissions dynamically
 function populatePermissionOptions() {
+  const bearerToken = localStorage.getItem('edms_token');
+
   // Make an AJAX request to fetch permission data (replace URL with your actual endpoint)
   $.ajax({
       url: 'http://127.0.0.1:8000/api/grouppermissions', // Update with your actual permission API endpoint
       type: 'GET',
       dataType: 'json',
+      headers: {
+        'Authorization': `Bearer ${bearerToken}`,
+        'Content-Type': 'application/json',
+      },
       success: function (permissionData) {
           const permissionSelect = document.getElementById('permissionSelect');
           permissionSelect.innerHTML = '';
-          permissionData.data.forEach(function (permission) {
+          permissionData.data.data.forEach(function (permission) {
               const option = document.createElement('option');
               option.value = permission.id;
               option.text = permission.id;  // You can replace this with the actual permission label
