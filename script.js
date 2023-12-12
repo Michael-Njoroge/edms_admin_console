@@ -50,6 +50,8 @@ $(document).ready(function() {
         $('#groupsTableContainer').show();
       } else if (value === '4') {
         $('#groupMembershipsTableContainer').show();
+      }else if (value === '5') {
+        $('#groupPermissionsTableContainer').show();
       }
       // Add more conditions for other radio buttons  
     });
@@ -714,6 +716,54 @@ function assignUsersToGroup() {
         submitButton.prop('disabled', false).html('Assign Users');
       });
   }
+
   
- 
+  // Async function to fetch data from the API
+  async function fetchData() {
+
+     // Retrieve the Bearer token from localStorage
+     const bearerToken = localStorage.getItem('edms_token');
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/grouppermissions', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      const responseData = await response.json();
+
+      console.log(responseData);
+
+      // Call the function to populate the table with the fetched data
+      populateTable(responseData.data.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  // Function to populate the table with data
+  function populateTable(permissionsData) {
+    const permissionsTbody = document.getElementById('permissionsTbody');
+
+    permissionsData.forEach((permission, index) => {
+      const newRow = permissionsTbody.insertRow();
+      newRow.insertCell(0).textContent = index + 1;
+      newRow.insertCell(1).textContent = permission.folder_id;
+      newRow.insertCell(2).textContent = permission.group.group_name;
+      newRow.insertCell(3).innerHTML = `<input type="checkbox" ${permission.view_users ? 'checked' : ''} disabled>`;
+      newRow.insertCell(4).innerHTML = `<input type="checkbox" ${permission.add_user ? 'checked' : ''} disabled>`;
+      // Add more cells for other permissions using the same pattern
+
+      const editCell = newRow.insertCell();
+      editCell.innerHTML = `<button type="button" onclick="editPermissions(${permission.id})">Edit</button>`;
+    });
+  }
+
+  // Function to handle permission editing
+  function editPermissions(permissionId) {
+    console.log(`Editing permissions for ID: ${permissionId}`);
+    // Implement your logic to open an edit modal or perform the desired action
+  }
  

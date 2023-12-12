@@ -28,7 +28,7 @@
 
 </head>
  
-<body onload="getData(); getGroupMembershipsData()">
+<body onload="getData(); getGroupMembershipsData(); fetchData()">
  
 <nav class="mnb navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
@@ -265,38 +265,40 @@
         </div>
 
 
-        <!-- ******************************Assign Users Modal********************************** -->
-        <div class="modal fade" id="assignUsersModal" tabindex="-1" role="dialog" aria-labelledby="assignUsersModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header border-bottom-0">
-                <h5 class="modal-title" id="assignUsersModalLabel">Assign Users to a Group</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <form id="assignUsersForm" onsubmit="event.preventDefault(); assignUsersToGroup();">
-                <div class="modal-body">
-                  <div class="form-group">
-                    <label for="assign_group">Select Group</label>
-                    <select class="form-control" id="assign_group" name="assign_group">
-        
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="assign_users">Select Users</label>
-                    <select class="form-control" id="assign_users" name="assign_users">
-        
-                    </select>
-                  </div>
+       <!-- ******************************Assign Users Modal********************************** -->
+          <div class="modal fade" id="assignUsersModal" tabindex="-1" role="dialog" aria-labelledby="assignUsersModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                        <h5 class="modal-title" id="assignUsersModalLabel">Assign Users to a Group</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="assignUsersForm" onsubmit="event.preventDefault(); assignUsersToGroup();">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="assign_group">Select Group</label>
+                                <select class="form-control" id="assign_group" name="assign_group">
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="assign_users">Select Users</label>
+                                <select class="form-control" id="assign_users" name="assign_users">
+
+                                </select>
+                            </div>
+       
+                        </div>
+                        <div class="modal-footer border-top-0 d-flex justify-content-center">
+                            <button type="submit" class="btn" id="assignUsersBtn" style="background: #355B11; color: white;">Assign Users</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer border-top-0 d-flex justify-content-center">
-                  <button type="submit" class="btn" id="assignUsersBtn" style="background: #355B11; color: white;">Assign Users</button>
-                </div>
-              </form>
             </div>
           </div>
-        </div>
+
 
           <!-- *************************Edit Group Membership Modal****************************** -->
             <div class="modal fade" id="editGroupMembershipModal" tabindex="-1" role="dialog" aria-labelledby="editGroupMembershipModalLabel" aria-hidden="true">
@@ -321,7 +323,7 @@
 
                       <div class="form-group">
                         <label for="editMembershipUser">Select User</label>
-                        <select class="form-control" id="editMembershipUser" name="editMembershipUser">
+                        <select class="form-control" id="editMembershipUser" name="editMembershipUser" multiple>
                           <!-- Populate with user options dynamically -->
                         </select>
                       </div>
@@ -333,8 +335,6 @@
                 </div>
               </div>
             </div>
-
-
 
 
             <!-- *******************Groups Table***************** -->
@@ -377,6 +377,25 @@
                 </thead>
                 <tbody id="groupMembershipsTbody"></tbody>
               </table>
+              </div>
+
+              <div id="groupPermissionsTableContainer" class="table-container" > 
+              <div class="table-container">
+                <table id="permissionsTable" class="table table-hover table-bordered" cellspacing="3" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Folder</th>
+                      <th>Group</th>
+                      <th>View Users</th>
+                      <th>Add User</th>
+                      <!-- Add more headers for other permissions -->
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="permissionsTbody"></tbody>
+                </table>
+              </div>
               </div>
              </div>
              
