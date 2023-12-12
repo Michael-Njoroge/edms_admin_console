@@ -723,7 +723,7 @@ function assignUsersToGroup() {
   }
 
 
-  // Async function to fetch data from the API
+  // ASYNC FUNCTION TO FETCH DATA FROM THE API
   async function fetchData() {
 
      // Retrieve the Bearer token from localStorage
@@ -748,16 +748,17 @@ function assignUsersToGroup() {
     }
   }
 
-  // Function to populate the table with data
+  // FUNCTION TO POPULATE THE TABLE WITH DATA
   async function populateTable(permissionsData) {
     const permissionsTbody = document.getElementById('permissionsTbody');
 
     permissionsData.forEach(async(permission, index) => {
-      const newRow = permissionsTbody.insertRow();
-      newRow.insertCell(0).textContent = index + 1;
-      newRow.insertCell(1).textContent = permission.group.group_name; 
-       newRow.insertCell(2).textContent = await getFolderName(permission.folder_id);
-      newRow.insertCell(3).innerHTML = `<input type="checkbox" ${permission.view_users ? 'checked' : ''} disabled>`;
+    const newRow = permissionsTbody.insertRow();
+
+    newRow.insertCell(0).textContent = index + 1;
+    newRow.insertCell(1).textContent = permission.group.group_name; 
+    newRow.insertCell(2).textContent = await getFolderName(permission.folder_id);
+    newRow.insertCell(3).innerHTML = `<input type="checkbox" ${permission.view_users ? 'checked' : ''} disabled>`;
     newRow.insertCell(4).innerHTML = `<input type="checkbox" ${permission.add_user ? 'checked' : ''} disabled>`;
     newRow.insertCell(5).innerHTML = `<input type="checkbox" ${permission.assign_user_group ? 'checked' : ''} disabled>`;
     newRow.insertCell(6).innerHTML = `<input type="checkbox" ${permission.view_user ? 'checked' : ''} disabled>`;
@@ -819,13 +820,12 @@ function assignUsersToGroup() {
     });
   }
 
-  // Function to handle permission editing
+  // FUNCTION TO HANDLE PERMISSION EDITING
   function editPermissions(permissionId) {
     console.log(`Editing permissions for ID: ${permissionId}`);
-    // Implement your logic to open an edit modal or perform the desired action
   }
   
- // Async function to fetch the folder name based on folder ID
+ // ASYNC FUNCTION TO FETCH THE FOLDER NAME BASED ON FOLDER ID
 async function getFolderName(folderId) {
   const bearerToken = localStorage.getItem('edms_token');
 
@@ -851,4 +851,119 @@ async function getFolderName(folderId) {
     console.error('Error fetching folder:', error);
     return 'Unknown Folder';
   }
+}
+
+ // Function to populate folders dynamically
+ function populateFolderOptions() {
+  // Make AJAX requests to fetch folder data (replace URL with your actual endpoint)
+  $.ajax({
+      url: 'http://127.0.0.1:8000/api/folders', // Update with your actual folder API endpoint
+      type: 'GET',
+      dataType: 'json',
+      success: function (folderData) {
+          const folderSelect = document.getElementById('folderSelect');
+          folderSelect.innerHTML = '';
+          folderData.data.forEach(function (folder) {
+              const option = document.createElement('option');
+              option.value = folder.id;
+              option.text = folder.name;  // You can replace this with the actual folder name
+              folderSelect.appendChild(option);
+          });
+      },
+      error: function (error) {
+          console.error('Error fetching folder data:', error);
+      }
+  });
+}
+
+// Function to populate groups dynamically
+function populateGroupOptions() {
+  // Make AJAX requests to fetch group data (replace URL with your actual endpoint)
+  $.ajax({
+      url: 'http://127.0.0.1:8000/api/groups', // Update with your actual group API endpoint
+      type: 'GET',
+      dataType: 'json',
+      success: function (groupData) {
+          const groupSelect = document.getElementById('groupSelect');
+          groupSelect.innerHTML = '';
+          groupData.data.forEach(function (group) {
+              const option = document.createElement('option');
+              option.value = group.id;
+              option.text = group.group_name;  // You can replace this with the actual group name
+              groupSelect.appendChild(option);
+          });
+      },
+      error: function (error) {
+          console.error('Error fetching group data:', error);
+      }
+  });
+}
+
+// Function to populate permissions dynamically
+function populatePermissionOptions() {
+  // Make an AJAX request to fetch permission data (replace URL with your actual endpoint)
+  $.ajax({
+      url: 'http://127.0.0.1:8000/api/grouppermissions', // Update with your actual permission API endpoint
+      type: 'GET',
+      dataType: 'json',
+      success: function (permissionData) {
+          const permissionSelect = document.getElementById('permissionSelect');
+          permissionSelect.innerHTML = '';
+          permissionData.data.forEach(function (permission) {
+              const option = document.createElement('option');
+              option.value = permission.id;
+              option.text = permission.id;  // You can replace this with the actual permission label
+              permissionSelect.appendChild(option);
+          });
+      },
+      error: function (error) {
+          console.error('Error fetching permission data:', error);
+      }
+  });
+}
+
+// Call the functions to populate folders and groups when the modal is shown
+$('#createPermissionModal').on('show.bs.modal', function () {
+  populateFolderOptions();
+  populateGroupOptions();
+  populatePermissionOptions();
+});
+
+// Function to create permission
+function createPermission() {
+  // Get selected folder ID
+  const folderId = document.getElementById('folderSelect').value;
+
+  // Get selected group ID
+  const groupId = document.getElementById('groupSelect').value;
+
+  // Get selected permissions
+  const permissions = [...document.getElementById('permissionSelect').options].filter(option => option.selected).map(option => option.value);
+
+  // Prepare data to send to the server (you can use AJAX for this)
+  const permissionData = {
+      folderId: folderId,
+      groupId: groupId,
+      permissions: permissions
+  };
+
+  // Send data to the server (you need to implement server-side logic to handle this)
+  $.ajax({
+      url: 'http://127.0.0.1:8000/api/create_permission', // Replace with your actual endpoint for creating permission
+      type: 'POST',
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify(permissionData),
+      success: function (response) {
+          console.log('Permission created successfully:', response);
+          // Optionally, you can update the UI or perform other actions upon success
+      },
+      error: function (error) {
+          console.error('Error creating permission:', error);
+          // Optionally, you can handle errors and display an error message
+      }
+  });
+
+  // Close the modal
+  $('#createPermissionModal').modal('hide');
 }
