@@ -749,14 +749,14 @@ function assignUsersToGroup() {
   }
 
   // Function to populate the table with data
-  function populateTable(permissionsData) {
+  async function populateTable(permissionsData) {
     const permissionsTbody = document.getElementById('permissionsTbody');
 
-    permissionsData.forEach((permission, index) => {
+    permissionsData.forEach(async(permission, index) => {
       const newRow = permissionsTbody.insertRow();
       newRow.insertCell(0).textContent = index + 1;
-      newRow.insertCell(1).textContent = permission.folder_id;
-      newRow.insertCell(2).textContent = permission.group.group_name;
+      newRow.insertCell(1).textContent = permission.group.group_name; 
+       newRow.insertCell(2).textContent = await getFolderName(permission.folder_id);
       newRow.insertCell(3).innerHTML = `<input type="checkbox" ${permission.view_users ? 'checked' : ''} disabled>`;
     newRow.insertCell(4).innerHTML = `<input type="checkbox" ${permission.add_user ? 'checked' : ''} disabled>`;
     newRow.insertCell(5).innerHTML = `<input type="checkbox" ${permission.assign_user_group ? 'checked' : ''} disabled>`;
@@ -824,4 +824,31 @@ function assignUsersToGroup() {
     console.log(`Editing permissions for ID: ${permissionId}`);
     // Implement your logic to open an edit modal or perform the desired action
   }
- 
+  
+ // Async function to fetch the folder name based on folder ID
+async function getFolderName(folderId) {
+  const bearerToken = localStorage.getItem('edms_token');
+
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/folder/show/${folderId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${bearerToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const responseData = await response.json();
+
+    if (response.ok) {
+      const folderData = responseData.data.data;
+      return folderData.name || 'Unknown Folder';
+    } else {
+      console.error('Error fetching folder:', responseData.message);
+      return 'Unknown Folder';
+    }
+  } catch (error) {
+    console.error('Error fetching folder:', error);
+    return 'Unknown Folder';
+  }
+}
