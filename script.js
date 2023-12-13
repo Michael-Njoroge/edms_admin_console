@@ -848,6 +848,7 @@ async function getFolderName(folderId) {
 
     if (response.ok) {
       const folderData = responseData.data.data;
+      console.log(folderData);
       return folderData.name || 'Unknown Folder';
     } else {
       console.error('Error fetching folder:', responseData.message);
@@ -874,9 +875,14 @@ function populateFolderOptions() {
     },
     success: function (folderData) {
 
-      console.log('Folder Data:', folderData);
       const folderSelect = document.getElementById('folderSelect');
       folderSelect.innerHTML = '';
+
+       // Add a default option
+       const defaultOption = document.createElement('option');
+       defaultOption.value = '';
+       defaultOption.text = 'Select Folder';
+       folderSelect.appendChild(defaultOption);
 
       // Check if there are folders in the response
       if (folderData.data.data && folderData.data.data.length > 0) {
@@ -914,6 +920,13 @@ function populateGroupOptions() {
       success: function (groupData) {
           const groupSelect = document.getElementById('groupSelect');
           groupSelect.innerHTML = '';
+
+          // Add a default option
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.text = 'Select Group';
+      groupSelect.appendChild(defaultOption);
+
           groupData.data.data.forEach(function (group) {
               const option = document.createElement('option');
               option.value = group.id;
