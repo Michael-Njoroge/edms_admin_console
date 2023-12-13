@@ -860,36 +860,43 @@ async function getFolderName(folderId) {
 }
 
  // FUNCTION TO POPULATE FOLDERS DYNAMICALLY
- function populateFolderOptions() {
-
+function populateFolderOptions() {
   const bearerToken = localStorage.getItem('edms_token');
 
   // Make AJAX requests to fetch folder data 
   $.ajax({
-      url: 'http://127.0.0.1:8000/api/folders/1',  
-      type: 'GET',
-      dataType: 'json',
-      headers: {
-        'Authorization': `Bearer ${bearerToken}`,
-        'Content-Type': 'application/json',
-      },
-      success: function (folderData) {
-          const folderSelect = document.getElementById('folderSelect');
-          folderSelect.innerHTML = '';
-          folderData.data.data.forEach(function (folder) {
-            console.log(folder);
-              const option = document.createElement('option');
-              option.value = folder.id;
-              option.text = folder.name;   
-              folderSelect.appendChild(option);
-          });
-      },
-      error: function (error) {
-          console.error('Error fetching folder data:', error);
+    url: 'http://127.0.0.1:8000/api/folders/1',
+    type: 'GET',
+    dataType: 'json',
+    headers: {
+      'Authorization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json',
+    },
+    success: function (folderData) {
+
+      console.log('Folder Data:', folderData);
+      const folderSelect = document.getElementById('folderSelect');
+      folderSelect.innerHTML = '';
+
+      // Check if there are folders in the response
+      if (folderData.data.data && folderData.data.data.length > 0) {
+        // Iterate over the folders and populate the dropdown
+        folderData.data.data.forEach(function (folder) {
+          const option = document.createElement('option');
+          option.value = folder.id;
+          option.text = folder.name;
+          folderSelect.appendChild(option);
+        });
+      } else {
+        // If no folders are found, you may want to handle this case
+        console.error('No folders found.');
       }
+    },
+    error: function (error) {
+      console.error('Error fetching folder data:', error);
+    }
   });
 }
-
 
 // FUNCTION TO POPULATE GROUPS DYNAMICALLY
 function populateGroupOptions() {
@@ -925,6 +932,11 @@ function populateGroupOptions() {
 function populateCheckboxOptions() {
   const bearerToken = localStorage.getItem('edms_token');
   const checkboxContainer = document.getElementById('checkboxContainer');
+  const folderSelect = document.getElementById('folderSelect');
+  const groupSelect = document.getElementById('groupSelect');
+
+  // Check if both folder and group are selected
+  if (folderSelect.value && groupSelect.value) {
 
   // Make an AJAX request to fetch permission data
   $.ajax({
@@ -973,6 +985,7 @@ function populateCheckboxOptions() {
       console.error('Error fetching checkbox data:', error);
     }
   });
+}
 }
 
 // Call the functions to populate folders and groups when the modal is shown
