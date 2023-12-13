@@ -690,7 +690,7 @@ function assignUsersToGroup() {
     // Retrieve the Bearer token from localStorage
     const bearerToken = localStorage.getItem('edms_token');
   
-    // Make a POST request to assign users to a group
+    // Make a POST request to assign group to a group permissions
     fetch('http://127.0.0.1:8000/api/groupmemberships/store', {
       method: 'POST',
       headers: {
@@ -723,7 +723,9 @@ function assignUsersToGroup() {
   }
 
 
-  // ASYNC FUNCTION TO FETCH DATA FROM THE API
+
+
+  //********** */ ASYNC FUNCTION TO FETCH GROUP PERMISSIONS DATA FROM THE API *******************//
   async function fetchData() {
 
      // Retrieve the Bearer token from localStorage
@@ -748,7 +750,8 @@ function assignUsersToGroup() {
     }
   }
 
-  // FUNCTION TO POPULATE THE TABLE WITH DATA
+
+  // FUNCTION TO POPULATE THE  GROUP PERMISSION TABLE WITH DATA
   async function populateTable(permissionsData) {
     const permissionsTbody = document.getElementById('permissionsTbody');
 
@@ -820,10 +823,12 @@ function assignUsersToGroup() {
     });
   }
 
-  // FUNCTION TO HANDLE PERMISSION EDITING
+
+  // FUNCTION TO HANDLE GROUP PERMISSION EDITING
   function editPermissions(permissionId) {
     console.log(`Editing permissions for ID: ${permissionId}`);
   }
+
   
  // ASYNC FUNCTION TO FETCH THE FOLDER NAME BASED ON FOLDER ID
 async function getFolderName(folderId) {
@@ -853,7 +858,7 @@ async function getFolderName(folderId) {
   }
 }
 
- // Function to populate folders dynamically
+ // FUNCTION TO POPULATE FOLDERS DYNAMICALLY
  function populateFolderOptions() {
 
   const bearerToken = localStorage.getItem('edms_token');
@@ -883,7 +888,7 @@ async function getFolderName(folderId) {
   });
 }
 
-// Function to populate groups dynamically
+// FUNCTION TO POPULATE GROUPS DYNAMICALLY
 function populateGroupOptions() {
   const bearerToken = localStorage.getItem('edms_token');
 
@@ -902,7 +907,7 @@ function populateGroupOptions() {
           groupData.data.data.forEach(function (group) {
               const option = document.createElement('option');
               option.value = group.id;
-              option.text = group.group_name;  // You can replace this with the actual group name
+              option.text = group.group_name; 
               groupSelect.appendChild(option);
           });
       },
@@ -912,7 +917,8 @@ function populateGroupOptions() {
   });
 }
 
-// Function to populate permissions dynamically
+
+// FUNCTION TO POPULATE PERMISSIONS DYNAMICALLY
 function populatePermissionOptions() {
   const bearerToken = localStorage.getItem('edms_token');
 
@@ -948,7 +954,7 @@ $('#createPermissionModal').on('show.bs.modal', function () {
   populatePermissionOptions();
 });
 
-// Function to create permission
+// FUNCTION TO CREATE PERMISSION
 function createPermission() {
   // Get selected folder ID
   const folderId = document.getElementById('folderSelect').value;
