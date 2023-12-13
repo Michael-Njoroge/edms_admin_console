@@ -890,6 +890,7 @@ async function getFolderName(folderId) {
   });
 }
 
+
 // FUNCTION TO POPULATE GROUPS DYNAMICALLY
 function populateGroupOptions() {
   const bearerToken = localStorage.getItem('edms_token');
@@ -917,10 +918,13 @@ function populateGroupOptions() {
           console.error('Error fetching group data:', error);
       }
   });
+
 }
-// FUNCTION TO POPULATE PERMISSIONS DYNAMICALLY
-function populatePermissionOptions() {
+
+// FUNCTION TO POPULATE CHECKBOXES DYNAMICALLY
+function populateCheckboxOptions() {
   const bearerToken = localStorage.getItem('edms_token');
+  const checkboxContainer = document.getElementById('checkboxContainer');
 
   // Make an AJAX request to fetch permission data
   $.ajax({
@@ -932,11 +936,14 @@ function populatePermissionOptions() {
       'Content-Type': 'application/json',
     },
     success: function (permissionData) {
-      const permissionSelect = document.getElementById('permissionSelect');
-      permissionSelect.innerHTML = '';
+      checkboxContainer.innerHTML = '';
 
       // Take the first permission object assuming the permissions are the same for all
       const permissions = permissionData.data.data[0];
+
+      const heading = document.createElement('h4');
+      heading.appendChild(document.createTextNode('Select Permissions:'));
+      checkboxContainer.appendChild(heading);
 
       Object.keys(permissions).forEach(function (key) {
         // Skip certain properties like 'id', 'group', 'group_id', 'folder_id', etc.
@@ -957,21 +964,13 @@ function populatePermissionOptions() {
           checkboxDiv.appendChild(checkbox);
           checkboxDiv.appendChild(label);
 
-          // Create an option element
-          const option = document.createElement('option');
-          option.value = key;
-          option.text = key;
-
-          // Append the checkbox div to the option
-          option.appendChild(checkboxDiv);
-
-          // Append the option to the permissionSelect
-          permissionSelect.appendChild(option);
+          // Append the checkbox div to the container
+          checkboxContainer.appendChild(checkboxDiv);
         }
       });
     },
     error: function (error) {
-      console.error('Error fetching permission data:', error);
+      console.error('Error fetching checkbox data:', error);
     }
   });
 }
@@ -980,8 +979,10 @@ function populatePermissionOptions() {
 $('#createPermissionModal').on('show.bs.modal', function () {
   populateFolderOptions();
   populateGroupOptions();
-  populatePermissionOptions();
+  populateCheckboxOptions();
 });
+
+
 
 
 // FUNCTION TO CREATE PERMISSION
