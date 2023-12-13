@@ -941,15 +941,13 @@ function populateGroupOptions() {
 
 }
 
+
 // FUNCTION TO POPULATE CHECKBOXES DYNAMICALLY
 function populateCheckboxOptions() {
   const bearerToken = localStorage.getItem('edms_token');
   const checkboxContainer = document.getElementById('checkboxContainer');
   const folderSelect = document.getElementById('folderSelect');
   const groupSelect = document.getElementById('groupSelect');
-
-  // Check if both folder and group are selected
-  if (folderSelect.value && groupSelect.value) {
 
   // Make an AJAX request to fetch permission data
   $.ajax({
@@ -993,22 +991,39 @@ function populateCheckboxOptions() {
           checkboxContainer.appendChild(checkboxDiv);
         }
       });
+
+      // Initially, hide the checkboxes
+      checkboxContainer.style.display = 'none';
     },
     error: function (error) {
       console.error('Error fetching checkbox data:', error);
     }
   });
 }
-}
 
-// Call the functions to populate folders and groups when the modal is shown
+// Call the function to populate folders and groups when the modal is shown
 $('#createPermissionModal').on('show.bs.modal', function () {
   populateFolderOptions();
   populateGroupOptions();
-  populateCheckboxOptions();
 });
 
+// Show checkboxes when both folder and group are selected
+$(document).on('change', '#folderSelect, #groupSelect', function () {
+  const folderSelect = document.getElementById('folderSelect');
+  const groupSelect = document.getElementById('groupSelect');
+  const checkboxContainer = document.getElementById('checkboxContainer');
 
+  if (folderSelect.value && groupSelect.value) {
+    checkboxContainer.style.display = 'block'; // Display checkboxes
+  } else {
+    checkboxContainer.style.display = 'none'; // Hide checkboxes if either folder or group is not selected
+  }
+});
+
+// Call the function to populate checkboxes when the page loads
+$(document).ready(function () {
+  populateCheckboxOptions();
+});
 
 
 // FUNCTION TO CREATE PERMISSION
