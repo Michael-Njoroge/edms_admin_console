@@ -860,6 +860,20 @@ async function getFolderName(folderId) {
   }
 }
 
+// Function to reset modal state
+function resetModalState() {
+  const folderSelect = document.getElementById('folderSelect');
+  const groupSelect = document.getElementById('groupSelect');
+  const checkboxContainer = document.getElementById('checkboxContainer');
+
+  // Reset selected values in dropdowns
+  folderSelect.value = '';
+  groupSelect.value = '';
+
+  // Hide checkboxes
+  checkboxContainer.style.display = 'none';
+}
+
  // FUNCTION TO POPULATE FOLDERS DYNAMICALLY
 function populateFolderOptions() {
   const bearerToken = localStorage.getItem('edms_token');
@@ -1005,10 +1019,16 @@ function populateCheckboxOptions() {
   });
 }
 
+// Call the function to reset modal state and populate checkboxes when the modal is hidden
+$('#createPermissionModal').on('hidden.bs.modal', function () {
+  resetModalState();
+});
+
 // Call the function to populate folders and groups when the modal is shown
 $('#createPermissionModal').on('show.bs.modal', function () {
   populateFolderOptions();
   populateGroupOptions();
+  populateCheckboxOptions();
 });
 
 // Show checkboxes when both folder and group are selected
