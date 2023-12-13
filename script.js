@@ -1051,47 +1051,57 @@ $(document).ready(function () {
 
 
 
-
-// FUNCTION TO CREATE PERMISSION
+// Function to handle the form submission and create group permissions
 function createPermission() {
-  // Get selected folder ID
-  const folderId = document.getElementById('folderSelect').value;
-
-  // Get selected group ID
-  const groupId = document.getElementById('groupSelect').value;
-
-  // Get selected permissions
-  const permissions = [...document.getElementById('permissionSelect').options].filter(option => option.selected).map(option => option.value);
-
-  // Prepare data to send to the server (you can use AJAX for this)
-  const permissionData = {
-      folderId: folderId,
-      groupId: groupId,
-      permissions: permissions
-  };
-
+  // Get the bearer token from local storage
   const bearerToken = localStorage.getItem('edms_token');
-  // Send data to the server  
-  $.ajax({
-      url: 'http://127.0.0.1:8000/api/grouppermissions/store', 
-      type: 'POST',
-      dataType: 'json',
-      headers: {
-        'Authorization': `Bearer ${bearerToken}`,
-        'Content-Type': 'application/json',
-      },
-      contentType: 'application/json',
-      data: JSON.stringify(permissionData),
-      success: function (response) {
-          console.log('Permission created successfully:', response);
-          // Optionally, you can update the UI or perform other actions upon success
-      },
-      error: function (error) {
-          console.error('Error creating permission:', error);
-          // Optionally, you can handle errors and display an error message
-      }
+
+  // Get references to HTML elements
+  const folderSelect = document.getElementById('folderSelect');
+  const groupSelect = document.getElementById('groupSelect');
+  const checkboxContainer = document.getElementById('checkboxContainer');
+
+  // Get selected values from dropdowns
+  const folderId = folderSelect.value;
+  const groupId = groupSelect.value;
+
+  // Get selected checkboxes
+  const selectedCheckboxes = [];
+  const checkboxes = checkboxContainer.querySelectorAll('input[type="checkbox"]:checked');
+  checkboxes.forEach(function (checkbox) {
+    selectedCheckboxes.push(checkbox.value);
   });
 
-  // Close the modal
+  // Prepare data for the AJAX request
+  const requestData = {
+    group_id: groupId,
+    folder_id: folderId,
+    permissions: selectedCheckboxes,
+  };
+
+  // Make an AJAX request to store group permissions
+  $.ajax({
+    url: 'http://127.0.0.1:8000/api/grouppermissions/store',
+    type: 'POST',
+    dataType: 'json',
+    headers: {
+      'Authorization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json',
+    },
+    data: JSON.stringify(requestData),
+    success: function (response) {
+      // Handle success response
+      console.log('Group permissions stored successfully:', response);
+      // Close the modal after successfully storing permissions
+      $('#createPermissionModal').modal('hide');
+    },
+    error: function (error) {
+      // Handle error response
+      console.error('Error storing group permissions:', error);
+      // Optionally, display an error message to the user
+      alert('Error storing group permissions. Please try again.');
+    }
+  });
+ // Close the modal
   $('#createPermissionModal').modal('hide');
 }
