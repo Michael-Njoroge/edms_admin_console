@@ -1092,8 +1092,12 @@ function createPermission() {
     success: function (response) {
       // Handle success response
       console.log('Group permissions stored successfully:', response);
+
       // Close the modal after successfully storing permissions
       $('#createPermissionModal').modal('hide');
+      toastr.success('Group permissions stored successfully');
+      populateTable();
+
     },
     error: function (error) {
       // Handle error response
