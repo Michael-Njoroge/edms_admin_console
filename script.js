@@ -918,34 +918,61 @@ function populateGroupOptions() {
       }
   });
 }
-
-
 // FUNCTION TO POPULATE PERMISSIONS DYNAMICALLY
 function populatePermissionOptions() {
   const bearerToken = localStorage.getItem('edms_token');
 
-  // Make an AJAX request to fetch permission data  
+  // Make an AJAX request to fetch permission data
   $.ajax({
-      url: 'http://127.0.0.1:8000/api/grouppermissions',  
-      type: 'GET',
-      dataType: 'json',
-      headers: {
-        'Authorization': `Bearer ${bearerToken}`,
-        'Content-Type': 'application/json',
-      },
-      success: function (permissionData) {
-          const permissionSelect = document.getElementById('permissionSelect');
-          permissionSelect.innerHTML = '';
-          permissionData.data.data.forEach(function (permission) {
-              const option = document.createElement('option');
-              option.value = permission.id;
-              option.text = permission.view_users;  
-              permissionSelect.appendChild(option);
-          });
-      },
-      error: function (error) {
-          console.error('Error fetching permission data:', error);
-      }
+    url: 'http://127.0.0.1:8000/api/grouppermissions',
+    type: 'GET',
+    dataType: 'json',
+    headers: {
+      'Authorization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json',
+    },
+    success: function (permissionData) {
+      const permissionSelect = document.getElementById('permissionSelect');
+      permissionSelect.innerHTML = '';
+
+      // Take the first permission object assuming the permissions are the same for all
+      const permissions = permissionData.data.data[0];
+
+      Object.keys(permissions).forEach(function (key) {
+        // Skip certain properties like 'id', 'group', 'group_id', 'folder_id', etc.
+        if (key !== 'id' && key !== 'group' && key !== 'group_id' && key !== 'folder_id' && key !== 'created_at' && key !== 'updated_at') {
+          // Create a checkbox
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.value = key;
+          checkbox.id = `checkbox_${key}`; // Set a unique ID for each checkbox
+
+          // Create a label for the checkbox
+          const label = document.createElement('label');
+          label.htmlFor = `checkbox_${key}`;
+          label.appendChild(document.createTextNode(key));
+
+          // Create a div to hold the checkbox and label
+          const checkboxDiv = document.createElement('div');
+          checkboxDiv.appendChild(checkbox);
+          checkboxDiv.appendChild(label);
+
+          // Create an option element
+          const option = document.createElement('option');
+          option.value = key;
+          option.text = key;
+
+          // Append the checkbox div to the option
+          option.appendChild(checkboxDiv);
+
+          // Append the option to the permissionSelect
+          permissionSelect.appendChild(option);
+        }
+      });
+    },
+    error: function (error) {
+      console.error('Error fetching permission data:', error);
+    }
   });
 }
 
@@ -955,6 +982,7 @@ $('#createPermissionModal').on('show.bs.modal', function () {
   populateGroupOptions();
   populatePermissionOptions();
 });
+
 
 // FUNCTION TO CREATE PERMISSION
 function createPermission() {
