@@ -882,6 +882,8 @@ function populateFolderOptions() {
        const defaultOption = document.createElement('option');
        defaultOption.value = '';
        defaultOption.text = 'Select Folder';
+       defaultOption.disabled = true;
+       defaultOption.selected = true;
        folderSelect.appendChild(defaultOption);
 
       // Check if there are folders in the response
@@ -921,11 +923,13 @@ function populateGroupOptions() {
           const groupSelect = document.getElementById('groupSelect');
           groupSelect.innerHTML = '';
 
-          // Add a default option
-      const defaultOption = document.createElement('option');
-      defaultOption.value = '';
-      defaultOption.text = 'Select Group';
-      groupSelect.appendChild(defaultOption);
+       // Add a default option
+       const defaultOption = document.createElement('option');
+       defaultOption.value = '';
+       defaultOption.text = 'Select Group';
+       defaultOption.disabled = true;
+       defaultOption.selected = true;
+       groupSelect.appendChild(defaultOption);
 
           groupData.data.data.forEach(function (group) {
               const option = document.createElement('option');
@@ -1024,6 +1028,8 @@ $(document).on('change', '#folderSelect, #groupSelect', function () {
 $(document).ready(function () {
   populateCheckboxOptions();
 });
+
+
 
 
 // FUNCTION TO CREATE PERMISSION
