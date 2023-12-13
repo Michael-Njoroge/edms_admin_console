@@ -844,6 +844,7 @@ async function getFolderName(folderId) {
     });
 
     const responseData = await response.json();
+    
 
     if (response.ok) {
       const folderData = responseData.data.data;
@@ -863,9 +864,9 @@ async function getFolderName(folderId) {
 
   const bearerToken = localStorage.getItem('edms_token');
 
-  // Make AJAX requests to fetch folder data (replace URL with your actual endpoint)
+  // Make AJAX requests to fetch folder data 
   $.ajax({
-      url: 'http://127.0.0.1:8000/api/folders/1', // Update with your actual folder API endpoint
+      url: 'http://127.0.0.1:8000/api/folders/1',  
       type: 'GET',
       dataType: 'json',
       headers: {
@@ -876,9 +877,10 @@ async function getFolderName(folderId) {
           const folderSelect = document.getElementById('folderSelect');
           folderSelect.innerHTML = '';
           folderData.data.data.forEach(function (folder) {
+            console.log(folder);
               const option = document.createElement('option');
               option.value = folder.id;
-              option.text = folder.name;  // You can replace this with the actual folder name
+              option.text = folder.name;   
               folderSelect.appendChild(option);
           });
       },
@@ -892,9 +894,9 @@ async function getFolderName(folderId) {
 function populateGroupOptions() {
   const bearerToken = localStorage.getItem('edms_token');
 
-  // Make AJAX requests to fetch group data (replace URL with your actual endpoint)
+  // Make AJAX requests to fetch group data 
   $.ajax({
-      url: 'http://127.0.0.1:8000/api/groups', // Update with your actual group API endpoint
+      url: 'http://127.0.0.1:8000/api/groups',  
       type: 'GET',
       dataType: 'json',
       headers: {
@@ -922,9 +924,9 @@ function populateGroupOptions() {
 function populatePermissionOptions() {
   const bearerToken = localStorage.getItem('edms_token');
 
-  // Make an AJAX request to fetch permission data (replace URL with your actual endpoint)
+  // Make an AJAX request to fetch permission data  
   $.ajax({
-      url: 'http://127.0.0.1:8000/api/grouppermissions', // Update with your actual permission API endpoint
+      url: 'http://127.0.0.1:8000/api/grouppermissions',  
       type: 'GET',
       dataType: 'json',
       headers: {
@@ -937,7 +939,7 @@ function populatePermissionOptions() {
           permissionData.data.data.forEach(function (permission) {
               const option = document.createElement('option');
               option.value = permission.id;
-              option.text = permission.id;  // You can replace this with the actual permission label
+              option.text = permission.view_users;  
               permissionSelect.appendChild(option);
           });
       },
@@ -972,11 +974,16 @@ function createPermission() {
       permissions: permissions
   };
 
-  // Send data to the server (you need to implement server-side logic to handle this)
+  const bearerToken = localStorage.getItem('edms_token');
+  // Send data to the server  
   $.ajax({
-      url: 'http://127.0.0.1:8000/api/create_permission', // Replace with your actual endpoint for creating permission
+      url: 'http://127.0.0.1:8000/api/grouppermissions/store', 
       type: 'POST',
       dataType: 'json',
+      headers: {
+        'Authorization': `Bearer ${bearerToken}`,
+        'Content-Type': 'application/json',
+      },
       contentType: 'application/json',
       data: JSON.stringify(permissionData),
       success: function (response) {
