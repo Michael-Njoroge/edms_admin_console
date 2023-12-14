@@ -755,7 +755,7 @@ function assignUsersToGroup() {
   async function populateTable(permissionsData) {
     const permissionsTbody = document.getElementById('permissionsTbody');
 
-    permissionsData.forEach(async(permission, index) => {
+    await Promise.all(permissionsData.map(async (permission, index) => {
     const newRow = permissionsTbody.insertRow();
 
     newRow.insertCell(0).textContent = index + 1;
@@ -821,7 +821,7 @@ function assignUsersToGroup() {
       // Add an edit button
       const editCell = newRow.insertCell();
       editCell.innerHTML = `<button type="button" onclick="editPermissions(${permission.id})">Edit</button>`;
-    });
+    }));
   }
 
   
@@ -1090,6 +1090,9 @@ function createPermission() {
     selectedCheckboxes.push(checkbox.value);
   });
 
+  // Select the submit button
+  const submitButton = $('#createPermissionModal').find('.modal-footer button');
+
     // Check if folder and group are selected
     if (!folderId || !groupId) {
       toastr.error('Please select both a folder and a group.');
@@ -1101,6 +1104,9 @@ function createPermission() {
       toastr.error('Please select at least one permission.');
       return;
     }
+
+    // Disable the submit button and show loading text
+  submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Assigning...');
 
   // Prepare data for the AJAX request
   const requestData = {
@@ -1120,9 +1126,7 @@ function createPermission() {
     },
     data: JSON.stringify(requestData),
     success: function (response) {
-      // Handle success response
-      console.log('Group permissions stored successfully:', response);
-
+ 
       // Close the modal after successfully storing permissions
       $('#createPermissionModal').modal('hide');
 
@@ -1134,7 +1138,10 @@ function createPermission() {
       // Handle error response
       console.error('Error storing group permissions:', error);
       
-      alert('Error storing group permissions. Please try again.');
+     },
+    complete: function () {
+      // Enable the submit button and revert the text
+      submitButton.prop('disabled', false).html('Assign Permission');
     }
   });
  // Close the modal
