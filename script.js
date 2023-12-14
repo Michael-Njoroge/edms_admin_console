@@ -818,15 +818,10 @@ function assignUsersToGroup() {
     newRow.insertCell(57).innerHTML = `<input type="checkbox" ${permission.rewind_workstep_result ? 'checked' : ''} disabled>`;
     newRow.insertCell(58).innerHTML = `<input type="checkbox" ${permission.delete_workstep_result ? 'checked' : ''} disabled>`;
 
+      // Add an edit button
       const editCell = newRow.insertCell();
       editCell.innerHTML = `<button type="button" onclick="editPermissions(${permission.id})">Edit</button>`;
     });
-  }
-
-
-  // FUNCTION TO HANDLE GROUP PERMISSION EDITING
-  function editPermissions(permissionId) {
-    console.log(`Editing permissions for ID: ${permissionId}`);
   }
 
   
@@ -979,6 +974,19 @@ function populateCheckboxOptions() {
     success: function (permissionData) {
       checkboxContainer.innerHTML = '';
 
+      // Add a "Check All" checkbox
+      const checkAllCheckbox = document.createElement('input');
+      checkAllCheckbox.type = 'checkbox';
+      checkAllCheckbox.id = 'checkbox_check_all';
+      const checkAllLabel = document.createElement('label');
+      checkAllLabel.htmlFor = 'checkbox_check_all';
+      checkAllLabel.appendChild(document.createTextNode('Select All'));
+
+      const checkAllDiv = document.createElement('div');
+      checkAllDiv.appendChild(checkAllCheckbox);
+      checkAllDiv.appendChild(checkAllLabel);
+      checkboxContainer.appendChild(checkAllDiv);
+
       // Take the first permission object assuming the permissions are the same for all
       const permissions = permissionData.data.data[0];
 
@@ -1012,6 +1020,14 @@ function populateCheckboxOptions() {
 
       // Initially, hide the checkboxes
       checkboxContainer.style.display = 'none';
+
+       // Add event listener for the "Check All" checkbox
+       checkAllCheckbox.addEventListener('change', function () {
+        const checkboxes = checkboxContainer.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+          checkbox.checked = checkAllCheckbox.checked;
+        });
+      });
     },
     error: function (error) {
       console.error('Error fetching checkbox data:', error);
@@ -1110,3 +1126,11 @@ function createPermission() {
  // Close the modal
   $('#createPermissionModal').modal('hide');
 }
+
+
+
+  // FUNCTION TO HANDLE GROUP PERMISSION EDITING
+  function editPermissions(permissionId) {
+    console.log(`Editing permissions for ID: ${permissionId}`);
+  }
+
