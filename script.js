@@ -1135,7 +1135,8 @@ function createPermission() {
       $('#createPermissionModal').modal('hide');
 
       toastr.success('Group permissions stored successfully');
-      populateTable();
+
+      populateTable(response.data.data);
 
     },
     error: function (error) {
