@@ -725,7 +725,7 @@ function assignUsersToGroup() {
 
 
 
-  //********** */ ASYNC FUNCTION TO FETCH GROUP PERMISSIONS DATA FROM THE API *******************//
+  //********** ASYNC FUNCTION FOR GROUP PERMISSIONS *******************//
   async function fetchData() {
 
      // Retrieve the Bearer token from localStorage
@@ -1051,7 +1051,7 @@ $(document).ready(function () {
 
 
 
-// Function to handle the form submission and create group permissions
+// FUNCTION TO HANDLE THE FORM SUBMISSION AND CREATE GROUP PERMISSIONS
 function createPermission() {
   // Get the bearer token from local storage
   const bearerToken = localStorage.getItem('edms_token');
@@ -1095,6 +1095,7 @@ function createPermission() {
 
       // Close the modal after successfully storing permissions
       $('#createPermissionModal').modal('hide');
+
       toastr.success('Group permissions stored successfully');
       populateTable();
 
@@ -1102,7 +1103,7 @@ function createPermission() {
     error: function (error) {
       // Handle error response
       console.error('Error storing group permissions:', error);
-      // Optionally, display an error message to the user
+      
       alert('Error storing group permissions. Please try again.');
     }
   });
