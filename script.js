@@ -821,6 +821,10 @@ function assignUsersToGroup() {
       // Add an edit button
       const editCell = newRow.insertCell();
       editCell.innerHTML = `<button type="button" onclick="editPermissions(${permission.id})">Edit</button>`;
+
+      // Add a delete button
+    const deleteCell = newRow.insertCell();
+    deleteCell.innerHTML = `<button type="button" onclick="confirmDeletePermissionModal(${permission.id})">Delete</button>`;
     }));
   }
 
@@ -1155,3 +1159,59 @@ function createPermission() {
     console.log(`Editing permissions for ID: ${permissionId}`);
   }
 
+
+  // GLOBAL VARIABLE TO STORE THE PERMISSION ID TO BE DELETED
+let permissionToDeleteId;
+
+// FUNCTION TO PREPARE FOR PERMISSION DELETION BY SETTING THE PERMISSION ID
+function confirmDeletePermissionModal(permissionId) {
+  // Set the permission ID to the global variable
+  permissionToDeleteId = permissionId;
+  $('#confirmDeletePermissionModal').modal('show');
+}
+
+// FUNCTION TO HANDLE PERMISSION DELETION
+function deletePermission() {
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem('edms_token');
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error('Unauthorized');
+    return;
+  }
+
+  // Disable the delete button and show loading text
+  const deleteButton = $('#deletePermissionBtn');
+  deleteButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Deleting...');
+
+  // Make a GET request to delete the permission
+  fetch(`http://127.0.0.1:8000/api/grouppermissions/delete/${permissionToDeleteId}`, {
+    method: 'GET',  
+    headers: {
+      'Authorization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Check the response 
+      if (data.success) {
+        toastr.success('Permission deleted successfully');
+        const tableBody = document.getElementById('permissionsTbody'); 
+        tableBody.innerHTML = ''; 
+
+        // Refresh the data by calling the fetchData() function
+        fetchData();
+      } else {
+        console.error('Failed to delete permission:', data.message);
+      }
+    })
+    .finally(() => {
+      // Enable the delete button and revert the text
+      deleteButton.prop('disabled', false).html('Delete');
+
+      // Hide the confirmation modal
+      $('#confirmDeletePermissionModal').modal('hide');
+    });
+}
