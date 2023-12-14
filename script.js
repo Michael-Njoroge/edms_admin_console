@@ -1090,6 +1090,18 @@ function createPermission() {
     selectedCheckboxes.push(checkbox.value);
   });
 
+    // Check if folder and group are selected
+    if (!folderId || !groupId) {
+      toastr.error('Please select both a folder and a group.');
+      return;
+    }
+
+      // Check if at least one permission is selected
+    if (selectedCheckboxes.length === 0) {
+      toastr.error('Please select at least one permission.');
+      return;
+    }
+
   // Prepare data for the AJAX request
   const requestData = {
     group_id: groupId,
