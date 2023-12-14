@@ -980,9 +980,10 @@ function populateCheckboxOptions() {
       checkAllCheckbox.id = 'checkbox_check_all';
       const checkAllLabel = document.createElement('label');
       checkAllLabel.htmlFor = 'checkbox_check_all';
-      checkAllLabel.appendChild(document.createTextNode('Select All'));
-
+      checkAllLabel.innerHTML = '&nbsp;Select All';
+ 
       const checkAllDiv = document.createElement('div');
+      checkAllDiv.style.cursor = 'pointer'; // Add pointer cursor style
       checkAllDiv.appendChild(checkAllCheckbox);
       checkAllDiv.appendChild(checkAllLabel);
       checkboxContainer.appendChild(checkAllDiv);
@@ -997,17 +998,18 @@ function populateCheckboxOptions() {
       Object.keys(permissions).forEach(function (key) {
         // Skip certain properties like 'id', 'group', 'group_id', 'folder_id', etc.
         if (key !== 'id' && key !== 'group' && key !== 'group_id' && key !== 'folder_id' && key !== 'created_at' && key !== 'updated_at') {
+          
           // Create a checkbox
           const checkbox = document.createElement('input');
           checkbox.type = 'checkbox';
           checkbox.value = key;
           checkbox.id = `checkbox_${key}`; // Set a unique ID for each checkbox
 
-          // Create a label for the checkbox
+          // Create a label for the checkbox with a non-breaking space
           const label = document.createElement('label');
           label.htmlFor = `checkbox_${key}`;
-          label.appendChild(document.createTextNode(key));
-
+          label.innerHTML = `&nbsp;&nbsp;${key}`;
+ 
           // Create a div to hold the checkbox and label
           const checkboxDiv = document.createElement('div');
           checkboxDiv.appendChild(checkbox);
