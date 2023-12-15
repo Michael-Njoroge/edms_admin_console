@@ -212,8 +212,8 @@ function populateUsersTable(users) {
                   <td>stamp</td>
                   <td>signature</td>
                   <td>
-                    <button onclick="performUserAction('${user.username}', 'activate')">A </button> 
-                    <button onclick="performUserAction('${user.username}', 'deactivate')" style="margin-left: 30px;">D</button>
+                    <a href="#" onclick="performUserAction('${user.username}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>
+                    <a href="#" onclick="performUserAction('${user.username}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>
                   </td>
                 </tr>`;
     usersTbody.append(row);
