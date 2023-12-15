@@ -52,6 +52,8 @@ $(document).ready(function() {
         $('#groupMembershipsTableContainer').show();
       }else if (value === '5') {
         $('#groupPermissionsTableContainer').show();
+      }else if (value === '6') {
+        $('#usersTableContainer').show();
       }
       // Add more conditions for other radio buttons  
     });
