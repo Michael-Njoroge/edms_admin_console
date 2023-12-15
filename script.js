@@ -202,13 +202,13 @@ function populateUsersTable(users) {
   // Loop through each user and create a table row
   users.forEach((user, index) => {
     // Check if the user has a photo
-    const photoUrl = user.photo ? user.photo : 'path/to/default-image.jpg';
+    const photoUrl = user.photo ? user.photo : '../images/no_image.jpg';
 
     const row = `<tr>
                   <td>${index + 1}</td>
                   <td>${user.username}</td>
                   <td>${user.name}</td>
-                  <td><img src="${photoUrl}" alt="User Photo" class="user-photo" /></td>
+                  <td><img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 50px; height: 50px; border-radius: 50%;"  /></td>
                   <td><button onclick="performUserAction('${user.username}')">Action</button></td>
                 </tr>`;
     usersTbody.append(row);
