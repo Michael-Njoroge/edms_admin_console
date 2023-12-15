@@ -155,6 +155,7 @@ populateDropdowns();
 
 
 
+// FUNCTION TO FETCH USER DATA WITH DATATABLES
 $(document).ready(function () {
   
   // Define a variable for the DataTable
@@ -162,7 +163,6 @@ $(document).ready(function () {
 
   // Call the fetchUserData function on page load
   fetchUserData();
-
 
   // FUNCTION TO FETCH USER DATA FROM THE API
   function fetchUserData() {
