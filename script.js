@@ -835,6 +835,37 @@ function assignUsersToGroup() {
   }
 
 
+ 
+  // FUNCTION TO FETCH GROUP PERMISSION DATA FROM THE API
+  function fetchData() {
+    const apiUrl = 'http://127.0.0.1:8000/api/grouppermissions';
+
+    // Retrieve the Bearer token from localStorage
+    const bearerToken = localStorage.getItem('edms_token');
+
+    $.ajax({
+      url: apiUrl,
+      type: 'GET',
+      headers: {
+        'Authorization': `Bearer ${bearerToken}`,
+        'Content-Type': 'application/json',
+      },
+      success: function (response) {
+        if (response.success) {
+          const permissions = response.data.data;
+          // Call function to populate the Group Permissions table
+          populateTable(permissions);
+        } else {
+          console.error('Error fetching group permissions data:', response);
+        }
+      },
+      error: function (error) {
+        console.error('Error fetching group permissions data:', error);
+      }
+    });
+  }
+
+
   // FUNCTION TO POPULATE THE  GROUP PERMISSION TABLE WITH DATA
   async function populateTable(permissionsData) {
     const permissionsTbody = document.getElementById('permissionsTbody');
@@ -910,7 +941,19 @@ function assignUsersToGroup() {
     const deleteCell = newRow.insertCell();
     deleteCell.innerHTML = `<button type="button" onclick="confirmDeletePermissionModal(${permission.id})">Delete</button>`;
     }));
+    // Destroy DataTable if already initialized
+    if ($.fn.DataTable.isDataTable('#permissionsTable')) {
+      $('#permissionsTable').DataTable().destroy();
+    }
+
+    // Initialize DataTable on the #permissionsTable element
+    permissionsDataTable = $('#permissionsTable').DataTable({
+      // Add any additional configuration options here
+    });
+    // Show the permissions table container
+    $('#permissionsTableContainer').show();
   }
+
 
   
  // ASYNC FUNCTION TO FETCH THE FOLDER NAME BASED ON FOLDER ID

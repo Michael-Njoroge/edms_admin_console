@@ -371,11 +371,19 @@
 
             <!-- *******************Groups Table***************** -->
             <div id="groupsTableContainer" class="table-container">
-            <div class="card-header">
+             
+              <div class="card-header d-flex justify-content-between mb-3">
+                  
+                <!-- Breadcrumb -->
+               <nav aria-label="breadcrumb">
+                 <ol class="breadcrumb">
+                   <li class="breadcrumb-item"><a href="#">Home</a></li>
+                   <li class="breadcrumb-item active" aria-current="page">Groups</li>
+                 </ol>
+               </nav>
               <button type="button" data-toggle="modal" data-target="#form" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 150px; margin-bottom: 15px; ">Add New Group</button>
 
-              <h4 class="card-title"><b>Groups</b></h4>
-              </div>
+               </div>
                   <table id="tab" class="table table-hover table-bordered" cellspacing="3" style="  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;" >
                <thead>
                 <tr>
@@ -393,7 +401,15 @@
 
               <!-- *******************Group Memberships Table***************** -->
               <div id="groupMembershipsTableContainer" class="table-container" style="display: none;">
-              <div class="card-header">
+              <div class="card-header d-flex justify-content-between mb-3">
+                  
+                <!-- Breadcrumb -->
+               <nav aria-label="breadcrumb">
+                 <ol class="breadcrumb">
+                   <li class="breadcrumb-item"><a href="#">Home</a></li>
+                   <li class="breadcrumb-item active" aria-current="page">Memberships</li>
+                 </ol>
+               </nav>
                 <button type="button" data-toggle="modal" data-target="#assignUsersModal" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 200px; margin-bottom: 15px; ">Assign User to Group</button>
 
                 <h4 class="card-title"><b>Group Memberships</b></h4>
