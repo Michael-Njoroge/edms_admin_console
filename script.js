@@ -162,6 +162,69 @@ fetchUserInfoAndUpdateNavbar();
 
 // Call populateDropdowns when the document is ready
 populateDropdowns();
+
+
+
+// FUNCTION TO FETCH USER DATA FROM THE API
+function fetchUserData() {
+  const apiUrl = 'http://127.0.0.1:8000/api/users';
+
+   // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem('edms_token');
+
+  $.ajax({
+    url: apiUrl,
+    type: 'GET',
+    headers: {
+      'Authorization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json',
+    },
+    success: function (response) {
+      if (response.success) {
+        const users = response.data.data;
+        // Call function to populate the Users table
+        populateUsersTable(users);
+      } else {
+        console.error('Error fetching user data:', response);
+      }
+    },
+    error: function (error) {
+      console.error('Error fetching user data:', error);
+    }
+  });
+}
+
+// FUNCTION TO POPULATE THE USERS TABLE WITH FETCHED USER DATA
+function populateUsersTable(users) {
+  const usersTbody = $('#usersTbody');
+  usersTbody.empty();
+
+  // Loop through each user and create a table row
+  users.forEach((user, index) => {
+    const row = `<tr>
+                  <td>${index + 1}</td>
+                  <td>${user.username}</td>
+                  <td>${user.name}</td>
+                  <td><button onclick="performUserAction('${user.username}')">Action</button></td>
+                </tr>`;
+    usersTbody.append(row);
+  });
+
+  // Show the users table container
+  $('#usersTableContainer').show();
+}
+
+// Function to perform an action for a specific user
+function performUserAction(username) {
+  console.log(`Performing action for user: ${username}`);
+  // Add your logic to handle the user action here
+}
+
+// Call the fetchUserData function on page load
+$(document).ready(function () {
+  fetchUserData();
+});
+
  
 
 
