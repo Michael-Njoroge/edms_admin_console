@@ -208,7 +208,7 @@ function populateUsersTable(users) {
                   <td>${index + 1}</td>
                   <td>${user.username}</td>
                   <td>${user.name}</td>
-                  <td><img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 50px; height: 50px; border-radius: 50%;"  /></td>
+                  <td><img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 60px; height: 60px; border-radius: 50%;"  /></td>
                   <td><button onclick="performUserAction('${user.username}')">Action</button></td>
                 </tr>`;
     usersTbody.append(row);
