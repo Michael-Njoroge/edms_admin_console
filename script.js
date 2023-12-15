@@ -251,14 +251,6 @@ $(document).ready(function () {
 
 
 // FUCTION TO CALL AND DISPLAY GROUP DATA
-$(document).ready(function () {
-  
-  // Define a variable for the DataTable
-  let userDataTable;
-
-  // Call the fetchUserData function on page load
-  getData();
-
 async function getData() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem('edms_token');
@@ -314,20 +306,10 @@ async function getData() {
 
       tableBody.appendChild(row);
   });
-  // Destroy DataTable if already initialized
-  if ($.fn.DataTable.isDataTable('#tab')) {
-    $('#tab').DataTable().destroy();
-  }
-
-  // Initialize DataTable on the #tab element
-  userDataTable = $('#tab').DataTable({
-    // Add any additional configuration options here
-  });
 
   // Call updateRowNumbers after appending rows to the table body
   updateRowNumbers();
 }
-});
     
 
 // FUNCTION TO HANDLE FORM SUBMISSION AND CREATE A NEW GROUP
