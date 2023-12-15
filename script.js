@@ -203,6 +203,10 @@ $(document).ready(function () {
       // Check if the user has a photo
       const photoUrl = user.photo ? user.photo : '../images/no_image.jpg';
 
+      // Check the status and set the corresponding label and color
+    const statusLabel = user.status === 'active' ? 'Active' : 'Inactive';
+    const statusColor = user.status === 'active' ? 'green' : 'red';
+
       const row = `<tr>
                     <td>${index + 1}</td>
                     <td>${user.username}</td>
@@ -210,6 +214,7 @@ $(document).ready(function () {
                     <td><img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 60px; height: 60px; border-radius: 50%;"  /></td>
                     <td>stamp</td>
                     <td>signature</td>
+                    <td style="color: ${statusColor};">${statusLabel}</td>
                     <td>
                       <a href="#" onclick="performUserAction('${user.username}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>
                       <a href="#" onclick="performUserAction('${user.username}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>
