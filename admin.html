@@ -413,11 +413,19 @@
 
               <!-- *******************Group Permissions Table***************** -->
               <div id="groupPermissionsTableContainer" class="table-container" > 
-                <div class="card-header">
-                <button type="button" data-toggle="modal" data-target="#createPermissionModal" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 200px; margin-bottom: 15px; ">Assign Group Permissions</button>
+                
 
-                <h4 class="card-title" style="margin: 0;"><b>Group Permissions</b></h4>
-                </div>
+                <div class="card-header d-flex justify-content-between mb-3">
+                  
+                  <!-- Breadcrumb -->
+                 <nav aria-label="breadcrumb">
+                   <ol class="breadcrumb">
+                     <li class="breadcrumb-item"><a href="#">Home</a></li>
+                     <li class="breadcrumb-item active" aria-current="page">Permissions</li>
+                   </ol>
+                 </nav>
+                 <button type="button" data-toggle="modal" data-target="#createPermissionModal" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 200px; margin-bottom: 15px; ">Assign Group Permissions</button>
+               </div>
                 <div style="overflow-x: auto;">
                   <table id="permissionsTable" class="table table-hover table-bordered" cellspacing="3" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;">
                   <thead>

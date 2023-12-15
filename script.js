@@ -155,6 +155,8 @@ populateDropdowns();
 
 
 
+
+
 // FUNCTION TO FETCH USER DATA WITH DATATABLES
 $(document).ready(function () {
   
@@ -204,7 +206,7 @@ $(document).ready(function () {
       const photoUrl = user.photo ? user.photo : '../images/no_image.jpg';
 
       // Check the status and set the corresponding label and color
-    const statusLabel = user.status === 'active' ? 'Active' : 'Inactive';
+    const statusLabel = user.status === 'active' ? 'Active' : 'InActive';
     const statusColor = user.status === 'active' ? 'green' : 'red';
 
       const row = `<tr>
@@ -232,9 +234,7 @@ $(document).ready(function () {
     userDataTable = $('#usersTable').DataTable({
       // Add any additional configuration options here
     });
-
-    // Show the users table container
-    $('#usersTableContainer').show();
+ 
   }
 
   // Function to perform an action for a specific user
