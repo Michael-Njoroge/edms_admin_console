@@ -18,17 +18,7 @@ function updateRowNumbers() {
         row.cells[0].textContent = index + 1;
     });
 }
-
-// FUNCTION TO HANDLE DATATABLES
-// $(document).ready(function() {
-//   var table = $('#groupMembershipsTab').DataTable({
-//     scrollX: false,
-//      scrollCollapse: true,
-//     paging: true,
-//     fixedHeader: true
-//   });});
-
-
+ 
 //******************************** SIDEBAR FUNCTIONS *********************************//
 
 
@@ -165,73 +155,88 @@ populateDropdowns();
 
 
 
-// FUNCTION TO FETCH USER DATA FROM THE API
-function fetchUserData() {
-  const apiUrl = 'http://127.0.0.1:8000/api/users';
-
-   // Retrieve the Bearer token from localStorage
-  const bearerToken = localStorage.getItem('edms_token');
-
-  $.ajax({
-    url: apiUrl,
-    type: 'GET',
-    headers: {
-      'Authorization': `Bearer ${bearerToken}`,
-      'Content-Type': 'application/json',
-    },
-    success: function (response) {
-      if (response.success) {
-        const users = response.data.data;
-        // Call function to populate the Users table
-        populateUsersTable(users);
-      } else {
-        console.error('Error fetching user data:', response);
-      }
-    },
-    error: function (error) {
-      console.error('Error fetching user data:', error);
-    }
-  });
-}
-
-// FUNCTION TO POPULATE THE USERS TABLE WITH FETCHED USER DATA
-function populateUsersTable(users) {
-  const usersTbody = $('#usersTbody');
-  usersTbody.empty();
-
-  // Loop through each user and create a table row
-  users.forEach((user, index) => {
-    // Check if the user has a photo
-    const photoUrl = user.photo ? user.photo : '../images/no_image.jpg';
-
-    const row = `<tr>
-                  <td>${index + 1}</td>
-                  <td>${user.username}</td>
-                  <td>${user.name}</td>
-                  <td><img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 60px; height: 60px; border-radius: 50%;"  /></td>
-                  <td>stamp</td>
-                  <td>signature</td>
-                  <td>
-                    <a href="#" onclick="performUserAction('${user.username}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>
-                    <a href="#" onclick="performUserAction('${user.username}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>
-                  </td>
-                </tr>`;
-    usersTbody.append(row);
-  });
-
-  // Show the users table container
-  $('#usersTableContainer').show();
-}
-
-// Function to perform an action for a specific user
-function performUserAction(username) {
-  console.log(`Performing action for user: ${username}`);
-  // Add your logic to handle the user action here
-}
-
-// Call the fetchUserData function on page load
 $(document).ready(function () {
+  
+  // Define a variable for the DataTable
+  let userDataTable;
+
+  // Call the fetchUserData function on page load
   fetchUserData();
+
+
+  // FUNCTION TO FETCH USER DATA FROM THE API
+  function fetchUserData() {
+    const apiUrl = 'http://127.0.0.1:8000/api/users';
+
+    // Retrieve the Bearer token from localStorage
+    const bearerToken = localStorage.getItem('edms_token');
+
+    $.ajax({
+      url: apiUrl,
+      type: 'GET',
+      headers: {
+        'Authorization': `Bearer ${bearerToken}`,
+        'Content-Type': 'application/json',
+      },
+      success: function (response) {
+        if (response.success) {
+          const users = response.data.data;
+          // Call function to populate the Users table
+          populateUsersTable(users);
+        } else {
+          console.error('Error fetching user data:', response);
+        }
+      },
+      error: function (error) {
+        console.error('Error fetching user data:', error);
+      }
+    });
+  }
+
+  // FUNCTION TO POPULATE THE USERS TABLE WITH FETCHED USER DATA
+  function populateUsersTable(users) {
+    const usersTbody = $('#usersTbody');
+    usersTbody.empty();
+
+    // Loop through each user and create a table row
+    users.forEach((user, index) => {
+      // Check if the user has a photo
+      const photoUrl = user.photo ? user.photo : '../images/no_image.jpg';
+
+      const row = `<tr>
+                    <td>${index + 1}</td>
+                    <td>${user.username}</td>
+                    <td>${user.name}</td>
+                    <td><img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 60px; height: 60px; border-radius: 50%;"  /></td>
+                    <td>stamp</td>
+                    <td>signature</td>
+                    <td>
+                      <a href="#" onclick="performUserAction('${user.username}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>
+                      <a href="#" onclick="performUserAction('${user.username}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>
+                    </td>
+                  </tr>`;
+      usersTbody.append(row);
+    });
+
+    // Destroy DataTable if already initialized
+    if ($.fn.DataTable.isDataTable('#usersTable')) {
+      $('#usersTable').DataTable().destroy();
+    }
+
+    // Initialize DataTable on the #usersTable element
+    userDataTable = $('#usersTable').DataTable({
+      // Add any additional configuration options here
+    });
+
+    // Show the users table container
+    $('#usersTableContainer').show();
+  }
+
+  // Function to perform an action for a specific user
+  function performUserAction(username) {
+    console.log(`Performing action for user: ${username}`);
+    // Add your logic to handle the user action here
+  }
 });
 
  
