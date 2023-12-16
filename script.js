@@ -240,7 +240,7 @@ $(document).ready(function () {
   // Function to perform an action for a specific user
   function performUserAction(username) {
     console.log(`Performing action for user: ${username}`);
-    // Add your logic to handle the user action here
+    // Add the user action here
   }
 });
 
@@ -317,8 +317,11 @@ async function getData() {
 
   // Call updateRowNumbers after appending rows to the table body
   updateRowNumbers();
+
+  // Initialize DataTables after adding rows
+  $('#tab').DataTable();
 }
-    
+ 
 
 // FUNCTION TO HANDLE FORM SUBMISSION AND CREATE A NEW GROUP
 function createGroup() {
