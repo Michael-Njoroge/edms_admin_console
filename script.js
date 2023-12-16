@@ -278,6 +278,10 @@ async function getData() {
   data.data.data.forEach(group => {
       const row = document.createElement('tr');
 
+      // Check the status and set the corresponding label and color
+    const statusLabel = group.status === 'active' ? 'Active' : 'InActive';
+    const statusColor = group.status === 'active' ? 'green' : 'red';
+    
       // Group information
       row.innerHTML += `<td>${group.id}</td>`;
       row.innerHTML += `<td>${group.group_name}</td>`;
@@ -286,6 +290,10 @@ async function getData() {
       // Users
       const users = group.users.length;
       row.innerHTML += `<td>${users}</td>`;
+
+      // Status
+      row.innerHTML += `<td style="color: ${statusColor};">${statusLabel}</td>`;
+
 
       // Check if the group is not a seed group (disable delete for groups with id 1 and 2)
       if (group.id === 1 || group.id === 2) {

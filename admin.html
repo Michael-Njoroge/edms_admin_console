@@ -131,12 +131,10 @@
                           <label for="group_name">Group Name</label>
                           <input type="text" class="form-control" id="group_name" name="group_name" placeholder="Enter Group Name">
                         </div>
-
                         <div class="form-group">
                           <label for="admin_id">Group Admin Id</label>
                           <input type="text" class="form-control" id="admin_id" placeholder="Enter Group Id"  >
-                        </div>
-                        
+                        </div>                       
                       </div>
                       <div class="modal-footer border-top-0 d-flex justify-content-center">
                         <button type="submit" class="btn" id="submitBtn" style="background: #355B11; color: white;">Submit</button>
@@ -161,12 +159,10 @@
                     <div class="modal-body">
                       <input type="hidden" class="form-control" id="edit_group_id" >
                       <input type="hidden" class="form-control" id="edit_group_admin_id" >
-
                       <div class="form-group">
                         <label for="group_name">Group Name</label>
                         <input type="text" class="form-control" id="edit_group_name" name="edit_group_name" placeholder="Enter Group Name">
-                      </div>
-                  
+                      </div>                 
                     </div>
                     <div class="modal-footer border-top-0 d-flex justify-content-center">
                       <button type="submit" id="editSubmitBtn" class="btn" style="background: #355B11; color: white;">Submit</button>
@@ -256,16 +252,13 @@
                             <div class="form-group">
                                 <label for="assign_group">Select Group</label>
                                 <select class="form-control" id="assign_group" name="assign_group">
-
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="assign_users">Select Users</label>
                                 <select class="form-control" id="assign_users" name="assign_users">
-
                                 </select>
-                            </div>
-       
+                            </div>     
                         </div>
                         <div class="modal-footer border-top-0 d-flex justify-content-center">
                             <button type="submit" class="btn" id="assignUsersBtn" style="background: #355B11; color: white;">Assign Users</button>
@@ -288,15 +281,13 @@
                   </div>
                   <form id="editGroupMembershipForm" onsubmit="event.preventDefault(); submitEditGroupMembership();">
                     <div class="modal-body">
-                      <input type="hidden" class="form-control" id="editMembershipId">
-                      
+                      <input type="hidden" class="form-control" id="editMembershipId">  
                       <div class="form-group">
                         <label for="editMembershipGroup">Select Group</label>
                         <select class="form-control" id="editMembershipGroup" name="editMembershipGroup">
                           <!-- Populate with group options dynamically -->
                         </select>
                       </div>
-
                       <div class="form-group">
                         <label for="editMembershipUser">Select User</label>
                         <select class="form-control" id="editMembershipUser" name="editMembershipUser" multiple>
@@ -330,14 +321,12 @@
                                       <!-- Group options will be populated dynamically -->
                                   </select>
                                 </div>
-
                                 <div class="form-group">
                                     <label for="folderSelect">Select Folder:</label>
                                     <select class="form-control" id="folderSelect">
                                         <!-- Folder options will be populated dynamically -->
                                     </select>
                                 </div>
-                    
                                  <!-- Add a div container for checkboxes -->
                                  <div id="checkboxContainer"></div>
                             </form>
@@ -370,10 +359,8 @@
             </div>
 
             <!-- *******************Groups Table***************** -->
-            <div id="groupsTableContainer" class="table-container">
-             
-              <div class="card-header d-flex justify-content-between mb-3">
-                  
+            <div id="groupsTableContainer" class="table-container">            
+              <div class="card-header d-flex justify-content-between mb-3">   
                 <!-- Breadcrumb -->
                <nav aria-label="breadcrumb">
                  <ol class="breadcrumb">
@@ -382,7 +369,6 @@
                  </ol>
                </nav>
               <button type="button" data-toggle="modal" data-target="#form" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 150px; margin-bottom: 15px; ">Add New Group</button>
-
                </div>
                   <table id="tab" class="table table-hover table-bordered" cellspacing="3" style="  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;" >
                <thead>
@@ -397,13 +383,11 @@
                </thead>
                <tbody id="tbody"></tbody>
              </table>
-             
             </div>
 
               <!-- *******************Group Memberships Table***************** -->
               <div id="groupMembershipsTableContainer" class="table-container" style="display: none;">
               <div class="card-header d-flex justify-content-between mb-3">
-                  
                 <!-- Breadcrumb -->
                <nav aria-label="breadcrumb">
                  <ol class="breadcrumb">
@@ -412,7 +396,6 @@
                  </ol>
                </nav>
                 <button type="button" data-toggle="modal" data-target="#assignUsersModal" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 200px; margin-bottom: 15px; ">Assign User to Group</button>
-
                 <h4 class="card-title"><b>Group Memberships</b></h4>
               </div>
               <table id="groupMembershipsTab" class="table table-hover table-bordered" cellspacing="3" style=" justify-content: center;  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%;">
@@ -430,10 +413,7 @@
 
               <!-- *******************Group Permissions Table***************** -->
               <div id="groupPermissionsTableContainer" class="table-container" > 
-                
-
                 <div class="card-header d-flex justify-content-between mb-3">
-                  
                   <!-- Breadcrumb -->
                  <nav aria-label="breadcrumb">
                    <ol class="breadcrumb">
