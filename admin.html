@@ -79,6 +79,11 @@
           </li>
 
           <li>
+            <input type="radio" name="sidebar_tab1" id="sidebar_tab6" value="6"/>
+            <label for="sidebar_tab6"><i class="fa fa-user"></i> Users</label>
+          </li>
+
+          <li>
             <input type="radio" name="sidebar_tab1" id="sidebar_tab3" value="3"/>
             <label for="sidebar_tab3"><i class="fa fa-cog"></i> Groups</label>
           </li>
@@ -91,11 +96,6 @@
           <li>
             <input type="radio" name="sidebar_tab1" id="sidebar_tab5" value="5"/>
             <label for="sidebar_tab5"><i class="fa fa-lock"></i> Permissions</label>
-          </li>
-
-          <li>
-            <input type="radio" name="sidebar_tab1" id="sidebar_tab6" value="6"/>
-            <label for="sidebar_tab6"><i class="fa fa-user"></i> Users</label>
           </li>
 
           <li>
@@ -368,9 +368,9 @@
                    <li class="breadcrumb-item active" aria-current="page">Groups</li>
                  </ol>
                </nav>
-              <button type="button" data-toggle="modal" data-target="#form" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 150px; margin-bottom: 15px; ">Add New Group</button>
+              <button type="button" data-toggle="modal" data-target="#form" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 100px; margin-bottom: 15px; ">New Group</button>
                </div>
-                  <table id="tab" class="table table-hover table-bordered" cellspacing="3" style="  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;" >
+                  <table id="tab" class="table table-hover table-bordered" cellspacing="3" style="  box-shadow: 0 4px 8px rgba(5, 2, 2, 0.1); width: 100%; border-radius: 10px;" >
                <thead>
                 <tr>
                   <th>#</th>
@@ -395,9 +395,8 @@
                    <li class="breadcrumb-item active" aria-current="page">Memberships</li>
                  </ol>
                </nav>
-                <button type="button" data-toggle="modal" data-target="#assignUsersModal" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 200px; margin-bottom: 15px; ">Assign User to Group</button>
-                <h4 class="card-title"><b>Group Memberships</b></h4>
-              </div>
+                <button type="button" data-toggle="modal" data-target="#assignUsersModal" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 100px; margin-bottom: 15px; ">Assign User</button>
+               </div>
               <table id="groupMembershipsTab" class="table table-hover table-bordered" cellspacing="3" style=" justify-content: center;  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%;">
                 <thead>
                   <tr>
@@ -421,7 +420,7 @@
                      <li class="breadcrumb-item active" aria-current="page">Permissions</li>
                    </ol>
                  </nav>
-                 <button type="button" data-toggle="modal" data-target="#createPermissionModal" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 5px; width: 200px; margin-bottom: 15px; ">Assign Group Permissions</button>
+                 <button type="button" data-toggle="modal" data-target="#createPermissionModal" style="background: #355B11; color: white; border: none; border-radius: 15px; padding: 3px; width: 75px; margin-bottom: 15px; ">New</button>
                </div>
                 <div style="overflow-x: auto;">
                   <table id="permissionsTable" class="table table-hover table-bordered" cellspacing="3" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;">

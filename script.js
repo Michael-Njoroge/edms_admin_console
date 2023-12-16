@@ -931,7 +931,6 @@ function assignUsersToGroup() {
      
     // Show the permissions table container
     $('#permissionsTableContainer').show();
-
     
   }
        
