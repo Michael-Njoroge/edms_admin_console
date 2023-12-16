@@ -153,63 +153,41 @@ fetchUserInfoAndUpdateNavbar();
 // Call populateDropdowns when the document is ready
 populateDropdowns();
 
+ 
+///////// FUNCTION TO POPULATE THE USERS TABLE WITH FETCHED USER DATA //////////
+async function populateUsersTable() {
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem('edms_token');
 
-
-
-
-// FUNCTION TO FETCH USER DATA WITH DATATABLES
-$(document).ready(function () {
-  
-  // Define a variable for the DataTable
-  let userDataTable;
-
-  // Call the fetchUserData function on page load
-  fetchUserData();
-
-  // FUNCTION TO FETCH USER DATA FROM THE API
-  function fetchUserData() {
-    const apiUrl = 'http://127.0.0.1:8000/api/users';
-
-    // Retrieve the Bearer token from localStorage
-    const bearerToken = localStorage.getItem('edms_token');
-
-    $.ajax({
-      url: apiUrl,
-      type: 'GET',
-      headers: {
-        'Authorization': `Bearer ${bearerToken}`,
-        'Content-Type': 'application/json',
-      },
-      success: function (response) {
-        if (response.success) {
-          const users = response.data.data;
-          // Call function to populate the Users table
-          populateUsersTable(users);
-        } else {
-          console.error('Error fetching user data:', response);
-        }
-      },
-      error: function (error) {
-        console.error('Error fetching user data:', error);
-      }
-    });
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error('Unauthorized');
+    return;
   }
 
-  // FUNCTION TO POPULATE THE USERS TABLE WITH FETCHED USER DATA
-  function populateUsersTable(users) {
-    const usersTbody = $('#usersTbody');
-    usersTbody.empty();
+  // Fetch users
+  const records = await fetch('http://127.0.0.1:8000/api/users', {
+    headers: {
+      'Authorization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json'
+    }
+  });
 
-    // Loop through each user and create a table row
-    users.forEach((user, index) => {
-      // Check if the user has a photo
-      const photoUrl = user.photo ? user.photo : '../images/no_image.jpg';
+  const data = await records.json();
 
-      // Check the status and set the corresponding label and color
+  const tableBody = $('#usersTbody');
+  tableBody.empty();
+
+  // Loop through each user and create a table row
+  data.data.data.forEach((user, index) => {
+    // Check if the user has a photo
+    const photoUrl = user.photo ? user.photo : '../images/no_image.jpg';
+
+    // Check the status and set the corresponding label and color
     const statusLabel = user.status === 'active' ? 'Active' : 'InActive';
     const statusColor = user.status === 'active' ? 'green' : 'red';
 
-      const row = `<tr>
+    const row = `<tr>
                     <td>${index + 1}</td>
                     <td>${user.username}</td>
                     <td>${user.name}</td>
@@ -222,33 +200,21 @@ $(document).ready(function () {
                       <a href="#" onclick="performUserAction('${user.username}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>
                     </td>
                   </tr>`;
-      usersTbody.append(row);
-    });
 
-    // Destroy DataTable if already initialized
-    if ($.fn.DataTable.isDataTable('#usersTable')) {
-      $('#usersTable').DataTable().destroy();
-    }
+    tableBody.append(row);
+  });
 
-    // Initialize DataTable on the #usersTable element
-    userDataTable = $('#usersTable').DataTable({
-      // Add any additional configuration options here
-    });
+  // Initialize DataTable on the #usersTable element
+  $('#usersTable').DataTable({
+    // Add any additional configuration options here
+    responsive: true,
+    lengthMenu: [5, 10, 25, 45, 70, 100],
+    pageLength: 6,
+  });
+}
  
-  }
-
-  // Function to perform an action for a specific user
-  function performUserAction(username) {
-    console.log(`Performing action for user: ${username}`);
-    // Add the user action here
-  }
-});
-
- 
-
 
 // ******************************* GROUPS FUNCTIONS **************************** //
-
 
 // FUCTION TO CALL AND DISPLAY GROUP DATA
 async function getData() {
@@ -319,7 +285,11 @@ async function getData() {
   updateRowNumbers();
 
   // Initialize DataTables after adding rows
-  $('#tab').DataTable();
+  $('#tab').DataTable({
+    lengthMenu: [5, 10, 25, 45, 70, 100],
+    pageLength: 6,
+   
+  });
   
 }
  
