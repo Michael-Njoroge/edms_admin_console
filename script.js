@@ -209,7 +209,6 @@ async function populateUsersTable() {
     // Add any additional configuration options here
     responsive: true,
     lengthMenu: [5, 10, 25, 45, 70, 100],
-    pageLength: 6,
   });
 }
  
@@ -284,11 +283,14 @@ async function getData() {
   // Call updateRowNumbers after appending rows to the table body
   updateRowNumbers();
 
+  // Destroy the existing DataTable (if any) before reinitializing
+  if ($.fn.DataTable.isDataTable('#tab')) {
+    $('#tab').DataTable().destroy();
+  }
+
   // Initialize DataTables after adding rows
   $('#tab').DataTable({
     lengthMenu: [5, 10, 25, 45, 70, 100],
-    pageLength: 6,
-   
   });
   
 }
@@ -606,8 +608,15 @@ async function getGroupMembershipsData() {
   // Call updateRowNumbers after appending rows to the table body
   updateRowNumbers();
 
+    // Destroy the existing DataTable (if any) before reinitializing
+    if ($.fn.DataTable.isDataTable('#groupMembershipsTab')) {
+      $('#groupMembershipsTab').DataTable().destroy();
+    }
+
     // Initialize DataTables after adding rows
-    $('#groupMembershipsTab').DataTable();
+    $('#groupMembershipsTab').DataTable({
+      lengthMenu: [5, 10, 25, 45, 70, 100],
+    });
  
 }
 
