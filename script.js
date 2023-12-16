@@ -623,7 +623,7 @@ async function getGroupMembershipsData() {
  
 
 
-// ADD THIS FUNCTION TO HANDLE THE CLICK EVENT OF THE DELETE BUTTON IN EACH ROW
+// FUNCTION TO HANDLE THE CLICK EVENT OF THE DELETE BUTTON IN EACH ROW
 function confirmDeleteGroupMembership(membershipId) {
 
   // Set the membership ID in the hidden input field of the confirmation modal
@@ -910,8 +910,16 @@ function assignUsersToGroup() {
      
     // Show the permissions table container
     $('#permissionsTableContainer').show();
+
     
   }
+  // Initialize DataTable for the permissions table
+  $('#permissionsTable').DataTable({
+    // Add any additional configuration options here
+    responsive: true,
+    lengthMenu: [5, 10, 25, 45, 70, 100],
+    searching: true, 
+});
        
 
 
