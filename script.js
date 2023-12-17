@@ -203,13 +203,6 @@ async function populateUsersTable() {
 
     tableBody.append(row);
   });
-
-  // Initialize DataTable on the #usersTable element
-  $('#usersTable').DataTable({
-    // Add any additional configuration options here
-    responsive: true,
-    lengthMenu: [5, 10, 25, 45, 70, 100],
-  });
 }
  
 
@@ -280,19 +273,10 @@ async function getData() {
       tableBody.appendChild(row);
   });
 
+ 
   // Call updateRowNumbers after appending rows to the table body
   updateRowNumbers();
 
-  // Destroy the existing DataTable (if any) before reinitializing
-  if ($.fn.DataTable.isDataTable('#tab')) {
-    $('#tab').DataTable().destroy();
-  }
-
-  // Initialize DataTables after adding rows
-  $('#tab').DataTable({
-    lengthMenu: [5, 10, 25, 45, 70, 100],
-  });
-  
 }
  
 
@@ -454,7 +438,7 @@ function submitEditForm() {
  
         //close the modal after successful submission
         $('#editForm').modal('hide');
-
+ 
         //refresh the data by calling the getData() function
         getData();
         getGroupMembershipsData()
@@ -608,16 +592,6 @@ async function getGroupMembershipsData() {
   // Call updateRowNumbers after appending rows to the table body
   updateRowNumbers();
 
-    // Destroy the existing DataTable (if any) before reinitializing
-    if ($.fn.DataTable.isDataTable('#groupMembershipsTab')) {
-      $('#groupMembershipsTab').DataTable().destroy();
-    }
-
-    // Initialize DataTables after adding rows
-    $('#groupMembershipsTab').DataTable({
-      lengthMenu: [5, 10, 25, 45, 70, 100],
-    });
- 
 }
 
  
@@ -913,13 +887,7 @@ function assignUsersToGroup() {
 
     
   }
-  // Initialize DataTable for the permissions table
-  $('#permissionsTable').DataTable({
-    // Add any additional configuration options here
-    responsive: true,
-    lengthMenu: [5, 10, 25, 45, 70, 100],
-    searching: true, 
-});
+  
        
 
 
