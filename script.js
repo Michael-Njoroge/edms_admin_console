@@ -563,9 +563,8 @@ function deleteGroup() {
 
 // ****************************GROUP MEMBERSHIPS FUNCTIONS************************ //
 
-
-// FUNCTION TO FETCH AND DISPLAY GROUP MEMBERSHIPS DATA
-async function getGroupMembershipsData() {
+// FUNCTION TO FETCH AND DISPLAY GROUP MEMBERSHIPS DATA WITH PAGINATION
+async function getGroupMembershipsData(page = 1, itemsPerPage = 5) {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem('edms_token');
 
@@ -578,8 +577,6 @@ async function getGroupMembershipsData() {
   });
 
   const membershipsData = await membershipsResponse.json();
-
-  console.log(membershipsData);
 
   // Get the table body element
   const membershipsTableBody = document.getElementById('groupMembershipsTbody');
@@ -610,8 +607,14 @@ async function getGroupMembershipsData() {
     return groupData.data.data.group_name;
   };
 
+  // Calculate start and end indices based on pagination
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage - 1, membershipsData.data.data.length - 1);
+
+  const currentPageData = membershipsData.data.data.slice(startIndex, endIndex + 1);
+
   // Iterate through the data and append rows to the table
-  for (const membership of membershipsData.data.data) {
+  for (const membership of currentPageData) {
     const row = document.createElement('tr');
 
     // Group information
@@ -626,9 +629,9 @@ async function getGroupMembershipsData() {
     row.innerHTML += `<td>${groupName}</td>`;
 
     row.innerHTML += `<td style="font-size:21px; ">
-    <center>
-       <a href="#" onclick="confirmDeleteGroupMembership(${membership.id})" title="delete"> <i class="fa fa-trash"></i></a>
-    </center>
+      <center>
+         <a href="#" onclick="confirmDeleteGroupMembership(${membership.id})" title="delete"> <i class="fa fa-trash"></i></a>
+      </center>
     </td>`;
 
     membershipsTableBody.appendChild(row);
@@ -637,7 +640,48 @@ async function getGroupMembershipsData() {
   // Call updateRowNumbers after appending rows to the table body
   updateRowNumbers();
 
+  // Generate pagination links
+  const totalPages = Math.ceil(membershipsData.data.data.length / itemsPerPage);
+  const paginationElement = document.getElementById('membershipsPagination');
+  paginationElement.innerHTML = '';
+
+  if (totalPages > 1) {
+    const prevLink = document.createElement('a');
+    prevLink.href = '#';
+    prevLink.innerHTML = '«';
+    prevLink.classList.add('page-link');
+    prevLink.addEventListener('click', () => {
+      if (page > 1) {
+        getGroupMembershipsData(page - 1, itemsPerPage);
+      }
+    });
+    paginationElement.appendChild(prevLink);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageLink = document.createElement('a');
+      pageLink.href = '#';
+      pageLink.textContent = i;
+      pageLink.classList.add('page-link');
+      if (i === page) {
+        pageLink.classList.add('active');
+      }
+      pageLink.addEventListener('click', () => getGroupMembershipsData(i, itemsPerPage));
+      paginationElement.appendChild(pageLink);
+    }
+
+    const nextLink = document.createElement('a');
+    nextLink.href = '#';
+    nextLink.innerHTML = '»';
+    nextLink.classList.add('page-link');
+    nextLink.addEventListener('click', () => {
+      if (page < totalPages) {
+        getGroupMembershipsData(page + 1, itemsPerPage);
+      }
+    });
+    paginationElement.appendChild(nextLink);
+  }
 }
+
 
  
 
