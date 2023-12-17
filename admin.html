@@ -40,8 +40,9 @@
           <a id="user-name" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Loading...</a>
           <ul class="dropdown-menu">
             <li><a href="#" data-toggle="modal" data-target="#profileModal">Profile</a></li>
-            <li><a href="#">Upload Signature</a></li>
-            <li><a href="#">Upload Stamp</a></li>
+            <li><a href="#" id="uploadPhotoBtn" data-toggle="modal" data-target="#uploadPhotoModal">Upload Photo</a></li>
+            <li><a href="#" id="uploadSignatureBtn" data-toggle="modal" data-target="#uploadSignatureModal">Upload Signature</a></li>
+            <li><a href="#" id="uploadStampBtn" data-toggle="modal" data-target="#uploadStampModal">Upload Stamp</a></li>            
             <li role="separator" class="divider"></li>
             <li><a href="#">Logout</a></li>
           </ul>
@@ -236,6 +237,86 @@
             </div>
           </div>
         </div>
+
+        <!-- Upload Photo Modal -->
+        <div class="modal fade" id="uploadPhotoModal" tabindex="-1" role="dialog" aria-labelledby="uploadPhotoModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="uploadPhotoModalLabel">Upload Photo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="photoFile">Select Photo:</label>
+                    <input type="file" class="form-control-file" id="photoFile">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="uploadPhoto()">Upload</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upload Signature Modal -->
+        <div class="modal fade" id="uploadSignatureModal" tabindex="-1" role="dialog" aria-labelledby="uploadSignatureModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="uploadSignatureModalLabel">Upload Signature</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="signatureFile">Select Signature:</label>
+                    <input type="file" class="form-control-file" id="signatureFile">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="uploadSignature()">Upload</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <!-- Upload Stamp Modal -->
+          <div class="modal fade" id="uploadStampModal" tabindex="-1" role="dialog" aria-labelledby="uploadStampModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="uploadStampModalLabel">Upload Stamp</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="stampFile">Select Stamp:</label>
+                      <input type="file" class="form-control-file" id="stampFile">
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" onclick="uploadStamp()">Upload</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
 
        <!-- ******************************Assign Users Modal********************************** -->
           <div class="modal fade" id="assignUsersModal" tabindex="-1" role="dialog" aria-labelledby="assignUsersModalLabel" aria-hidden="true">
