@@ -155,7 +155,7 @@ populateDropdowns();
 
  
 ///////// FUNCTION TO POPULATE THE USERS TABLE WITH FETCHED USER DATA //////////
-async function populateUsersTable() {
+ async function populateUsersTable(page = 1, itemsPerPage = 5) {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem('edms_token');
 
@@ -165,8 +165,8 @@ async function populateUsersTable() {
     return;
   }
 
-  // Fetch users
-  const records = await fetch('http://127.0.0.1:8000/api/users', {
+  // Fetch users with pagination parameters
+  const records = await fetch(`http://127.0.0.1:8000/api/users?page=${page}&itemsPerPage=${itemsPerPage}`, {
     headers: {
       'Authorization': `Bearer ${bearerToken}`,
       'Content-Type': 'application/json'
@@ -203,8 +203,26 @@ async function populateUsersTable() {
 
     tableBody.append(row);
   });
+
+  // Generate pagination links
+  const totalPages = Math.ceil(data.data.total / itemsPerPage);
+  const paginationElement = $('#usersPagination');
+  paginationElement.empty();
+
+  if (totalPages > 1) {
+    const prevLink = `<a href="#" onclick="populateUsersTable(${page - 1}, ${itemsPerPage})" class="page-link">«</a>`;
+    paginationElement.append(prevLink);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageLink = `<a href="#" onclick="populateUsersTable(${i}, ${itemsPerPage})" class="page-link ${i === page ? 'active' : ''}">${i}</a>`;
+      paginationElement.append(pageLink);
+    }
+
+    const nextLink = `<a href="#" onclick="populateUsersTable(${page + 1}, ${itemsPerPage})" class="page-link">»</a>`;
+    paginationElement.append(nextLink);
+  }
 }
- 
+
 
 // ******************************* GROUPS FUNCTIONS **************************** //
 // FUNCTION TO CALL AND DISPLAY GROUP DATA WITH PAGINATION
