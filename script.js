@@ -207,77 +207,122 @@ async function populateUsersTable() {
  
 
 // ******************************* GROUPS FUNCTIONS **************************** //
-
-// FUCTION TO CALL AND DISPLAY GROUP DATA
-async function getData() {
+// FUNCTION TO CALL AND DISPLAY GROUP DATA WITH PAGINATION
+async function getData(page = 1, itemsPerPage = 5) {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem('edms_token');
 
   // Check if the token is present in localStorage
   if (!bearerToken) {
-      console.error('Unauthorized');
-      return;
+    console.error('Unauthorized');
+    return;
   }
 
-  // Fetch groups
+  // Fetch groups data from the API
   const records = await fetch('http://127.0.0.1:8000/api/groups', {
-      headers: {
-          'Authorization': `Bearer ${bearerToken}`,
-          'Content-Type': 'application/json'
-      }
+    headers: {
+      'Authorization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json'
+    }
   });
 
+  // Parse the JSON response
   const data = await records.json();
 
+  // Get the table body element
   const tableBody = document.getElementById('tbody');
-
   tableBody.innerHTML = '';
 
-  data.data.data.forEach(group => {
-      const row = document.createElement('tr');
+  // Calculate start and end indices based on pagination
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage - 1, data.data.data.length - 1);
 
-      // Check the status and set the corresponding label and color
+  // Get the data for the current page
+  const currentPageData = data.data.data.slice(startIndex, endIndex + 1);
+
+  // Populate the table with data for the current page
+  currentPageData.forEach(group => {
+    const row = document.createElement('tr');
     const statusLabel = group.status === 'active' ? 'Active' : 'InActive';
     const statusColor = group.status === 'active' ? 'green' : 'red';
-    
-      // Group information
-      row.innerHTML += `<td>${group.id}</td>`;
-      row.innerHTML += `<td>${group.group_name}</td>`;
-      row.innerHTML += `<td>${group.group_admin_id}</td>`;
 
-      // Users
-      const users = group.users.length;
-      row.innerHTML += `<td>${users}</td>`;
+    // Populate table cells with group information
+    row.innerHTML += `<td>${group.id}</td>`;
+    row.innerHTML += `<td>${group.group_name}</td>`;
+    row.innerHTML += `<td>${group.group_admin_id}</td>`;
+    const users = group.users.length;
+    row.innerHTML += `<td>${users}</td>`;
+    row.innerHTML += `<td style="color: ${statusColor};">${statusLabel}</td>`;
 
-      // Status
-      row.innerHTML += `<td style="color: ${statusColor};">${statusLabel}</td>`;
+    // Add action buttons based on group ID
+    if (group.id === 1 || group.id === 2) {
+      row.innerHTML += `<td style="font-size:21px; ">
+            <center>
+                <a href="#" data-toggle="modal" data-target="#editForm" onclick="editGroup(${group.id})" data-groupid="${group.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
+                <i class="fa fa-trash" style="color: lightgrey; cursor: not-allowed;" title="Cannot delete this group" aria-disabled="true"></i>
+            </center>
+        </td>`;
+    } else {
+      row.innerHTML += `<td style="font-size:21px; ">
+            <center>
+                <a href="#" data-toggle="modal" data-target="#editForm" onclick="editGroup(${group.id})" data-groupid="${group.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
+                <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"><i class="fa fa-trash"></i></a>
+            </center>
+        </td>`;
+    }
 
-
-      // Check if the group is not a seed group (disable delete for groups with id 1 and 2)
-      if (group.id === 1 || group.id === 2) {
-          row.innerHTML += `<td style="font-size:21px; ">
-                <center>
-                    <a href="#" data-toggle="modal" data-target="#editForm" onclick="editGroup(${group.id})" data-groupid="${group.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
-                    <i class="fa fa-trash" style="color: lightgrey; cursor: not-allowed;" title="Cannot delete this group" aria-disabled="true"></i>
-                </center>
-            </td>`;
-      } else {
-          row.innerHTML += `<td style="font-size:21px; ">
-                <center>
-                    <a href="#" data-toggle="modal" data-target="#editForm" onclick="editGroup(${group.id})" data-groupid="${group.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
-                    <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"><i class="fa fa-trash"></i></a>
-                </center>
-            </td>`;
-      }
-
-      tableBody.appendChild(row);
+    // Append the row to the table body
+    tableBody.appendChild(row);
   });
 
- 
   // Call updateRowNumbers after appending rows to the table body
   updateRowNumbers();
 
+  // Generate pagination links
+  const totalPages = Math.ceil(data.data.data.length / itemsPerPage);
+  const paginationElement = document.getElementById('pagination');
+  paginationElement.innerHTML = '';
+
+  // Add previous page link
+  if (totalPages > 1) {
+    const prevLink = document.createElement('a');
+    prevLink.href = '#';
+    prevLink.innerHTML = '«'; // Previous page symbol
+    prevLink.classList.add('page-link');
+    prevLink.addEventListener('click', () => {
+      if (page > 1) {
+        getData(page - 1, itemsPerPage);
+      }
+    });
+    paginationElement.appendChild(prevLink);
+
+    // Add page links
+    for (let i = 1; i <= totalPages; i++) {
+      const pageLink = document.createElement('a');
+      pageLink.href = '#';
+      pageLink.textContent = i;
+      pageLink.classList.add('page-link');
+      if (i === page) {
+        pageLink.classList.add('active');
+      }
+      pageLink.addEventListener('click', () => getData(i, itemsPerPage));
+      paginationElement.appendChild(pageLink);
+    }
+
+    // Add next page link
+    const nextLink = document.createElement('a');
+    nextLink.href = '#';
+    nextLink.innerHTML = '»'; // Next page symbol
+    nextLink.classList.add('page-link');
+    nextLink.addEventListener('click', () => {
+      if (page < totalPages) {
+        getData(page + 1, itemsPerPage);
+      }
+    });
+    paginationElement.appendChild(nextLink);
+  }
 }
+
  
 
 // FUNCTION TO HANDLE FORM SUBMISSION AND CREATE A NEW GROUP
