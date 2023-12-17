@@ -683,7 +683,6 @@ async function getGroupMembershipsData(page = 1, itemsPerPage = 5) {
 }
 
 
- 
 
 
 // FUNCTION TO HANDLE THE CLICK EVENT OF THE DELETE BUTTON IN EACH ROW
@@ -978,8 +977,6 @@ function assignUsersToGroup() {
   }
   
        
-
-
   
  // ASYNC FUNCTION TO FETCH THE FOLDER NAME BASED ON FOLDER ID
 async function getFolderName(folderId) {
