@@ -18,7 +18,10 @@
   justify-content: flex-start;
   position: relative;
   cursor: pointer;
-  width: 150px;
+  width: 130px;
+}
+.msb .navbar-nav li {
+  margin-left: 9px; /* Adjust the margin to control the space on both sides */
 }
  
 .msb .navbar-nav li input[type="radio"] {
@@ -100,6 +103,17 @@ body {
   padding-left: 20px; 
     }
   }
+
+  .createButton{
+   background: #355B11;
+   color: white;
+   border: none; 
+   border-radius: 5px; 
+   padding: 5px 12px; 
+   font-weight: bold; 
+   letter-spacing: 1px; 
+   margin-bottom: 15px;  
+  }
  
   .pagination {
     display: flex;
@@ -118,7 +132,7 @@ body {
   }
 
 .pagination a.active {
-    background-color: #4CAF50;
+    background-color: #355B11;
     color: white;
 }
 
