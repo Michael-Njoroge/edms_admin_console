@@ -3,8 +3,8 @@
   background-color: #355B11 !important;
   color: white !important;
   border-radius: 5px;
-  padding: 10px; /* Add padding to both sides */
-   box-sizing: border-box; /* Include padding in the width calculation */
+  padding: 10px;  
+   box-sizing: border-box; 
    display: flex;
   align-items: center;
  
@@ -111,11 +111,11 @@ body {
 
 .pagination a {
     color: black;
-    padding: 8px 8px; /* Adjust padding as needed */
+    padding: 8px 8px; 
     text-decoration: none;
     transition: background-color .3s;
-    margin: 0 2px; /* Adjust margin as needed */
-}
+    margin: 0 2px;  
+  }
 
 .pagination a.active {
     background-color: #4CAF50;
@@ -125,3 +125,5 @@ body {
 .pagination a:hover:not(.active) {
     background-color: #ddd;
 }
+
+
