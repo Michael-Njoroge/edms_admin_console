@@ -21,7 +21,7 @@
   width: 130px;
 }
 .msb .navbar-nav li {
-  margin-left: 9px; /* Adjust the margin to control the space on both sides */
+  margin-left: 9px;  
 }
  
 .msb .navbar-nav li input[type="radio"] {

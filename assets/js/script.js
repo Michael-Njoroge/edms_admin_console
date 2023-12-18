@@ -247,6 +247,8 @@ async function getData(page = 1, itemsPerPage = 5) {
   // Parse the JSON response
   const data = await records.json();
 
+  console.log(data);
+
   // Get the table body element
   const tableBody = document.getElementById('tbody');
   tableBody.innerHTML = '';
@@ -267,7 +269,7 @@ async function getData(page = 1, itemsPerPage = 5) {
     // Populate table cells with group information
     row.innerHTML += `<td>${group.id}</td>`;
     row.innerHTML += `<td>${group.group_name}</td>`;
-    row.innerHTML += `<td>${group.group_admin_id}</td>`;
+    row.innerHTML += `<td>${group.admin.name}</td>`;
     const users = group.users.length;
     row.innerHTML += `<td>${users}</td>`;
     row.innerHTML += `<td style="color: ${statusColor};">${statusLabel}</td>`;
@@ -901,9 +903,7 @@ function assignUsersToGroup() {
         },
       });
       const responseData = await response.json();
-
-      console.log(responseData);
-
+ 
       // Call the function to populate the table with the fetched data
       populateTable(responseData.data.data);
     } catch (error) {
@@ -1014,7 +1014,6 @@ async function getFolderName(folderId) {
 
     if (response.ok) {
       const folderData = responseData.data.data;
-      console.log(folderData);
       return folderData.name || 'Unknown Folder';
     } else {
       console.error('Error fetching folder:', responseData.message);
