@@ -399,6 +399,8 @@ function createGroup() {
       // Update the dropdowns after deleting the group
       populateDropdowns();
 
+      getGroupMembershipsData()
+
       // Enable the submit button and revert the text
       submitButton.prop('disabled', false).html('Submit');
 
@@ -444,6 +446,7 @@ function fetchAndPopulateUsersDropdown() {
       data.data.data.forEach(user => {
         
         adminSelect.append(`<option value="${user.id}">${user.name}</option>`);
+        
       });
     })
     .catch(error => {
