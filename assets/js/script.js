@@ -100,7 +100,7 @@ function fetchUserInfoAndUpdateNavbar() {
     .then(response => response.json())
     .then(data => {
         // Update the user's name in the navigation bar
-        updateUserNameInNavbar(data.data.data.name);
+        updateUserNameInNavbar(data.data.data.username);
 
          // Update the profile modal
          updateProfileModal(data.data.data);
@@ -189,8 +189,8 @@ populateDropdowns();
 
     const row = `<tr>
                     <td>${index + 1}</td>
-                    <td>${user.username}</td>
                     <td>${user.name}</td>
+                    <td>${user.username}</td>
                     <td><img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 60px; height: 60px; border-radius: 50%;"  /></td>
                     <td>stamp</td>
                     <td>signature</td>
@@ -344,15 +344,15 @@ async function getData(page = 1, itemsPerPage = 5) {
 }
 
  
-
 // FUNCTION TO HANDLE FORM SUBMISSION AND CREATE A NEW GROUP
 function createGroup() {
   // Fetch form data
   const groupName = $('#group_name').val();
-  const adminId = $('#admin_id').val();
+  // Update to get the selected user ID from the dropdown
+  const adminId = $('#adminSelect').val();
 
-   // Validate form fields
-   if (!groupName || !adminId) {
+  // Validate form fields
+  if (!groupName || !adminId) {
     toastr.error('Please fill out all fields.');
     return;
   }
@@ -370,7 +370,6 @@ function createGroup() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem('edms_token');
 
- 
   // Check if the token is present in localStorage
   if (!bearerToken) {
     console.error('Unauthorized');
@@ -386,34 +385,83 @@ function createGroup() {
     },
     body: JSON.stringify(requestData),
   })
-  .then(response => response.json())
-  .then(data => {
-   
+    .then(response => response.json())
+    .then(data => {
+      // Close the modal after successful submission
+      $('#form').modal('hide');
 
-    //close the modal after successful submission
-    $('#form').modal('hide');
+      // Clear the add group form
+      $('#createForm')[0].reset();
 
-    // Clear the add group form
-    $('#createForm')[0].reset();
+      // Refresh the data by calling the getData() function
+      getData();
 
-    //refresh the data by calling the getData() function
-    getData();
+      // Update the dropdowns after deleting the group
+      populateDropdowns();
 
-    // Update the dropdowns after deleting the group
-    populateDropdowns();
+      // Enable the submit button and revert the text
+      submitButton.prop('disabled', false).html('Submit');
 
-    // Enable the submit button and revert the text
-    submitButton.prop('disabled', false).html('Submit');
+      toastr.success('Group created successfully');
+    })
+    .catch(error => {
+      console.error('Error:', error);
 
-    toastr.success('Group created successfully');
-  })
-  .catch(error => {
-    console.error('Error:', error);
-
-    // Enable the submit button and revert the text
-    submitButton.prop('disabled', false).html('Submit');
-  });
+      // Enable the submit button and revert the text
+      submitButton.prop('disabled', false).html('Submit');
+    });
 }
+
+// Fetch existing users and populate the dropdown when the document is ready
+function fetchAndPopulateUsersDropdown() {
+  const adminSelect = $('#adminSelect');
+
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem('edms_token');
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error('Unauthorized');
+    return;
+  }
+
+  // Fetch existing users from your API
+  fetch('http://127.0.0.1:8000/api/users', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json',
+    },
+   })
+    .then(response => response.json())
+    .then(data => {
+      const assignUserDropdown = $('#adminSelect');
+      assignUserDropdown.empty();
+        // Add default "Select" option
+      assignUserDropdown.append('<option value="" disabled selected>Select Admin</option>');
+      
+      // Populate the dropdown with existing users
+      data.data.data.forEach(user => {
+        
+        adminSelect.append(`<option value="${user.id}">${user.name}</option>`);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching users:', error);
+    });
+}
+
+// Call fetchAndPopulateUsersDropdown when the document is ready
+$(document).ready(function () {
+  fetchAndPopulateUsersDropdown();
+});
+
+// Call fetchUserInfoAndUpdateNavbar before the document is ready
+fetchUserInfoAndUpdateNavbar();
+
+// Call populateDropdowns when the document is ready
+populateDropdowns();
+
 
 //FUNCTION TO SHOW EDIT MODAL BASED ON GROUP ID
 

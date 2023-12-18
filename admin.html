@@ -127,10 +127,10 @@
                           <label for="group_name">Group Name</label>
                           <input type="text" class="form-control" id="group_name" name="group_name" placeholder="Enter Group Name">
                         </div>
-                        <div class="form-group">
-                          <label for="admin_id">Group Admin Id</label>
-                          <input type="text" class="form-control" id="admin_id" placeholder="Enter Group Id"  >
-                        </div>                       
+                        <label for="adminSelect">Group Admin:</label>
+                        <select id="adminSelect" name="adminSelect" class="form-control">
+                          <!-- Populate this dropdown with existing users -->
+                        </select>
                       </div>
                       <div class="modal-footer border-top-0 d-flex justify-content-center">
                         <button type="submit" class="btn" id="submitBtn" style="background: #355B11; color: white;">Submit</button>
