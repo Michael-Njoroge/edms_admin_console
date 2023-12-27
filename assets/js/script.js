@@ -18,6 +18,78 @@ function updateRowNumbers() {
         row.cells[0].textContent = index + 1;
     });
 }
+
+
+// Login function
+document.addEventListener("DOMContentLoaded", function () {
+  const loginForm = document.getElementById("login-form");
+  const usernameInput = document.getElementById("username");
+  const passwordInput = document.getElementById("password");
+  const submitButton = document.getElementById("submit");
+  const errorMessage = document.getElementById("error-message");
+
+  if (loginForm) {
+      loginForm.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const username = usernameInput.value;
+          const password = passwordInput.value;
+          const loginData = {
+              username: username,
+              password: password
+          };
+
+          submitButton.disabled = true;
+          submitButton.textContent = "Please Wait  ...";
+
+          try {
+         const response= await fetch('http://127.0.0.1:8000/api/auth/login', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(loginData)
+          });
+            const  data = await response.json();
+       console.log(data);
+                   if (response.status === 200) {
+
+                      localStorage.setItem("edms_token",data.type+" "+data.access_token)
+                          window.location.href = "dashboard.html"; // Redirect on success
+
+                      } else if (response.status === 403) {
+                          
+                          errorMessage.style.display = "block";
+                          errorMessage.textContent = "Invalid username or password";
+
+                          usernameInput.value = "";
+                          passwordInput.value = "";
+
+                          setTimeout(() => {
+                              errorMessage.style.display = "none";
+                          }, 3000);
+
+                       } else {
+                          errorMessage.style.display = "block";
+                      errorMessage.textContent = "Error: Something went wrong. Please try again.";
+
+                      
+                       }
+                  }
+                  catch (error) 
+                  { 
+                  errorMessage.style.display = "block";
+                  errorMessage.textContent = "Error: Network issue. Please try again.";
+                  console.error(error);
+       }
+       finally {
+                  submitButton.disabled = false;
+                  submitButton.textContent = "Sign In";
+              }
+      
+  });
+}
+     });
  
 //******************************** SIDEBAR FUNCTIONS *********************************//
 
@@ -61,11 +133,6 @@ $(document).ready(function() {
 
      // Trigger the change event to display the corresponding table
      $('input[name="sidebar_tab1"][value="' + lastSelectedTab + '"]').change();
-
-     // Trigger display of "Permissions" table on page load
-    if (lastSelectedTab === '5') {
-        $('#groupPermissionsTableContainer').show();
-    }
  
   });
 
