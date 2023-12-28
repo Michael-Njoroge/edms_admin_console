@@ -19,77 +19,6 @@ function updateRowNumbers() {
     });
 }
 
-
-// Login function
-document.addEventListener("DOMContentLoaded", function () {
-  const loginForm = document.getElementById("login-form");
-  const usernameInput = document.getElementById("username");
-  const passwordInput = document.getElementById("password");
-  const submitButton = document.getElementById("submit");
-  const errorMessage = document.getElementById("error-message");
-
-  if (loginForm) {
-      loginForm.addEventListener("submit", async function (e) {
-          e.preventDefault();
-
-          const username = usernameInput.value;
-          const password = passwordInput.value;
-          const loginData = {
-              username: username,
-              password: password
-          };
-
-          submitButton.disabled = true;
-          submitButton.textContent = "Please Wait  ...";
-
-          try {
-         const response= await fetch('http://127.0.0.1:8000/api/auth/login', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(loginData)
-          });
-            const  data = await response.json();
-       console.log(data);
-                   if (response.status === 200) {
-
-                      localStorage.setItem("edms_token",data.type+" "+data.access_token)
-                          window.location.href = "dashboard.html"; // Redirect on success
-
-                      } else if (response.status === 403) {
-                          
-                          errorMessage.style.display = "block";
-                          errorMessage.textContent = "Invalid username or password";
-
-                          usernameInput.value = "";
-                          passwordInput.value = "";
-
-                          setTimeout(() => {
-                              errorMessage.style.display = "none";
-                          }, 3000);
-
-                       } else {
-                          errorMessage.style.display = "block";
-                      errorMessage.textContent = "Error: Something went wrong. Please try again.";
-
-                      
-                       }
-                  }
-                  catch (error) 
-                  { 
-                  errorMessage.style.display = "block";
-                  errorMessage.textContent = "Error: Network issue. Please try again.";
-                  console.error(error);
-       }
-       finally {
-                  submitButton.disabled = false;
-                  submitButton.textContent = "Sign In";
-              }
-      
-  });
-}
-     });
  
 //******************************** SIDEBAR FUNCTIONS *********************************//
 
@@ -1500,3 +1429,80 @@ function deletePermission() {
       $('#confirmDeletePermissionModal').modal('hide');
     });
 }
+
+///////////// LOGIN FUNCTION /////////////
+document.addEventListener("DOMContentLoaded", function () {
+  // Get references to HTML elements
+  const loginForm = document.querySelector(".login-form"); // Use querySelector for class selection
+  const usernameInput = document.getElementById("username");
+  const passwordInput = document.getElementById("password");
+  const submitButton = document.getElementById("submit");
+  const errorMessage = document.querySelector(".error-message"); // Use querySelector for class selection
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      // Get username and password from input fields
+      const username = usernameInput.value;
+      const password = passwordInput.value;
+      const loginData = {
+        username: username,
+        password: password
+      };
+
+      // Disable submit button during the login process
+      submitButton.disabled = true;
+      submitButton.textContent = "Please Wait  ...";
+
+      try {
+        // Send a POST request to the login API
+        const response = await fetch('http://127.0.0.1:8000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(loginData)
+        });
+
+        // Parse the JSON response
+        const data = await response.json();
+
+        // Check the response status
+        if (response.status === 200) {
+          // Store the token in localStorage
+          localStorage.setItem("edms_token", data.type + " " + data.access_token);
+
+          // Redirect to the dashboard on successful login
+          window.location.href = "dashboard.html";
+        } else if (response.status === 403) {
+          // Display an error message for invalid credentials
+          errorMessage.style.display = "block";
+          errorMessage.textContent = "Invalid username or password";
+
+          // Clear input fields
+          usernameInput.value = "";
+          passwordInput.value = "";
+
+          // Hide the error message after 3 seconds
+          setTimeout(() => {
+            errorMessage.style.display = "none";
+          }, 3000);
+        } else {
+          // Display a generic error message for other cases
+          errorMessage.style.display = "block";
+          errorMessage.textContent = "Error: Something went wrong. Please try again.";
+        }
+      } catch (error) {
+        // Display a network error message
+        errorMessage.style.display = "block";
+        errorMessage.textContent = "Error: Network issue. Please try again.";
+        console.error(error);
+      } finally {
+        // Re-enable the submit button and reset its text
+        submitButton.disabled = false;
+        submitButton.textContent = "Sign In";
+      }
+    });
+  }
+});
