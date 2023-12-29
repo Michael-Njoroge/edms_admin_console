@@ -505,73 +505,72 @@ function editGroup(groupId) {
           console.error('Error:', error);
       });
   }   
-
 // FUNCTION TO SUBMIT THE EDIT FORM
 function submitEditForm() {
-    // Fetch form data
-    const groupId = $('#edit_group_admin_id').val();
-    const groupName = $('#edit_group_name').val();
-    const newAdminId = $('#edit_adminSelect').val();  
-    const group_id = $('#edit_group_id').val();
+  // Fetch form data
+  const groupId = $('#edit_group_admin_id').val();
+  const groupName = $('#edit_group_name').val();
+  const newAdminId = $('#edit_adminSelect').val();
+  const group_id = $('#edit_group_id').val();
 
-    console.log('Original Group Name:', originalGroupName);
-    console.log('Current Group Name:', groupName);
-   
- 
-     // Check if values have changed
-     if (groupName === originalGroupName) {
-      toastr.warning('No changes detected.');
-      return;
+  console.log('Original Group Name:', originalGroupName);
+  console.log('Original Group Admin ID:', originalGroupAdminId);
+  console.log('Current Group Name:', groupName);
+  console.log('Current Group Admin ID:', newAdminId);
+
+  // Check if values have changed
+  if (groupName === originalGroupName && newAdminId === originalGroupAdminId) {
+    toastr.warning('No changes detected.');
+    return;
   }
 
-    // Disable the submit button and show loading text
-    const submitButton = $('#editSubmitBtn');
-    submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Updating...');
+  // Disable the submit button and show loading text
+  const submitButton = $('#editSubmitBtn');
+  submitButton.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Updating...');
 
-    // Construct the request payload
-    const requestData = {
-        group_name: groupName,
-        group_admin_id: newAdminId,
-     };
+  // Construct the request payload
+  const requestData = {
+    group_name: groupName,
+    group_admin_id: newAdminId,
+  };
 
-    // Retrieve the Bearer token from localStorage
-    const bearerToken = localStorage.getItem('edms_token');
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem('edms_token');
 
-    // Check if the token is present in localStorage
-    if (!bearerToken) {
-      toastr.error('Unauthorized.');
-        return;
-    }
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    toastr.error('Unauthorized.');
+    return;
+  }
 
-    // Make a POST request to update the group
-    fetch(`http://127.0.0.1:8000/api/groups/update/${group_id}`, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-    })
+  // Make a POST request to update the group
+  fetch(`http://127.0.0.1:8000/api/groups/update/${group_id}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestData),
+  })
     .then(response => response.json())
     .then(data => {
- 
-        //close the modal after successful submission
-        $('#editForm').modal('hide');
- 
-        //refresh the data by calling the getData() function
-        getData();
-        getGroupMembershipsData()
+      // Close the modal after successful submission
+      $('#editForm').modal('hide');
 
-        // Update the dropdowns after editing the group
-        populateDropdowns();
+      // Refresh the data by calling the getData() function
+      getData();
+      getGroupMembershipsData();
 
-        // Enable the submit button and revert the text
-        submitButton.prop('disabled', false).html('Submit');
+      // Update the dropdowns after editing the group
+      populateDropdowns();
+
+      // Enable the submit button and revert the text
+      submitButton.prop('disabled', false).html('Submit');
 
       toastr.success('Group updated successfully');
     })
     .catch(error => {
-        console.error('Error:', error);
+      console.error('Error:', error);
     });
 }
 
