@@ -491,7 +491,13 @@ function editGroup(groupId) {
           $('#edit_group_admin_id').val(data.data.data.group_admin_id);        
           $('#edit_group_name').val(data.data.data.group_name);
   
-     
+          // Fetch and populate the edit modal's admin dropdown
+        fetchAndPopulateEditUsersDropdown();
+
+         // Select the current admin in the dropdown
+         const currentAdminId = originalGroupAdminId;
+         $('#edit_adminSelect').val(currentAdminId);
+
           // Show the modal for editing
           $('#editForm').modal('show');
       })
@@ -505,6 +511,7 @@ function submitEditForm() {
     // Fetch form data
     const groupId = $('#edit_group_admin_id').val();
     const groupName = $('#edit_group_name').val();
+    const newAdminId = $('#edit_adminSelect').val();  
     const group_id = $('#edit_group_id').val();
 
     console.log('Original Group Name:', originalGroupName);
@@ -524,7 +531,7 @@ function submitEditForm() {
     // Construct the request payload
     const requestData = {
         group_name: groupName,
-        group_admin_id: groupId,
+        group_admin_id: newAdminId,
      };
 
     // Retrieve the Bearer token from localStorage
@@ -565,6 +572,49 @@ function submitEditForm() {
     })
     .catch(error => {
         console.error('Error:', error);
+    });
+}
+
+// FUNCTION TO FETCH AND POPULATE USERS FOR THE EDIT MODAL DROPDOWN
+function fetchAndPopulateEditUsersDropdown() {
+  const editAdminSelect = $('#edit_adminSelect');
+
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem('edms_token');
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    toastr.error('Unauthorized.');
+    return;
+  }
+
+  // Fetch existing users from your API
+  fetch('http://127.0.0.1:8000/api/users', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Clear the dropdown before populating
+      editAdminSelect.empty();
+
+      // Add default "Select" option
+      editAdminSelect.append('<option value="" disabled>Select New Admin</option>');
+
+      // Populate the dropdown with existing users
+      data.data.data.forEach(user => {
+        editAdminSelect.append(`<option value="${user.id}">${user.name}</option>`);
+      });
+
+      // Select the current admin in the dropdown
+      const currentAdminId = originalGroupAdminId;
+      editAdminSelect.val(currentAdminId);
+    })
+    .catch(error => {
+      console.error('Error fetching users:', error);
     });
 }
 
