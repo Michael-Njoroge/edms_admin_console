@@ -151,7 +151,7 @@ populateDropdowns();
 
  
 ///////// FUNCTION TO POPULATE THE USERS TABLE WITH FETCHED USER DATA //////////
- async function populateUsersTable(page = 1, itemsPerPage = 5) {
+async function populateUsersTable(page = 1, itemsPerPage = 5) {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem('edms_token');
 
@@ -171,8 +171,12 @@ populateDropdowns();
 
   const data = await records.json();
 
-  const tableBody = $('#usersTbody');
-  tableBody.empty();
+  const usersTable = $('#usersTable').DataTable({
+    lengthMenu: [5, 10, 25, 50],
+  }); // Initialize DataTable
+
+  // Clear existing rows
+  usersTable.clear().draw();
 
   // Loop through each user and create a table row
   data.data.data.forEach((user, index) => {
@@ -183,21 +187,18 @@ populateDropdowns();
     const statusLabel = user.status === 'active' ? 'Active' : 'InActive';
     const statusColor = user.status === 'active' ? 'green' : 'red';
 
-    const row = `<tr>
-                    <td>${index + 1}</td>
-                    <td>${user.name}</td>
-                    <td>${user.username}</td>
-                    <td><img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 60px; height: 60px; border-radius: 50%;"  /></td>
-                    <td>stamp</td>
-                    <td>signature</td>
-                    <td style="color: ${statusColor};">${statusLabel}</td>
-                    <td>
-                      <a href="#" onclick="performUserAction('${user.username}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>
-                      <a href="#" onclick="performUserAction('${user.username}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>
-                    </td>
-                  </tr>`;
-
-    tableBody.append(row);
+    // Add the row to DataTable
+    usersTable.row.add([
+      index + 1,
+      user.name,
+      user.username,
+      `<img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 60px; height: 60px; border-radius: 50%;" />`,
+      'stamp',
+      'signature',
+      `<span style="color: ${statusColor};">${statusLabel}</span>`,
+      `<a href="#" onclick="performUserAction('${user.username}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>
+         <a href="#" onclick="performUserAction('${user.username}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>`
+    ]).draw(false);
   });
 
   // Generate pagination links
