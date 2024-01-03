@@ -449,8 +449,9 @@
                    <li class="breadcrumb-item active" aria-current="page">Groups</li>
                  </ol>
                </nav>
-              <button type="button" data-toggle="modal" data-target="#form" class="createButton">New Group</button>
+              <button type="button" data-toggle="modal" data-target="#form" class="btn btn-secondary">New Group</button>
                </div>
+               <br>
                   <table id="tab" class="table table-hover table-bordered" cellspacing="3" style="  box-shadow: 0 4px 8px rgba(5, 2, 2, 0.1); width: 100%; border-radius: 10px;" >
                <thead>
                 <tr>
@@ -478,8 +479,9 @@
                    <li class="breadcrumb-item active" aria-current="page">Memberships</li>
                  </ol>
                </nav>
-                <button type="button" data-toggle="modal" data-target="#assignUsersModal" class="createButton">Assign User</button>
+                <button type="button" data-toggle="modal" data-target="#assignUsersModal" class="btn btn-secondary">Assign User</button>
                </div>
+               <br>
               <table id="groupMembershipsTab" class="table table-hover table-bordered" cellspacing="3" style=" justify-content: center;  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%;">
                 <thead>
                   <tr>
@@ -504,8 +506,9 @@
                      <li class="breadcrumb-item active" aria-current="page">Permissions</li>
                    </ol>
                  </nav>
-                 <button type="button" data-toggle="modal" data-target="#createPermissionModal" class="createButton">New</button>
+                 <button type="button" data-toggle="modal" data-target="#createPermissionModal" class="btn btn-secondary">New Permission</button>
                 </div>
+                <br>
                    <table id="permissionsTable" class="table table-hover table-bordered" cellspacing="3" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;">
                   <thead>
                     <tr>
@@ -577,41 +580,34 @@
               </div>
  
 
-             <!-- *******************Users Table***************** -->
-              <div id="usersTableContainer" class="table-container" style="display: none;">
-                <div class="card-header d-flex justify-content-between mb-3">
-                   <!-- Breadcrumb -->
-                  <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="#">Home</a></li>
-                      <li class="breadcrumb-item active" aria-current="page">Users</li>
-                    </ol>
-                  </nav>
-                </div>
-                <table id="usersTable" class="table table-hover table-bordered " cellspacing="3" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Name</th>
-                      <th>Username</th>
-                      <th>Photo</th>
-                      <th>Stamp</th>
-                      <th>Signature</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody id="usersTbody"></tbody>
-                </table>
-                <div id="usersPagination" class="pagination justify-content-center"></div>
-              </div>
-
-           </div>
-         </div>
-       </div>
-     </div>
-    </div>
+           <!-- *******************Users Table***************** -->
+<div id="usersTableContainer" class="table-container" style="display: none;">
+  <div class="card-header d-flex justify-content-between mb-3">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Users</li>
+      </ol>
+    </nav>
+ 
   </div>
+  <table id="usersTable" class="table table-hover table-bordered " cellspacing="3" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Photo</th>
+        <th>Stamp</th>
+        <th>Signature</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="usersTbody"></tbody>
+  </table>
+  <div id="usersPagination" class="pagination justify-content-center"></div>
 </div>
 
 <!-- main js -->
