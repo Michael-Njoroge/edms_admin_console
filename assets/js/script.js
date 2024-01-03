@@ -151,7 +151,7 @@ populateDropdowns();
 
  
 ///////// FUNCTION TO POPULATE THE USERS TABLE WITH FETCHED USER DATA //////////
-async function populateUsersTable(page = 1, itemsPerPage = 5) {
+async function populateUsersTable() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem('edms_token');
 
@@ -162,7 +162,7 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
   }
 
   // Fetch users with pagination parameters
-  const records = await fetch(`http://127.0.0.1:8000/api/users?page=${page}&itemsPerPage=${itemsPerPage}`, {
+  const records = await fetch('http://127.0.0.1:8000/api/users', {
     headers: {
       'Authorization': `Bearer ${bearerToken}`,
       'Content-Type': 'application/json'
@@ -171,9 +171,10 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
 
   const data = await records.json();
 
+  // Initialize DataTable
   const usersTable = $('#usersTable').DataTable({
     lengthMenu: [5, 10, 25, 50],
-  }); // Initialize DataTable
+  }); 
 
   // Clear existing rows
   usersTable.clear().draw();
