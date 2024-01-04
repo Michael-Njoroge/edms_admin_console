@@ -1,33 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Page</title>
-    <link rel="stylesheet" href="./assets/css/main.css">
-</head>
+    <link rel="stylesheet" href="./assets/css/main.css" />
+  </head>
 
-<body>
-
+  <body>
     <div class="container">
-        <h1>Sign In</h1>
-        <div class="error-message"></div>
-        <form class="login-form">
-            <input class="input-field" type="text" placeholder='Username' id='username' required autocomplete="off" />
-            <span class="error username_err"></span>
-            <input class="input-field" type="password" placeholder='Password' id='password' required autocomplete="off" />
-            <span class="error password_err"></span>
-            <button class="btn-submit" type="submit" name="submit" id="submit">Sign In</button>
-        </form>
-        <hr class="divider">
-        <a href="#" class="forgot-password">Forgot Password?</a>
+      <h1>Sign In</h1>
+      <div class="error-message"></div>
+      <form class="login-form">
+        <input
+          class="input-field"
+          type="text"
+          placeholder="Username"
+          id="username"
+          required
+          autocomplete="off"
+        />
+        <span class="error username_err"></span>
+        <input
+          class="input-field"
+          type="password"
+          placeholder="Password"
+          id="password"
+          required
+          autocomplete="off"
+        />
+        <span class="error password_err"></span>
+        <button class="btn-submit" type="submit" name="submit" id="submit">
+          Sign In
+        </button>
+      </form>
+      <hr class="divider" />
+      <a href="#" class="forgot-password">Forgot Password?</a>
     </div>
 
     <script src="./assets/js/jquery.min.js"></script>
     <script src="./assets/js/script.js"></script>
-
-</body>
-
+  </body>
 </html>

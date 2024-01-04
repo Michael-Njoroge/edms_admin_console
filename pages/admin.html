@@ -1,631 +1,1150 @@
- <!DOCTYPE html>
- <html lang="en">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Console Page</title>
- 
-  <!-- Main css -->
-<link rel="stylesheet" href="../assets/css/main.css">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Console Page</title>
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="../assets/css/main.css" />
 
     <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="../assets/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="../assets/font-awesome/css/font-awesome.min.css"
+    />
 
-<!-- Datatable CSS -->
-<link rel="stylesheet" href="../assets/DataTables/datatables.min.css">
+    <!-- DataTable CSS -->
+    <link rel="stylesheet" href="../assets/DataTables/datatables.min.css" />
 
-<!-- jQuery -->
-<script src="../assets/js/jquery.min.js"></script>
+    <!-- jQuery -->
+    <script src="../assets/js/jquery.min.js"></script>
 
-<!-- Bootstrap JavaScript -->
-<script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
 
-     <!-- Toast -->
-<link rel="stylesheet" href="../assets/toastr/toastr.min.css">
- 
+    <!-- Toast -->
+    <link rel="stylesheet" href="../assets/toastr/toastr.min.css" />
+  </head>
 
-</head>
- 
-<body onload="getData(); getGroupMembershipsData(); fetchData(); populateUsersTable();">
- 
-  <!-- Profile Dropdown Menu -->
-<nav class="mnb navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid">
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
-         <li class="dropdown">
-         
-          <a id="user-name" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Loading...</a>
-          <ul class="dropdown-menu">
-
-            <li><a href="#" data-toggle="modal" data-target="#profileModal">Profile</a></li>
-            <li><a href="#" id="uploadPhotoBtn" data-toggle="modal" data-target="#uploadPhotoModal">Upload Photo</a></li>
-            <li><a href="#" id="uploadSignatureBtn" data-toggle="modal" data-target="#uploadSignatureModal">Upload Signature</a></li>
-            <li><a href="#" id="uploadStampBtn" data-toggle="modal" data-target="#uploadStampModal">Upload Stamp</a></li>            
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Logout</a></li>
+  <body
+    onload="getData(); getGroupMembershipsData(); fetchData(); populateUsersTable();"
+  >
+    <!-- Profile Dropdown Menu -->
+    <nav class="mnb navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a
+                id="user-name"
+                href="#"
+                class="dropdown-toggle"
+                data-toggle="dropdown"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+                >Loading...</a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="#" data-toggle="modal" data-target="#profileModal"
+                    >Profile</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    id="uploadPhotoBtn"
+                    data-toggle="modal"
+                    data-target="#uploadPhotoModal"
+                    >Upload Photo</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    id="uploadSignatureBtn"
+                    data-toggle="modal"
+                    data-target="#uploadSignatureModal"
+                    >Upload Signature</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    id="uploadStampBtn"
+                    data-toggle="modal"
+                    data-target="#uploadStampModal"
+                    >Upload Stamp</a
+                  >
+                </li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Logout</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-bell-o"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-comment-o"></i></a>
+            </li>
           </ul>
-        </li>
-        <li><a href="#"><i class="fa fa-bell-o"></i></a></li>
-        <li><a href="#"><i class="fa fa-comment-o"></i></a></li>
-      </ul>
-   
-    </div>
-  </div>
-</nav>
+        </div>
+      </div>
+    </nav>
 
-<!--msb: main sidebar-->
-<div class="msb" id="msb">
-  <nav class="navbar" role="navigation">
-			<div class="navbar-header">
-				<div class="brand-wrapper">
-					<!-- Brand -->
-          <center>
-            <div class="brand-name-wrapper" ><a class="navbar-brand" href="#">DISI EDMS</a></div>
-          </center>
-				</div>
-			</div>
- 
-				<ul class="nav navbar-nav" >
+    <!--msb: main sidebar-->
+    <div class="msb" id="msb">
+      <nav class="navbar" role="navigation">
+        <div class="navbar-header">
+          <div class="brand-wrapper">
+            <!-- Brand -->
+            <center>
+              <div class="brand-name-wrapper">
+                <a class="navbar-brand" href="#">DISI EDMS</a>
+              </div>
+            </center>
+          </div>
+        </div>
 
+        <ul class="nav navbar-nav">
           <li>
-            <input type="radio" name="sidebar_tab1" id="sidebar_tab1" value="1" checked="1"/>
-            <label for="sidebar_tab1"><i class="fa fa-dashboard"></i> Dashboard</label>
+            <input
+              type="radio"
+              name="sidebar_tab1"
+              id="sidebar_tab1"
+              value="1"
+              checked="1"
+            />
+            <label for="sidebar_tab1"
+              ><i class="fa fa-dashboard"></i> Dashboard</label
+            >
           </li>
 
           <li>
-            <input type="radio" name="sidebar_tab1" id="sidebar_tab2" value="2"/>
-            <label for="sidebar_tab2"><i class="fa fa-folder"></i> Folders</label>
+            <input
+              type="radio"
+              name="sidebar_tab1"
+              id="sidebar_tab2"
+              value="2"
+            />
+            <label for="sidebar_tab2"
+              ><i class="fa fa-folder"></i> Folders</label
+            >
           </li>
 
           <li>
-            <input type="radio" name="sidebar_tab1" id="sidebar_tab6" value="6"/>
+            <input
+              type="radio"
+              name="sidebar_tab1"
+              id="sidebar_tab6"
+              value="6"
+            />
             <label for="sidebar_tab6"><i class="fa fa-user"></i> Users</label>
           </li>
 
           <li>
-            <input type="radio" name="sidebar_tab1" id="sidebar_tab3" value="3"/>
+            <input
+              type="radio"
+              name="sidebar_tab1"
+              id="sidebar_tab3"
+              value="3"
+            />
             <label for="sidebar_tab3"><i class="fa fa-cog"></i> Groups</label>
           </li>
 
           <li>
-            <input type="radio" name="sidebar_tab1" id="sidebar_tab4" value="4"/>
-            <label for="sidebar_tab4"><i class="fa fa-users"></i> Membership</label>
+            <input
+              type="radio"
+              name="sidebar_tab1"
+              id="sidebar_tab4"
+              value="4"
+            />
+            <label for="sidebar_tab4"
+              ><i class="fa fa-users"></i> Membership</label
+            >
           </li>
 
           <li>
-            <input type="radio" name="sidebar_tab1" id="sidebar_tab5" value="5"/>
-            <label for="sidebar_tab5"><i class="fa fa-lock"></i> Permissions</label>
+            <input
+              type="radio"
+              name="sidebar_tab1"
+              id="sidebar_tab5"
+              value="5"
+            />
+            <label for="sidebar_tab5"
+              ><i class="fa fa-lock"></i> Permissions</label
+            >
           </li>
 
           <li>
-            <input type="radio" name="sidebar_tab1" id="sidebar_tab7" value="7"/>
-              <label for="sidebar_tab7"><i class="fa fa-signal"></i> Others</label>
+            <input
+              type="radio"
+              name="sidebar_tab1"
+              id="sidebar_tab7"
+              value="7"
+            />
+            <label for="sidebar_tab7"
+              ><i class="fa fa-signal"></i> Others</label
+            >
           </li>
         </ul>
-		</nav>  
-</div>
+      </nav>
+    </div>
 
-<!--main content wrapper-->
-<div class="mcw">
-  <!--navigation here-->
-  <!--main content view-->
-  <div class="cv">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card elevation-3">
-
+    <!--main content wrapper-->
+    <div class="mcw">
+      <!--navigation here-->
+      <!--main content view-->
+      <div class="cv">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card elevation-3">
               <!-- ******************************Create Group modal********************************** -->
-              <div class="modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div
+                class="modal fade"
+                id="form"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header border-bottom-0">
-                      <h5 class="modal-title" id="exampleModalLabel">Create New Group</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Create New Group
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
-                    <form id="createForm" onsubmit="event.preventDefault(); createGroup();">
+                    <form
+                      id="createForm"
+                      onsubmit="event.preventDefault(); createGroup();"
+                    >
                       <div class="modal-body">
                         <div class="form-group">
                           <label for="group_name">Group Name</label>
-                          <input type="text" class="form-control" id="group_name" name="group_name" placeholder="Enter Group Name">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="group_name"
+                            name="group_name"
+                            placeholder="Enter Group Name"
+                          />
                         </div>
                         <label for="adminSelect">Group Admin</label>
-                        <select id="adminSelect" name="adminSelect" class="form-control">
+                        <select
+                          id="adminSelect"
+                          name="adminSelect"
+                          class="form-control"
+                        >
                           <!-- Populate this dropdown with existing users -->
                         </select>
                       </div>
-                      <div class="modal-footer border-top-0 d-flex justify-content-center">
-                        <button type="submit" class="btn" id="submitBtn" style="background: #355B11; color: white;">Submit</button>
+                      <div
+                        class="modal-footer border-top-0 d-flex justify-content-center"
+                      >
+                        <button
+                          type="submit"
+                          class="btn"
+                          id="submitBtn"
+                          style="background: #355b11; color: white"
+                        >
+                          Submit
+                        </button>
                       </div>
                     </form>
                   </div>
                 </div>
               </div>
 
-
-            <!-- ******************************Edit Group modal********************************** -->
-            <div class="modal fade" id="editForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header border-bottom-0">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Group</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <form id="formEdit" onsubmit="event.preventDefault(); submitEditForm();">
-                    <div class="modal-body">
-                      <input type="hidden" class="form-control" id="edit_group_id" >
-                      <input type="hidden" class="form-control" id="edit_group_admin_id" >
-                      <div class="form-group">
-                        <label for="group_name">Group Name</label>
-                        <input type="text" class="form-control" id="edit_group_name" name="edit_group_name" placeholder="Enter Group Name">
-                      </div>   
-                      <div class="form-group">
-                        <label for="edit_adminSelect">Select New Admin</label>
-                        <select id="edit_adminSelect" name="edit_adminSelect" class="form-control">
+              <!-- ******************************Edit Group modal********************************** -->
+              <div
+                class="modal fade"
+                id="editForm"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Edit Group
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form
+                      id="formEdit"
+                      onsubmit="event.preventDefault(); submitEditForm();"
+                    >
+                      <div class="modal-body">
+                        <input
+                          type="hidden"
+                          class="form-control"
+                          id="edit_group_id"
+                        />
+                        <input
+                          type="hidden"
+                          class="form-control"
+                          id="edit_group_admin_id"
+                        />
+                        <div class="form-group">
+                          <label for="group_name">Group Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="edit_group_name"
+                            name="edit_group_name"
+                            placeholder="Enter Group Name"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="edit_adminSelect">Select New Admin</label>
+                          <select
+                            id="edit_adminSelect"
+                            name="edit_adminSelect"
+                            class="form-control"
+                          >
                             <!-- Populate this dropdown with existing users -->
-                        </select>
-                      </div>              
-                    </div>
-                    <div class="modal-footer border-top-0 d-flex justify-content-center">
-                      <button type="submit" id="editSubmitBtn" class="btn" style="background: #355B11; color: white;">Submit</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-            
-            <!-- ******************************Confirm Delete Modal********************************** -->
-            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header border-bottom-0">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Are you sure you want to delete this group?</p>
-                    <!-- Hidden input field to store the group ID -->
-                    <input type="hidden" id="deleteGroupId" />
-                  </div>
-                  <div class="modal-footer border-top-0 d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="deleteGroupBtn" onclick="deleteGroup()">Delete</button>
+                          </select>
+                        </div>
+                      </div>
+                      <div
+                        class="modal-footer border-top-0 d-flex justify-content-center"
+                      >
+                        <button
+                          type="submit"
+                          id="editSubmitBtn"
+                          class="btn"
+                          style="background: #355b11; color: white"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
-            </div>
+
+              <!-- ******************************Confirm Delete Modal********************************** -->
+              <div
+                class="modal fade"
+                id="confirmDeleteModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="confirmDeleteModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                      <h5 class="modal-title" id="confirmDeleteModalLabel">
+                        Confirm Delete
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Are you sure you want to delete this group?</p>
+                      <!-- Hidden input field to store the group ID -->
+                      <input type="hidden" id="deleteGroupId" />
+                    </div>
+                    <div
+                      class="modal-footer border-top-0 d-flex justify-content-center"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        id="deleteGroupBtn"
+                        onclick="deleteGroup()"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <!-- **************Confirm Delete Mmebership Modal******************** -->
-          <div class="modal fade" id="confirmDeleteMmebershipModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header border-bottom-0">
-                  <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>Are you sure you want to delete this group membership?</p>
-                  <!-- Hidden input field to store the group membership ID -->
-                  <input type="hidden" id="deleteMembershipId" />
-                </div>
-                <div class="modal-footer border-top-0 d-flex justify-content-center">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button type="button" id="deleteGroupMembershipBtn" class="btn btn-danger" onclick="deleteGroupMembership()">Delete</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        <!-- Profile Modal -->
-        <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="profileModalLabel">Profile</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <!-- Display user profile information here -->
-                <p><strong>Username:</strong> <span id="profile-username">Loading...</span></p>
-                <p><strong>Name:</strong> <span id="profile-name">Loading...</span></p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Upload Photo Modal -->
-        <div class="modal fade" id="uploadPhotoModal" tabindex="-1" role="dialog" aria-labelledby="uploadPhotoModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="uploadPhotoModalLabel">Upload Photo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form>
-                  <div class="form-group">
-                    <label for="photoFile">Select Photo:</label>
-                    <input type="file" class="form-control-file" id="photoFile">
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn" style="background: #355B11; color: white;" onclick="uploadPhoto()">Upload</button>
-               </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Upload Signature Modal -->
-        <div class="modal fade" id="uploadSignatureModal" tabindex="-1" role="dialog" aria-labelledby="uploadSignatureModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="uploadSignatureModalLabel">Upload Signature</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form>
-                  <div class="form-group">
-                    <label for="signatureFile">Select Signature:</label>
-                    <input type="file" class="form-control-file" id="signatureFile">
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn" style="background: #355B11; color: white;" onclick="uploadSignature()">Upload</button>
-               </div>
-            </div>
-          </div>
-        </div>
-
-          <!-- Upload Stamp Modal -->
-          <div class="modal fade" id="uploadStampModal" tabindex="-1" role="dialog" aria-labelledby="uploadStampModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="uploadStampModalLabel">Upload Stamp</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form>
-                    <div class="form-group">
-                      <label for="stampFile">Select Stamp:</label>
-                      <input type="file" class="form-control-file" id="stampFile">
-                    </div>
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn" style="background: #355B11; color: white;" onclick="uploadStamp()">Upload</button>
-                 </div>
-              </div>
-            </div>
-          </div>
-
-
-
-       <!-- ******************************Assign Users Modal********************************** -->
-          <div class="modal fade" id="assignUsersModal" tabindex="-1" role="dialog" aria-labelledby="assignUsersModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
+              <div
+                class="modal fade"
+                id="confirmDeleteMmebershipModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="confirmDeleteModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
                     <div class="modal-header border-bottom-0">
-                        <h5 class="modal-title" id="assignUsersModalLabel">Assign Users to a Group</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                      <h5 class="modal-title" id="confirmDeleteModalLabel">
+                        Confirm Delete
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
-                    <form id="assignUsersForm" onsubmit="event.preventDefault(); assignUsersToGroup();">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="assign_group">Select Group</label>
-                                <select class="form-control" id="assign_group" name="assign_group">
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="assign_users">Select Users</label>
-                                <select class="form-control" id="assign_users" name="assign_users">
-                                </select>
-                            </div>     
-                        </div>
-                        <div class="modal-footer border-top-0 d-flex justify-content-center">
-                            <button type="submit" class="btn" id="assignUsersBtn" style="background: #355B11; color: white;">Assign Users</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-          </div>
-
-
-          <!-- *************************Edit Group Membership Modal****************************** -->
-            <div class="modal fade" id="editGroupMembershipModal" tabindex="-1" role="dialog" aria-labelledby="editGroupMembershipModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header border-bottom-0">
-                    <h5 class="modal-title" id="editGroupMembershipModalLabel">Edit Group Membership</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <form id="editGroupMembershipForm" onsubmit="event.preventDefault(); submitEditGroupMembership();">
                     <div class="modal-body">
-                      <input type="hidden" class="form-control" id="editMembershipId">  
-                      <div class="form-group">
-                        <label for="editMembershipGroup">Select Group</label>
-                        <select class="form-control" id="editMembershipGroup" name="editMembershipGroup">
-                          <!-- Populate with group options dynamically -->
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="editMembershipUser">Select User</label>
-                        <select class="form-control" id="editMembershipUser" name="editMembershipUser" multiple>
-                          <!-- Populate with user options dynamically -->
-                        </select>
-                      </div>
+                      <p>
+                        Are you sure you want to delete this group membership?
+                      </p>
+                      <!-- Hidden input field to store the group membership ID -->
+                      <input type="hidden" id="deleteMembershipId" />
                     </div>
-                    <div class="modal-footer border-top-0 d-flex justify-content-center">
-                      <button type="submit" class="btn" id="editMembershipBtn" style="background: #355B11; color: white;">Submit</button>
+                    <div
+                      class="modal-footer border-top-0 d-flex justify-content-center"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        id="deleteGroupMembershipBtn"
+                        class="btn btn-danger"
+                        onclick="deleteGroupMembership()"
+                      >
+                        Delete
+                      </button>
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Assign group permissions modal -->
-              <div class="modal fade" id="createPermissionModal" tabindex="-1" role="dialog" aria-labelledby="createPermissionModalLabel" aria-hidden="true">
+              <!-- Profile Modal -->
+              <div
+                class="modal fade"
+                id="profileModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="profileModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="profileModalLabel">
+                        Profile
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <!-- Display user profile information here -->
+                      <p>
+                        <strong>Username:</strong>
+                        <span id="profile-username">Loading...</span>
+                      </p>
+                      <p>
+                        <strong>Name:</strong>
+                        <span id="profile-name">Loading...</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Upload Photo Modal -->
+              <div
+                class="modal fade"
+                id="uploadPhotoModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="uploadPhotoModalLabel"
+                aria-hidden="true"
+              >
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="createPermissionModalLabel">Assign Permissions to Group</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                  <label for="groupSelect">Select Group:</label>
-                                  <select class="form-control" id="groupSelect">
-                                      <!-- Group options will be populated dynamically -->
-                                  </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="folderSelect">Select Folder:</label>
-                                    <select class="form-control" id="folderSelect">
-                                        <!-- Folder options will be populated dynamically -->
-                                    </select>
-                                </div>
-                                 <!-- Add a div container for checkboxes -->
-                                 <div id="checkboxContainer"></div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                             <button type="button" class="btn" style="background: #355B11; color: white;" onclick="createPermission()">Assign Permission</button>
-                        </div>
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="uploadPhotoModalLabel">
+                        Upload Photo
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="form-group">
+                          <label for="photoFile">Select Photo:</label>
+                          <input
+                            type="file"
+                            class="form-control-file"
+                            id="photoFile"
+                          />
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn"
+                        style="background: #355b11; color: white"
+                        onclick="uploadPhoto()"
+                      >
+                        Upload
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-             <!-- Delete Permission Modal -->
-            <div class="modal fade" id="confirmDeletePermissionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    Are you sure you want to delete this permission?
-                  </div>
-                  <div class="modal-footer">
-                     <button type="button" id="deletePermissionBtn" class="btn btn-danger" onclick="deletePermission()">Delete</button>
+              <!-- Upload Signature Modal -->
+              <div
+                class="modal fade"
+                id="uploadSignatureModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="uploadSignatureModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="uploadSignatureModalLabel">
+                        Upload Signature
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="form-group">
+                          <label for="signatureFile">Select Signature:</label>
+                          <input
+                            type="file"
+                            class="form-control-file"
+                            id="signatureFile"
+                          />
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn"
+                        style="background: #355b11; color: white"
+                        onclick="uploadSignature()"
+                      >
+                        Upload
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- *******************Groups Table***************** -->
-            <div id="groupsTableContainer" class="table-container">            
-              <div class="card-header d-flex justify-content-between mb-3">   
-                <!-- Breadcrumb -->
-               <nav aria-label="breadcrumb">
-                 <ol class="breadcrumb">
-                   <li class="breadcrumb-item"><a href="#">Home</a></li>
-                   <li class="breadcrumb-item active" aria-current="page">Groups</li>
-                 </ol>
-               </nav>
-              <button type="button" data-toggle="modal" data-target="#form" class="btn btn-secondary">New Group</button>
-               </div>
-               <br>
-                  <table id="tab" class="table table-hover table-bordered" cellspacing="3" style="  box-shadow: 0 4px 8px rgba(5, 2, 2, 0.1); width: 100%; border-radius: 10px;" >
-               <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Group Name</th>
-                  <th>Group Admin</th>
-                  <th>Users</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                 </tr>
-               </thead>
-               <tbody id="tbody"></tbody>
-             </table>
-              <!-- Pagination -->
-            <div id="pagination" class="pagination justify-content-center"></div>
-            </div>
-
-              <!-- *******************Group Memberships Table***************** -->
-              <div id="groupMembershipsTableContainer" class="table-container" style="display: none;">
-              <div class="card-header d-flex justify-content-between mb-3">
-                <!-- Breadcrumb -->
-               <nav aria-label="breadcrumb">
-                 <ol class="breadcrumb">
-                   <li class="breadcrumb-item"><a href="#">Home</a></li>
-                   <li class="breadcrumb-item active" aria-current="page">Memberships</li>
-                 </ol>
-               </nav>
-                <button type="button" data-toggle="modal" data-target="#assignUsersModal" class="btn btn-secondary">Assign User</button>
-               </div>
-               <br>
-              <table id="groupMembershipsTab" class="table table-hover table-bordered" cellspacing="3" style=" justify-content: center;  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%;">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>User</th>
-                    <th>Group</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="groupMembershipsTbody"></tbody>
-              </table>
-              <div id="membershipsPagination" class="pagination justify-content-center"></div>
+              <!-- Upload Stamp Modal -->
+              <div
+                class="modal fade"
+                id="uploadStampModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="uploadStampModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="uploadStampModalLabel">
+                        Upload Stamp
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="form-group">
+                          <label for="stampFile">Select Stamp:</label>
+                          <input
+                            type="file"
+                            class="form-control-file"
+                            id="stampFile"
+                          />
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn"
+                        style="background: #355b11; color: white"
+                        onclick="uploadStamp()"
+                      >
+                        Upload
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <!-- *******************Group Permissions Table***************** -->
-              <div id="groupPermissionsTableContainer" class="table-container" > 
+              <!-- ******************************Assign Users Modal********************************** -->
+              <div
+                class="modal fade"
+                id="assignUsersModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="assignUsersModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                      <h5 class="modal-title" id="assignUsersModalLabel">
+                        Assign Users to a Group
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form
+                      id="assignUsersForm"
+                      onsubmit="event.preventDefault(); assignUsersToGroup();"
+                    >
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label for="assign_group">Select Group</label>
+                          <select
+                            class="form-control"
+                            id="assign_group"
+                            name="assign_group"
+                          ></select>
+                        </div>
+                        <div class="form-group">
+                          <label for="assign_users">Select Users</label>
+                          <select
+                            class="form-control"
+                            id="assign_users"
+                            name="assign_users"
+                          ></select>
+                        </div>
+                      </div>
+                      <div
+                        class="modal-footer border-top-0 d-flex justify-content-center"
+                      >
+                        <button
+                          type="submit"
+                          class="btn"
+                          id="assignUsersBtn"
+                          style="background: #355b11; color: white"
+                        >
+                          Assign Users
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <!-- *************************Edit Group Membership Modal****************************** -->
+              <div
+                class="modal fade"
+                id="editGroupMembershipModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="editGroupMembershipModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                      <h5
+                        class="modal-title"
+                        id="editGroupMembershipModalLabel"
+                      >
+                        Edit Group Membership
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form
+                      id="editGroupMembershipForm"
+                      onsubmit="event.preventDefault(); submitEditGroupMembership();"
+                    >
+                      <div class="modal-body">
+                        <input
+                          type="hidden"
+                          class="form-control"
+                          id="editMembershipId"
+                        />
+                        <div class="form-group">
+                          <label for="editMembershipGroup">Select Group</label>
+                          <select
+                            class="form-control"
+                            id="editMembershipGroup"
+                            name="editMembershipGroup"
+                          >
+                            <!-- Populate with group options dynamically -->
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="editMembershipUser">Select User</label>
+                          <select
+                            class="form-control"
+                            id="editMembershipUser"
+                            name="editMembershipUser"
+                            multiple
+                          >
+                            <!-- Populate with user options dynamically -->
+                          </select>
+                        </div>
+                      </div>
+                      <div
+                        class="modal-footer border-top-0 d-flex justify-content-center"
+                      >
+                        <button
+                          type="submit"
+                          class="btn"
+                          id="editMembershipBtn"
+                          style="background: #355b11; color: white"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Assign group permissions modal -->
+              <div
+                class="modal fade"
+                id="createPermissionModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="createPermissionModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="createPermissionModalLabel">
+                        Assign Permissions to Group
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="form-group">
+                          <label for="groupSelect">Select Group:</label>
+                          <select class="form-control" id="groupSelect">
+                            <!-- Group options will be populated dynamically -->
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="folderSelect">Select Folder:</label>
+                          <select class="form-control" id="folderSelect">
+                            <!-- Folder options will be populated dynamically -->
+                          </select>
+                        </div>
+                        <!-- Add a div container for checkboxes -->
+                        <div id="checkboxContainer"></div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn"
+                        style="background: #355b11; color: white"
+                        onclick="createPermission()"
+                      >
+                        Assign Permission
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Delete Permission Modal -->
+              <div
+                class="modal fade"
+                id="confirmDeletePermissionModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Confirm Deletion
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to delete this permission?
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        id="deletePermissionBtn"
+                        class="btn btn-danger"
+                        onclick="deletePermission()"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- *******************Groups Table***************** -->
+              <div id="groupsTableContainer" class="table-container">
                 <div class="card-header d-flex justify-content-between mb-3">
                   <!-- Breadcrumb -->
-                 <nav aria-label="breadcrumb">
-                   <ol class="breadcrumb">
-                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                     <li class="breadcrumb-item active" aria-current="page">Permissions</li>
-                   </ol>
-                 </nav>
-                 <button type="button" data-toggle="modal" data-target="#createPermissionModal" class="btn btn-secondary">New Permission</button>
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">
+                        Groups
+                      </li>
+                    </ol>
+                  </nav>
+                  <button
+                    type="button"
+                    data-toggle="modal"
+                    data-target="#form"
+                    class="btn btn-secondary"
+                  >
+                    New Group
+                  </button>
                 </div>
-                <br>
-                   <table id="permissionsTable" class="table table-hover table-bordered" cellspacing="3" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;">
+                <br />
+                <table
+                  id="tab"
+                  class="table table-hover table-bordered"
+                  cellspacing="3"
+                  style="
+                    box-shadow: 0 4px 8px rgba(5, 2, 2, 0.1);
+                    width: 100%;
+                    border-radius: 10px;
+                  "
+                >
                   <thead>
                     <tr>
                       <th>#</th>
-                    <th>Group</th>
-                    <th>Folder</th>
-                    <th>View Users</th>
-                    <th>Add User</th>
-                    <th>Assign User Group</th>
-                    <th>View User</th>
-                    <th>Update User</th>
-                    <th>Delete User</th>
-                    <th>View Groups</th>
-                    <th>Add Group</th>
-                    <th>View Group</th>
-                    <th>Update Group</th>
-                    <th>Delete Group</th>
-                    <th>View Group Memberships</th>
-                    <th>Add Group Membership</th>
-                    <th>View Group Membership</th>
-                    <th>Update Group Membership</th>
-                    <th>Delete Group Membership</th>
-                    <th>View Group Permissions</th>
-                    <th>Add Group Permission</th>
-                    <th>View Group Permission</th>
-                    <th>Update Group Permission</th>
-                    <th>Delete Group Permission</th>
-                    <th>View Folders</th>
-                    <th>Create Folder</th>
-                    <th>Open Folder</th>
-                    <th>Update Folder</th>
-                    <th>Delete Folder</th>
-                    <th>View Documents</th>
-                    <th>Add Document</th>
-                    <th>View Document</th>
-                    <th>Update Document</th>
-                    <th>Delete Document</th>
-                    <th>View Fields</th>
-                    <th>Add Field</th>
-                    <th>View Field</th>
-                    <th>Update Field</th>
-                    <th>Delete Field</th>
-                    <th>View Docfields</th>
-                    <th>Create Docfield</th>
-                    <th>View Docfield</th>
-                    <th>Update Docfield</th>
-                    <th>Delete Docfield</th>
-                    <th>View Worksteps</th>
-                    <th>Add Workstep</th>
-                    <th>View Workstep</th>
-                    <th>Update Workstep</th>
-                    <th>Delete Workstep</th>
-                    <th>View Possible Actions</th>
-                    <th>Add Possible Action</th>
-                    <th>View Possible Action</th>
-                    <th>Update Possible Action</th>
-                    <th>Delete Possible Action</th>
-                    <th>View Workstep Results</th>
-                    <th>Add Workstep Result</th>
-                    <th>View Workstep Result</th>
-                    <th>Rewind Workstep Result</th>
-                    <th>Delete Workstep Result</th>
-                    <th>Action</th>
+                      <th>Group Name</th>
+                      <th>Group Admin</th>
+                      <th>Users</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody"></tbody>
+                </table>
+                <!-- Pagination -->
+                <div
+                  id="pagination"
+                  class="pagination justify-content-center"
+                ></div>
+              </div>
+
+              <!-- *******************Group Memberships Table***************** -->
+              <div
+                id="groupMembershipsTableContainer"
+                class="table-container"
+                style="display: none"
+              >
+                <div class="card-header d-flex justify-content-between mb-3">
+                  <!-- Breadcrumb -->
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">
+                        Memberships
+                      </li>
+                    </ol>
+                  </nav>
+                  <button
+                    type="button"
+                    data-toggle="modal"
+                    data-target="#assignUsersModal"
+                    class="btn btn-secondary"
+                  >
+                    Assign User
+                  </button>
+                </div>
+                <br />
+                <table
+                  id="groupMembershipsTab"
+                  class="table table-hover table-bordered"
+                  cellspacing="3"
+                  style="
+                    justify-content: center;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    width: 100%;
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>User</th>
+                      <th>Group</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="groupMembershipsTbody"></tbody>
+                </table>
+                <div
+                  id="membershipsPagination"
+                  class="pagination justify-content-center"
+                ></div>
+              </div>
+
+              <!-- *******************Group Permissions Table***************** -->
+              <div id="groupPermissionsTableContainer" class="table-container">
+                <div class="card-header d-flex justify-content-between mb-3">
+                  <!-- Breadcrumb -->
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">
+                        Permissions
+                      </li>
+                    </ol>
+                  </nav>
+                  <button
+                    type="button"
+                    data-toggle="modal"
+                    data-target="#createPermissionModal"
+                    class="btn btn-secondary"
+                  >
+                    New Permission
+                  </button>
+                </div>
+                <br />
+                <table
+                  id="permissionsTable"
+                  class="table table-hover table-bordered"
+                  cellspacing="3"
+                  style="
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    width: 100%;
+                    border-radius: 10px;
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Group</th>
+                      <th>Folder</th>
+                      <th>View Users</th>
+                      <th>Add User</th>
+                      <th>Assign User Group</th>
+                      <th>View User</th>
+                      <th>Update User</th>
+                      <th>Delete User</th>
+                      <th>View Groups</th>
+                      <th>Add Group</th>
+                      <th>View Group</th>
+                      <th>Update Group</th>
+                      <th>Delete Group</th>
+                      <th>View Group Memberships</th>
+                      <th>Add Group Membership</th>
+                      <th>View Group Membership</th>
+                      <th>Update Group Membership</th>
+                      <th>Delete Group Membership</th>
+                      <th>View Group Permissions</th>
+                      <th>Add Group Permission</th>
+                      <th>View Group Permission</th>
+                      <th>Update Group Permission</th>
+                      <th>Delete Group Permission</th>
+                      <th>View Folders</th>
+                      <th>Create Folder</th>
+                      <th>Open Folder</th>
+                      <th>Update Folder</th>
+                      <th>Delete Folder</th>
+                      <th>View Documents</th>
+                      <th>Add Document</th>
+                      <th>View Document</th>
+                      <th>Update Document</th>
+                      <th>Delete Document</th>
+                      <th>View Fields</th>
+                      <th>Add Field</th>
+                      <th>View Field</th>
+                      <th>Update Field</th>
+                      <th>Delete Field</th>
+                      <th>View Docfields</th>
+                      <th>Create Docfield</th>
+                      <th>View Docfield</th>
+                      <th>Update Docfield</th>
+                      <th>Delete Docfield</th>
+                      <th>View Worksteps</th>
+                      <th>Add Workstep</th>
+                      <th>View Workstep</th>
+                      <th>Update Workstep</th>
+                      <th>Delete Workstep</th>
+                      <th>View Possible Actions</th>
+                      <th>Add Possible Action</th>
+                      <th>View Possible Action</th>
+                      <th>Update Possible Action</th>
+                      <th>Delete Possible Action</th>
+                      <th>View Workstep Results</th>
+                      <th>Add Workstep Result</th>
+                      <th>View Workstep Result</th>
+                      <th>Rewind Workstep Result</th>
+                      <th>Delete Workstep Result</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody id="permissionsTbody"></tbody>
                 </table>
-                <div id="permissionsPagination" class="pagination justify-content-center"></div>
+                <div
+                  id="permissionsPagination"
+                  class="pagination justify-content-center"
+                ></div>
               </div>
- 
 
-           <!-- *******************Users Table***************** -->
-<div id="usersTableContainer" class="table-container" style="display: none;">
-  <div class="card-header d-flex justify-content-between mb-3">
-    <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Users</li>
-      </ol>
-    </nav>
- 
-  </div>
-  <table id="usersTable" class="table table-hover table-bordered " cellspacing="3" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; border-radius: 10px;">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Name</th>
-        <th>Username</th>
-        <th>Photo</th>
-        <th>Stamp</th>
-        <th>Signature</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody id="usersTbody"></tbody>
-  </table>
-  <div id="usersPagination" class="pagination justify-content-center"></div>
-</div>
+              <!-- *******************Users Table***************** -->
+              <div
+                id="usersTableContainer"
+                class="table-container"
+                style="display: none"
+              >
+                <div class="card-header d-flex justify-content-between mb-3">
+                  <!-- Breadcrumb -->
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">
+                        Users
+                      </li>
+                    </ol>
+                  </nav>
+                </div>
+                <table
+                  id="usersTable"
+                  class="table table-hover table-bordered"
+                  cellspacing="3"
+                  style="
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    width: 100%;
+                    border-radius: 10px;
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Username</th>
+                      <th>Photo</th>
+                      <th>Stamp</th>
+                      <th>Signature</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="usersTbody"></tbody>
+                </table>
+                <div
+                  id="usersPagination"
+                  class="pagination justify-content-center"
+                ></div>
+              </div>
 
-<!-- main js -->
-<script src="../assets/js/script.js"></script>
-<script src="../assets/js/sidebar.js"></script>
-<script src="../assets/js/navbar.js"></script>
-<script src="../assets/js/usersTable.js"></script>
-<script src="../assets/js/groups.js"></script>
+              <!-- main js -->
+              <script src="../assets/js/script.js"></script>
+              <script src="../assets/js/sidebar.js"></script>
+              <script src="../assets/js/navbar.js"></script>
+              <script src="../assets/js/usersTable.js"></script>
+              <script src="../assets/js/groups.js"></script>
+              <script src="../assets/js/groupMemberships.js"></script>
 
+              <!-- Toast Js -->
+              <script src="../assets/toastr/toastr.min.js"></script>
 
-<!-- Toast Js -->
-<script src="../assets/toastr/toastr.min.js"></script>
-
- <script src="../assets/DataTables/datatables.min.js"></script>
-
-</body>
+              <script src="../assets/DataTables/datatables.min.js"></script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
- 
