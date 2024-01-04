@@ -44,7 +44,7 @@ async function getData(page = 1, itemsPerPage = 5) {
         group.users.length,
         `<span style="color: ${statusColor};">${statusLabel}</span>`,
         `<a href="#" data-toggle="modal" data-target="#editForm" onclick="editGroup(${group.id})" data-groupid="${group.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
-         <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"><i class="fa fa-trash"></i></a>`,
+       <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"><i class="fa fa-trash"></i></a>`,
       ])
       .draw(false);
   });
@@ -406,4 +406,77 @@ function deleteGroup() {
       // Hide the confirmation modal
       $("#confirmDeleteModal").modal("hide");
     });
+}
+
+// Call populateDropdowns when the document is ready
+$(document).ready(async function () {
+  await populateDropdowns();
+});
+
+async function populateDropdowns() {
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem("edms_token");
+
+  try {
+    // Fetch existing groups
+    const groupsResponse = await fetch("http://127.0.0.1:8000/api/groups", {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const groupsData = await groupsResponse.json();
+
+    const assignGroupDropdown = $("#assign_group");
+    assignGroupDropdown.empty();
+
+    // Add default "Select" option
+    assignGroupDropdown.append(
+      '<option value="" disabled selected>Select Group</option>'
+    );
+
+    groupsData.data.data.forEach((group) => {
+      assignGroupDropdown.append(
+        `<option value="${group.id}">${group.group_name}</option>`
+      );
+    });
+
+    // Fetch existing users
+    const usersResponse = await fetch("http://127.0.0.1:8000/api/users", {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const usersData = await usersResponse.json();
+    const assignUsersDropdown = $("#assign_users");
+
+    // Fetch the selected group
+    const selectedGroupId = assignGroupDropdown.val();
+
+    // Get users in the selected group
+    const selectedGroup = groupsData.data.data.find(
+      (group) => group.id == selectedGroupId
+    );
+    const usersInGroup = selectedGroup
+      ? selectedGroup.users.map((user) => user.id)
+      : [];
+
+    assignUsersDropdown.empty();
+
+    // Add default "Select" option
+    assignUsersDropdown.append(
+      '<option value="" disabled selected>Select User</option>'
+    );
+
+    usersData.data.data.forEach((user) => {
+      assignUsersDropdown.append(
+        `<option value="${user.id}">${user.username}</option>`
+      );
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 }
