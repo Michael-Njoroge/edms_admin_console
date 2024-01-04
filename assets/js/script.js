@@ -174,10 +174,9 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
   // Initialize DataTable
   const usersTable = $('#usersTable').DataTable({
     lengthMenu: [5, 10, 25, 50],
+    "bDestroy": true
   }); 
-
-  // Clear existing rows
-  usersTable.clear().draw();
+ 
 
   // Loop through each user and create a table row
   data.data.data.forEach((user, index) => {
@@ -193,7 +192,7 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
       index + 1,
       user.name,
       user.username,
-      `<img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 60px; height: 60px; border-radius: 50%;" />`,
+      `<img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 40px; height: 40px; border-radius: 50%;" />`,
       'stamp',
       'signature',
       `<span style="color: ${statusColor};">${statusLabel}</span>`,
@@ -247,10 +246,11 @@ async function getData(page = 1, itemsPerPage = 5) {
   // Initialize DataTable
   const groupsTable = $('#tab').DataTable({
     lengthMenu: [5, 10, 25, 50],
+    "bDestroy": true
   }); 
 
-  // Clear existing rows
-  groupsTable.clear().draw();
+  // Clear the existing table
+groupsTable.clear().draw();
 
   // Loop through each group and create a table row
   data.data.data.forEach((group, index) => {
@@ -454,6 +454,8 @@ function editGroup(groupId) {
           console.error('Error:', error);
       });
   }   
+
+
 // FUNCTION TO SUBMIT THE EDIT FORM
 function submitEditForm() {
   // Fetch form data
@@ -628,8 +630,8 @@ function deleteGroup() {
 
 // ****************************GROUP MEMBERSHIPS FUNCTIONS************************ //
 
-// FUNCTION TO FETCH AND DISPLAY GROUP MEMBERSHIPS DATA WITH PAGINATION
-async function getGroupMembershipsData(page = 1, itemsPerPage = 5) {
+// FUNCTION TO FETCH AND DISPLAY GROUP MEMBERSHIPS DATA WITHOUT PAGINATION
+async function getGroupMembershipsData() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem('edms_token');
 
@@ -672,14 +674,8 @@ async function getGroupMembershipsData(page = 1, itemsPerPage = 5) {
     return groupData.data.data.group_name;
   };
 
-  // Calculate start and end indices based on pagination
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage - 1, membershipsData.data.data.length - 1);
-
-  const currentPageData = membershipsData.data.data.slice(startIndex, endIndex + 1);
-
   // Iterate through the data and append rows to the table
-  for (const membership of currentPageData) {
+  for (const membership of membershipsData.data.data) {
     const row = document.createElement('tr');
 
     // Group information
@@ -704,47 +700,6 @@ async function getGroupMembershipsData(page = 1, itemsPerPage = 5) {
 
   // Call updateRowNumbers after appending rows to the table body
   updateRowNumbers();
-
-  // Generate pagination links
-  const totalPages = Math.ceil(membershipsData.data.data.length / itemsPerPage);
-  const paginationElement = document.getElementById('membershipsPagination');
-  paginationElement.innerHTML = '';
-
-  if (totalPages > 1) {
-    const prevLink = document.createElement('a');
-    prevLink.href = '#';
-    prevLink.innerHTML = '«';
-    prevLink.classList.add('page-link');
-    prevLink.addEventListener('click', () => {
-      if (page > 1) {
-        getGroupMembershipsData(page - 1, itemsPerPage);
-      }
-    });
-    paginationElement.appendChild(prevLink);
-
-    for (let i = 1; i <= totalPages; i++) {
-      const pageLink = document.createElement('a');
-      pageLink.href = '#';
-      pageLink.textContent = i;
-      pageLink.classList.add('page-link');
-      if (i === page) {
-        pageLink.classList.add('active');
-      }
-      pageLink.addEventListener('click', () => getGroupMembershipsData(i, itemsPerPage));
-      paginationElement.appendChild(pageLink);
-    }
-
-    const nextLink = document.createElement('a');
-    nextLink.href = '#';
-    nextLink.innerHTML = '»';
-    nextLink.classList.add('page-link');
-    nextLink.addEventListener('click', () => {
-      if (page < totalPages) {
-        getGroupMembershipsData(page + 1, itemsPerPage);
-      }
-    });
-    paginationElement.appendChild(nextLink);
-  }
 }
 
 
