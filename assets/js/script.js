@@ -629,14 +629,12 @@ function deleteGroup() {
 
 
 // ****************************GROUP MEMBERSHIPS FUNCTIONS************************ //
-
-// FUNCTION TO FETCH AND DISPLAY GROUP MEMBERSHIPS DATA WITHOUT PAGINATION
-async function getGroupMembershipsData() {
+async function getGroupMembershipsData(page = 1, itemsPerPage = 5) {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem('edms_token');
 
-  // Fetch group memberships
-  const membershipsResponse = await fetch('http://127.0.0.1:8000/api/groupmemberships', {
+  // Fetch group memberships data with pagination parameters
+  const membershipsResponse = await fetch(`http://127.0.0.1:8000/api/groupmemberships?page=${page}&itemsPerPage=${itemsPerPage}`, {
     headers: {
       'Authorization': `Bearer ${bearerToken}`,
       'Content-Type': 'application/json'
@@ -645,10 +643,14 @@ async function getGroupMembershipsData() {
 
   const membershipsData = await membershipsResponse.json();
 
-  // Get the table body element
-  const membershipsTableBody = document.getElementById('groupMembershipsTbody');
+  // Get the table element
+  const membershipsTable = $('#groupMembershipsTab').DataTable({
+    lengthMenu: [5, 10, 25, 50],
+    destroy: true,
+  });
+
   // Clear the existing table rows
-  membershipsTableBody.innerHTML = '';
+  membershipsTable.clear().draw();
 
   // Function to fetch user data based on user_id
   const fetchUserData = async (userId) => {
@@ -674,32 +676,40 @@ async function getGroupMembershipsData() {
     return groupData.data.data.group_name;
   };
 
-  // Iterate through the data and append rows to the table
-  for (const membership of membershipsData.data.data) {
-    const row = document.createElement('tr');
-
-    // Group information
-    row.innerHTML += `<td>${membership.id}</td>`;
-
-    // Fetch user data based on user_id
+  // Iterate through the data and append rows to the DataTable
+  for (let index = 0; index < membershipsData.data.data.length; index++) {
+    const membership = membershipsData.data.data[index];
     const username = await fetchUserData(membership.user_id);
-    // Fetch group data based on group_id
     const groupName = await fetchGroupData(membership.group_id);
 
-    row.innerHTML += `<td>${username}</td>`;
-    row.innerHTML += `<td>${groupName}</td>`;
-
-    row.innerHTML += `<td style="font-size:21px; ">
-      <center>
-         <a href="#" onclick="confirmDeleteGroupMembership(${membership.id})" title="delete"> <i class="fa fa-trash"></i></a>
-      </center>
-    </td>`;
-
-    membershipsTableBody.appendChild(row);
+    membershipsTable.row.add([
+      index + 1,
+      username,
+      groupName,
+      `<a href="#" onclick="confirmDeleteGroupMembership(${membership.id})" title="delete"><i class="fa fa-trash"></i></a>`
+    ]).draw(false);
   }
 
   // Call updateRowNumbers after appending rows to the table body
   updateRowNumbers();
+
+  // Generate pagination links
+  const totalPages = Math.ceil(membershipsData.data.total / itemsPerPage);
+  const paginationElement = $('#membershipsPagination');
+  paginationElement.empty();
+
+  if (totalPages > 1) {
+    const prevLink = `<a href="#" onclick="getGroupMembershipsData(${page - 1}, ${itemsPerPage})" class="page-link">«</a>`;
+    paginationElement.append(prevLink);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageLink = `<a href="#" onclick="getGroupMembershipsData(${i}, ${itemsPerPage})" class="page-link ${i === page ? 'active' : ''}">${i}</a>`;
+      paginationElement.append(pageLink);
+    }
+
+    const nextLink = `<a href="#" onclick="getGroupMembershipsData(${page + 1}, ${itemsPerPage})" class="page-link">»</a>`;
+    paginationElement.append(nextLink);
+  }
 }
 
 
