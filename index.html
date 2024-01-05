@@ -6,13 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Page</title>
     <link rel="stylesheet" href="./assets/css/main.css" />
+    <style>
+      /* Add styling for the spinner */
+      #spinner {
+        display: none;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 4px solid #3498db;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+        margin-top: 15px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
 
   <body>
     <div class="container">
       <h1>Sign In</h1>
-      <div class="error-message"></div>
-      <form class="login-form">
+      <div
+        id="error-message"
+        class="error"
+        style="color: red; padding-bottom: 15px; text-align: center"
+      ></div>
+      <form class="login-form" id="login-form">
         <input
           class="input-field"
           type="text"
@@ -34,6 +61,7 @@
         <button class="btn-submit" type="submit" name="submit" id="submit">
           Sign In
         </button>
+        <div id="spinner"></div>
       </form>
       <hr class="divider" />
       <a href="#" class="forgot-password">Forgot Password?</a>
@@ -41,5 +69,6 @@
 
     <script src="./assets/js/jquery.min.js"></script>
     <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/login.js"></script>
   </body>
 </html>
