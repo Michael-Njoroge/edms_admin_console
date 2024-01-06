@@ -1,4 +1,3 @@
-// FUNCTION TO HANDLE TABLE DISPLAY BASED ON SELECTED RADIO BUTTON
 $(document).ready(function () {
   // Handle click events for radio buttons
   $('input[name="sidebar_tab1"]').on("change", function () {
@@ -7,10 +6,11 @@ $(document).ready(function () {
     // Store the selected tab in localStorage
     localStorage.setItem("lastSelectedTab", value);
 
-    // Hide all tables
+    // Hide all tables and cards
     $(".table-container").hide();
+    $("#content").hide();
 
-    // Show the corresponding table based on the selected radio button
+    // Show the corresponding table or card based on the selected radio button
     if (value === "3") {
       $("#groupsTableContainer").show();
     } else if (value === "4") {
@@ -19,6 +19,8 @@ $(document).ready(function () {
       $("#groupPermissionsTableContainer").show();
     } else if (value === "6") {
       $("#usersTableContainer").show();
+    } else if (value === "1") {
+      $("#content").show();
     }
     // Add more conditions for other radio buttons
   });
@@ -37,6 +39,6 @@ $(document).ready(function () {
     true
   );
 
-  // Trigger the change event to display the corresponding table
+  // Trigger the change event to display the corresponding table or card
   $('input[name="sidebar_tab1"][value="' + lastSelectedTab + '"]').change();
 });

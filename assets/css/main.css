@@ -261,18 +261,6 @@
    }
  }
 
-
- .profile {
-   display: flex;
-   align-items: center;
-   gap: 30px;
- }
-
- .profile h2 {
-   font-size: 20px;
-   text-transform: capitalize;
- }
-
  .img-box {
    width: 50px;
    height: 50px;
@@ -286,73 +274,9 @@
    width: 100%;
  }
 
- .menu {
-   background-color: #123;
-   width: 60px;
-   height: 100vh;
-   padding: 20px;
-   overflow: hidden;
-   transition: 0.5s;
- }
 
- .menu:hover {
-   width: 260px;
- }
-
- ul {
-   list-style: none;
-   position: relative;
-   height: 95%;
- }
-
- ul li a {
-   display: block;
-   text-decoration: none;
-   padding: 10px;
-   margin: 10px 0;
-   border-radius: 8px;
-   display: flex;
-   gap: 40px;
-   align-items: center;
-   transition: 0.5s;
-
- }
-
- ul li a:hover,
- .active,
- .box:hover,
- td:hover {
-   background-color: #ffffff55;
- }
-
- .log-out {
-   position: absolute;
-   bottom: 0;
-   width: 100%;
-
- }
-
- .log-out a {
-   background-color: #a00;
- }
-
- ul li a i {
-   font-size: 30px;
- }
-
- .content {
-   width: 100%;
-   margin: 10px;
- }
-
- .title-info {
-   background-color: #0481ff;
-   padding: 10px;
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
-   border-radius: 8px;
-   margin: 10px 0;
+ .box:hover {
+   background-color: #355B11;
  }
 
  .data-info {
@@ -365,7 +289,7 @@
  }
 
  .box {
-   background-color: #123;
+   background-color: rgb(42, 45, 48);
    height: 150px;
    flex-basis: 150px;
    flex-grow: 1;
@@ -373,7 +297,8 @@
    display: flex;
    align-items: center;
    justify-content: space-around;
-
+   color: #f0f0f0;
+   cursor: pointer;
  }
 
  .box i {
@@ -386,27 +311,4 @@
 
  .box .data span {
    font-size: 30px;
- }
-
- table {
-   width: 100%;
-   text-align: center;
-   border-spacing: 8px;
-
- }
-
-
- .price,
- .count {
-   padding: 6px;
-   border-radius: 6px;
- }
-
- .price {
-   background-color: green;
- }
-
- .count {
-   background-color: gold;
-   color: black;
  }
