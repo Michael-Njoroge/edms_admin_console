@@ -201,6 +201,11 @@ function fetchAndPopulateUsersDropdown() {
     });
 }
 
+// Call fetchAndPopulateUsersDropdown when the document is ready
+$(document).ready(async function () {
+  await fetchAndPopulateUsersDropdown();
+});
+
 // Call populateDropdowns when the document is ready
 populateDropdowns();
 
