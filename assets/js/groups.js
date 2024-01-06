@@ -35,6 +35,9 @@ async function getData(page = 1, itemsPerPage = 5) {
     const statusLabel = group.status === "active" ? "Active" : "InActive";
     const statusColor = group.status === "active" ? "green" : "red";
 
+    // Check if the group is one of the seeded groups
+    const isSeededGroup = index < 2;
+
     // Add the row to DataTable
     groupsTable.row
       .add([
@@ -43,8 +46,20 @@ async function getData(page = 1, itemsPerPage = 5) {
         group.admin.name,
         group.users.length,
         `<span style="color: ${statusColor};">${statusLabel}</span>`,
-        `<a href="#" data-toggle="modal" data-target="#editForm" onclick="editGroup(${group.id})" data-groupid="${group.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
-       <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"><i class="fa fa-trash"></i></a>`,
+        `<td style="font-size:21px;">
+        <center>
+          <a href="#" data-toggle="modal" data-target="#editForm" onclick="editGroup(${
+            group.id
+          })" data-groupid="${
+          group.id
+        }" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
+          ${
+            group.id === 1 || group.id === 2
+              ? `<i class="fa fa-trash" style="color: lightgrey; cursor: not-allowed;" title="Cannot delete this group" aria-disabled="true"></i>`
+              : `<a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"><i class="fa fa-trash"></i></a>`
+          }
+        </center>
+      </td>`,
       ])
       .draw(false);
   });
