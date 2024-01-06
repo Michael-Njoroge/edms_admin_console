@@ -39,9 +39,7 @@
  }
 
  .brand-name-wrapper {
-   align-items: center;
-   top: 5px;
-   justify-content: center;
+
    position: relative;
    left: 45px;
    padding: 2px;
@@ -238,4 +236,27 @@
    gap: 15px;
    display: flex;
    text-decoration: none;
+ }
+
+ /* Styling for the spinner */
+ #spinner {
+   display: none;
+   border: 4px solid rgba(0, 0, 0, 0.1);
+   border-radius: 50%;
+   border-top: 4px solid #3498db;
+   width: 30px;
+   height: 30px;
+   animation: spin 1s linear infinite;
+   margin: 0 auto;
+   margin-top: 15px;
+ }
+
+ @keyframes spin {
+   0% {
+     transform: rotate(0deg);
+   }
+
+   100% {
+     transform: rotate(360deg);
+   }
  }
