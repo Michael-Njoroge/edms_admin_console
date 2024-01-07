@@ -18,7 +18,6 @@ function updateRowNumbers() {
 }
 
 // FUNCTION TO SHOW THE COUNT IN THE DASHBOARD
-
 async function fetchDataAndPopulateCounts() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem("edms_token");
@@ -58,11 +57,27 @@ async function fetchDataAndPopulateCounts() {
     // Update the group count in the appropriate card
     document.getElementById("groupCount").innerText =
       groupsData.data.data.length;
+
+    // Fetch data for folders from the API endpoint
+    const foldersResponse = await fetch("http://127.0.0.1:8000/api/folders/1", {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    // Convert the response to JSON format
+    const foldersData = await foldersResponse.json();
+
+    // Update the folder count in the appropriate card
+    document.getElementById("folderCount").innerText =
+      foldersData.data.data.length;
   } catch (error) {
     console.error("Error fetching data:", error);
     // Handle errors, e.g., display an error message
     document.getElementById("userCount").innerText = "Error loading data";
     document.getElementById("groupCount").innerText = "Error loading data";
+    document.getElementById("folderCount").innerText = "Error loading data";
   }
 }
 
