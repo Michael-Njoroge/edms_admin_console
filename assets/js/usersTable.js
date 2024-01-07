@@ -75,38 +75,3 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
     paginationElement.append(nextLink);
   }
 }
-
-// Function to show the count of users in the dashboard
-async function fetchDataAndPopulateUserCount() {
-  // Retrieve the Bearer token from localStorage
-  const bearerToken = localStorage.getItem("edms_token");
-
-  // Check if the token is present in localStorage
-  if (!bearerToken) {
-    console.error("Unauthorized");
-    return;
-  }
-
-  try {
-    // Fetch data from the API endpoint
-    const response = await fetch("http://127.0.0.1:8000/api/users", {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    // Convert the response to JSON format
-    const data = await response.json();
-
-    // Update the user count in the first card
-    document.getElementById("userCount").innerText = data.data.data.length;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    // Handle errors, e.g., display an error message
-    document.getElementById("userCount").innerText = "Error loading data";
-  }
-}
-
-// Call the async function
-fetchDataAndPopulateUserCount();
