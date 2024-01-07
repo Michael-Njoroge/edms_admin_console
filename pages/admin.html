@@ -870,12 +870,20 @@
               </div>
 
               <div class="content" id="content">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      Dashboard
+                    </li>
+                  </ol>
+                </nav>
                 <div class="data-info">
                   <div
                     class="box"
                     data-toggle="tooltip"
                     data-placement="bottom"
-                    title="Hover Text for Users"
+                    title="View Users"
                   >
                     <i class="fa fa-users"></i>
                     <div class="data">
@@ -889,7 +897,7 @@
                     class="box"
                     data-toggle="tooltip"
                     data-placement="bottom"
-                    title="Hover Text for Groups"
+                    title="View Groups"
                   >
                     <i class="fa fa-users"></i>
                     <div class="data">
@@ -903,7 +911,7 @@
                     class="box"
                     data-toggle="tooltip"
                     data-placement="bottom"
-                    title="Hover Text for Folders"
+                    title="View Folders"
                   >
                     <i class="fa fa-folder"></i>
                     <div class="data">
@@ -913,17 +921,22 @@
                       ></span>
                     </div>
                   </div>
-                  <div
-                    class="box"
-                    data-toggle="tooltip"
-                    data-placement="bottom"
-                    title="Hover Text for Revenue"
-                  >
-                    <i class="fa fa-dollar"></i>
-                    <div class="data">
-                      <p>Revenue</p>
-                      <span>$100</span>
-                    </div>
+                </div>
+                <div class="graph">
+                  <div class="bar category1">
+                    <h3>Users</h3>
+                    <div class="rectangle"></div>
+                    <span class="counter" id="userCount"> 15633</span>
+                  </div>
+                  <div class="bar category2">
+                    <h3>Groups</h3>
+                    <div class="rectangle"></div>
+                    <span class="counter" id="groupCount"> 15633</span>
+                  </div>
+                  <div class="bar category2">
+                    <h3>Folders</h3>
+                    <div class="rectangle"></div>
+                    <span class="counter" id="folderCount"> 15633</span>
                   </div>
                 </div>
               </div>
