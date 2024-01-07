@@ -1,3 +1,8 @@
+// Enable Bootstrap tooltips
+$(document).ready(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
+
 // FUNCTION TO UPDATE THE TABLE ROW NUMBERS DYNAMICALLY
 function updateRowNumbers() {
   // Update the rows in the "groupsTab" table
