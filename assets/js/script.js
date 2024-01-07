@@ -17,8 +17,9 @@ function updateRowNumbers() {
   });
 }
 
-// FUNCTION TO SHOW THE COUNT OF USERS IN THE DASHBOARD
-async function fetchDataAndPopulateUserCount() {
+// FUNCTION TO SHOW THE COUNT IN THE DASHBOARD
+
+async function fetchDataAndPopulateCounts() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem("edms_token");
 
@@ -29,8 +30,8 @@ async function fetchDataAndPopulateUserCount() {
   }
 
   try {
-    // Fetch data from the API endpoint
-    const response = await fetch("http://127.0.0.1:8000/api/users", {
+    // Fetch data for users from the API endpoint
+    const usersResponse = await fetch("http://127.0.0.1:8000/api/users", {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
         "Content-Type": "application/json",
@@ -38,16 +39,32 @@ async function fetchDataAndPopulateUserCount() {
     });
 
     // Convert the response to JSON format
-    const data = await response.json();
+    const usersData = await usersResponse.json();
 
     // Update the user count in the first card
-    document.getElementById("userCount").innerText = data.data.data.length;
+    document.getElementById("userCount").innerText = usersData.data.data.length;
+
+    // Fetch data for groups from the API endpoint
+    const groupsResponse = await fetch("http://127.0.0.1:8000/api/groups", {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    // Convert the response to JSON format
+    const groupsData = await groupsResponse.json();
+
+    // Update the group count in the appropriate card
+    document.getElementById("groupCount").innerText =
+      groupsData.data.data.length;
   } catch (error) {
     console.error("Error fetching data:", error);
     // Handle errors, e.g., display an error message
     document.getElementById("userCount").innerText = "Error loading data";
+    document.getElementById("groupCount").innerText = "Error loading data";
   }
 }
 
 // Call the async function
-fetchDataAndPopulateUserCount();
+fetchDataAndPopulateCounts();

@@ -148,6 +148,8 @@ function createGroup() {
 
       getGroupMembershipsData();
 
+      fetchDataAndPopulateCounts();
+
       // Enable the submit button and revert the text
       submitButton.prop("disabled", false).html("Submit");
 
@@ -203,7 +205,7 @@ function fetchAndPopulateUsersDropdown() {
 
 // Call fetchAndPopulateUsersDropdown when the document is ready
 $(document).ready(async function () {
-  await fetchAndPopulateUsersDropdown();
+  fetchAndPopulateUsersDropdown();
 });
 
 // Call populateDropdowns when the document is ready
