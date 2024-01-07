@@ -413,6 +413,8 @@ function deleteGroup() {
 
         getGroupMembershipsData();
 
+        fetchDataAndPopulateCounts();
+
         // Update the dropdowns after deleting the group
         populateDropdowns();
 
