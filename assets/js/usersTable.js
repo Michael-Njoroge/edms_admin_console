@@ -32,8 +32,8 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
     const photoUrl = user.photo ? user.photo : "../images/no_image.jpg";
 
     // Check the status and set the corresponding label and color
-    const statusLabel = user.status === "active" ? "Active" : "InActive";
-    const statusColor = user.status === "active" ? "green" : "red";
+    const statusLabel = user.is_active === "1" ? "Active" : "InActive";
+    const statusColor = user.is_active === "0" ? "green" : "red";
 
     // Add the row to DataTable
     usersTable.row

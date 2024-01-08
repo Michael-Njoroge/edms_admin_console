@@ -204,7 +204,7 @@
  .input-field {
    background: #fff;
    color: #495057;
-   border: 1px solid rgba(129, 125, 125, .2);
+   border: 1px solid #afb1b4 rgba(129, 125, 125, .2);
    padding: 12px 18px;
    font-weight: 600;
    height: auto;
@@ -313,64 +313,95 @@
    font-size: 30px;
  }
 
- .text-color {
-   color: rgb(103, 103, 103);
- }
-
- .b-list {
-   list-style: none;
+ /* tree */
+ .tree,
+ .tree ul {
    margin: 0;
    padding: 0;
-   padding-left: 40px;
+   list-style: none;
  }
 
- .b-list_viewtype_centered {
-   margin: 100px 0 0 50%;
- }
-
- .b-list_type_tree {
-   display: none;
- }
-
- .b-list__item {
+ .tree ul {
+   margin-left: 1em;
    position: relative;
-   display: inline-block;
-   width: 100%;
-   color: rgb(103, 103, 103);
-   line-height: 1.5;
+ }
+
+ .tree ul ul {
+   margin-left: .5em;
+ }
+
+ .tree ul:before {
+   content: "";
+   display: block;
+   width: 0;
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   border-left: 1px solid #afb1b4;
+ }
+
+ .tree li {
+   margin: 0;
+   padding: 8px 1em;
+   line-height: 2em;
+   color: black;
+   position: relative;
    cursor: pointer;
  }
 
- .b-list__item:before {
+ .tree ul li:before {
    content: "";
-   position: absolute;
-   border-top: 1px solid rgb(103, 103, 103);
-   border-left: 1px solid rgb(103, 103, 103);
-   width: 35px;
-   height: 100%;
-   left: -35px;
-   top: 10px;
- }
-
- .b-list__item:after {
-   content: "";
-   position: absolute;
-   border-left: 1px solid rgb(103, 103, 103);
-   height: 100%;
-   left: -35px;
-   top: -13px;
-   z-index: -1;
- }
-
- .b-list__item:last-child:before {
-   border-left: none;
- }
-
- .b-checkbox {
-   position: absolute;
-   top: -99999px;
- }
-
- .b-checkbox:checked+.b-list_type_tree {
    display: block;
+   width: 10px;
+   height: 0;
+   border-top: 1px solid #afb1b4;
+   margin-top: -1px;
+   position: absolute;
+   top: 1em;
+   left: 0;
+ }
+
+ .tree ul li:last-child:before {
+   background: #fff;
+   height: auto;
+   top: 1em;
+   bottom: 0;
+ }
+
+ .indicator {
+   margin-right: 5px;
+ }
+
+ .tree li a,
+ .tree li button {
+   text-decoration: none;
+   color: black;
+ }
+
+ .tree li button {
+   border: none;
+   background: transparent;
+   margin: 0px 0px 0px 0px;
+   padding: 0px 0px 0px 0px;
+   outline: 0;
+ }
+
+ .tree .btn {
+   text-decoration: none;
+   color: black;
+   padding: 0;
+   margin: 0;
+   background: transparent;
+   border: none;
+   display: inline-block;
+ }
+
+ .tree .btn i {
+   margin-right: 5px;
+ }
+
+ .tree .btn:hover,
+ .tree .btn:focus {
+   background-color: #eee;
  }
