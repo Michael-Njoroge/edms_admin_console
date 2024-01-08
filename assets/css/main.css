@@ -312,3 +312,65 @@
  .box .data span {
    font-size: 30px;
  }
+
+ .text-color {
+   color: rgb(103, 103, 103);
+ }
+
+ .b-list {
+   list-style: none;
+   margin: 0;
+   padding: 0;
+   padding-left: 40px;
+ }
+
+ .b-list_viewtype_centered {
+   margin: 100px 0 0 50%;
+ }
+
+ .b-list_type_tree {
+   display: none;
+ }
+
+ .b-list__item {
+   position: relative;
+   display: inline-block;
+   width: 100%;
+   color: rgb(103, 103, 103);
+   line-height: 1.5;
+   cursor: pointer;
+ }
+
+ .b-list__item:before {
+   content: "";
+   position: absolute;
+   border-top: 1px solid rgb(103, 103, 103);
+   border-left: 1px solid rgb(103, 103, 103);
+   width: 35px;
+   height: 100%;
+   left: -35px;
+   top: 10px;
+ }
+
+ .b-list__item:after {
+   content: "";
+   position: absolute;
+   border-left: 1px solid rgb(103, 103, 103);
+   height: 100%;
+   left: -35px;
+   top: -13px;
+   z-index: -1;
+ }
+
+ .b-list__item:last-child:before {
+   border-left: none;
+ }
+
+ .b-checkbox {
+   position: absolute;
+   top: -99999px;
+ }
+
+ .b-checkbox:checked+.b-list_type_tree {
+   display: block;
+ }

@@ -922,6 +922,92 @@
                     </div>
                   </div>
                 </div>
+                <ul class="b-list b-list_type_tree b-list_viewtype_centered">
+                  <!-- Country 1 -->
+                  <li class="b-list__item b-list__item_type_parent">
+                    <label class="b-label" for="country1">
+                      <i class="ion-earth"></i>
+                      United States
+                    </label>
+                    <input type="checkbox" class="b-checkbox" id="country1" />
+                    <!-- Counties for Country 1 -->
+                    <ul class="b-list b-list_type_tree">
+                      <li class="b-list__item b-list__item_type_parent">
+                        <label class="b-label" for="county1-1">
+                          <i class="ion-folder"></i>
+                          California
+                        </label>
+                        <input
+                          type="checkbox"
+                          class="b-checkbox"
+                          id="county1-1"
+                        />
+                        <!-- Sub-counties for County 1-1 -->
+                        <ul class="b-list b-list_type_tree">
+                          <li class="b-list__item b-list__item_type_child">
+                            <label class="b-label" for="subcounty1-1-1">
+                              <i class="ion-document"></i>
+                              Los Angeles
+                            </label>
+                            <input
+                              type="checkbox"
+                              class="b-checkbox"
+                              id="subcounty1-1-1"
+                            />
+                          </li>
+                          <!-- Add more sub-counties as needed -->
+                        </ul>
+                      </li>
+                      <!-- Add more counties for Country 1 as needed -->
+                    </ul>
+                    <button class="add-item">Add New Item</button>
+                  </li>
+
+                  <!-- Country 2 -->
+                  <li class="b-list__item b-list__item_type_parent">
+                    <label class="b-label" for="country2">
+                      <i class="ion-earth"></i>
+                      Canada
+                    </label>
+                    <input type="checkbox" class="b-checkbox" id="country2" />
+                    <!-- Counties for Country 2 -->
+                    <ul class="b-list b-list_type_tree">
+                      <li class="b-list__item b-list__item_type_parent">
+                        <label class="b-label" for="county2-1">
+                          <i class="ion-folder"></i>
+                          Ontario
+                        </label>
+                        <input
+                          type="checkbox"
+                          class="b-checkbox"
+                          id="county2-1"
+                        />
+                        <!-- Sub-counties for County 2-1 -->
+                        <ul class="b-list b-list_type_tree">
+                          <li class="b-list__item b-list__item_type_child">
+                            <label class="b-label" for="subcounty2-1-1">
+                              <i class="ion-document"></i>
+                              Toronto
+                            </label>
+                            <input
+                              type="checkbox"
+                              class="b-checkbox"
+                              id="subcounty2-1-1"
+                            />
+                          </li>
+                          <!-- Add more sub-counties as needed -->
+                        </ul>
+                      </li>
+                      <!-- Add more counties for Country 2 as needed -->
+                    </ul>
+                    <button class="add-item">Add New Item</button>
+                  </li>
+
+                  <!-- Add new category button -->
+                  <li class="b-list__item b-list__item_type_parent">
+                    <button class="add-category">Add New Category</button>
+                  </li>
+                </ul>
               </div>
 
               <!-- *******************Groups Table***************** -->
