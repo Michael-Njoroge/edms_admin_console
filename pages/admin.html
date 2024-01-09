@@ -926,7 +926,7 @@
                 </div>
               </div>
 
-              <div class="container" style="margin-top: 30px">
+              <div id="categories" class="container" style="margin-top: 30px">
                 <div class="row">
                   <div class="col-md-12">
                     <ul id="tree1">
@@ -1038,6 +1038,58 @@
                         </li>
                       </ul>
                     </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal for adding a new node -->
+              <div
+                class="modal fade"
+                id="newNodeModal"
+                tabindex="-1"
+                aria-labelledby="newNodeModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="newNodeModalLabel">
+                        Add New Node
+                      </h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <label for="nodeNameInput" class="form-label"
+                        >Node Name:</label
+                      >
+                      <input
+                        type="text"
+                        id="nodeNameInput"
+                        class="form-control"
+                        placeholder="Enter node name"
+                      />
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="saveNodeBtn"
+                      >
+                        Save
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

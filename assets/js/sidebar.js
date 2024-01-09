@@ -9,6 +9,7 @@ $(document).ready(function () {
     // Hide all tables and cards
     $(".table-container").hide();
     $("#content").hide();
+    $("#categories").hide();
 
     // Show the corresponding table or card based on the selected radio button
     if (value === "3") {
@@ -21,6 +22,8 @@ $(document).ready(function () {
       $("#usersTableContainer").show();
     } else if (value === "1") {
       $("#content").show();
+    } else if (value === "7") {
+      $("#categories").show();
     }
     // Add more conditions for other radio buttons
   });

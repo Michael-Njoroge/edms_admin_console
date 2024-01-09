@@ -22,14 +22,10 @@ $.fn.extend({
 
       // Add "New" button after each level
       var newButton = $(
-        "<li><button class='btn btn-primary btn-sm'><i class='glyphicon " +
+        "<li><button class='btn new-node-btn' data-toggle='modal' data-target='#newNodeModal'><i class='glyphicon " +
           closedClass +
           "'></i> New</button></li>"
       );
-      newButton.on("click", function (e) {
-        // Add your logic for the "New" button click event here
-        e.stopPropagation(); // Prevent the click event from propagating to the parent li
-      });
       level.append(newButton);
     });
 
@@ -74,6 +70,11 @@ $.fn.extend({
         $(this).closest("li").click();
         e.preventDefault();
       });
+    });
+
+    // Handle the "New" button click to show the modal
+    tree.find(".new-node-btn").on("click", function (e) {
+      e.stopPropagation(); // Prevent the click event from propagating to the parent li
     });
   },
 });

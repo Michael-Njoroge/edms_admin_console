@@ -379,13 +379,7 @@
    color: black;
  }
 
- .tree li button {
-   border: none;
-   background: transparent;
-   margin: 0px 0px 0px 0px;
-   padding: 0px 0px 0px 0px;
-   outline: 0;
- }
+
 
  .tree .btn {
    text-decoration: none;
@@ -399,9 +393,4 @@
 
  .tree .btn i {
    margin-right: 5px;
- }
-
- .tree .btn:hover,
- .tree .btn:focus {
-   background-color: #eee;
  }
