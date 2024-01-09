@@ -75,6 +75,13 @@ $.fn.extend({
     // Handle the "New" button click to show the modal
     tree.find(".new-node-btn").on("click", function (e) {
       e.stopPropagation(); // Prevent the click event from propagating to the parent li
+      $("#newNodeModal").modal("show"); // Show the modal manually
+    });
+
+    // Clear the modal content on modal hidden
+    $("#newNodeModal").on("hidden.bs.modal", function () {
+      // Clear the input field
+      $("#nodeNameInput").val("");
     });
   },
 });
