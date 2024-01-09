@@ -183,7 +183,19 @@
               value="7"
             />
             <label for="sidebar_tab7"
-              ><i class="fa fa-signal"></i> Lookups</label
+              ><i class="fa fa-search"></i> Lookups</label
+            >
+          </li>
+
+          <li>
+            <input
+              type="radio"
+              name="sidebar_tab1"
+              id="sidebar_tab8"
+              value="8"
+            />
+            <label for="sidebar_tab8"
+              ><i class="fa fa-exchange"></i> Serializers</label
             >
           </li>
         </ul>
@@ -926,7 +938,16 @@
                 </div>
               </div>
 
-              <div id="categories" class="container" style="margin-top: 30px">
+              <div id="categories" style="margin-top: 30px">
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      Lookups
+                    </li>
+                  </ol>
+                </nav>
                 <div class="row">
                   <div class="col-md-12">
                     <ul id="tree1">
@@ -1058,10 +1079,12 @@
                       </h5>
                       <button
                         type="button"
-                        class="btn-close"
+                        class="close"
                         data-dismiss="modal"
                         aria-label="Close"
-                      ></button>
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
                     <div class="modal-body">
                       <label for="nodeNameInput" class="form-label"
@@ -1077,17 +1100,11 @@
                     <div class="modal-footer">
                       <button
                         type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-primary"
+                        class="btn"
+                        style="background: #355b11; color: white"
                         id="saveNodeBtn"
                       >
-                        Save
+                        Submit
                       </button>
                     </div>
                   </div>
@@ -1348,6 +1365,62 @@
                 ></div>
               </div>
 
+              <!-- *******************Serializer Table***************** -->
+              <div
+                id="serializerTableContainer"
+                class="table-container"
+                style="display: none"
+              >
+                <div class="card-header d-flex justify-content-between mb-3">
+                  <!-- Breadcrumb -->
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">
+                        Serializer
+                      </li>
+                    </ol>
+                  </nav>
+                  <button
+                    type="button"
+                    data-toggle="modal"
+                    data-target="#newNodeModal"
+                    class="btn btn-secondary"
+                  >
+                    New Serializer
+                  </button>
+                </div>
+                <br />
+                <table
+                  id="serializerTable"
+                  class="table table-hover table-bordered"
+                  cellspacing="3"
+                  style="
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    width: 100%;
+                    border-radius: 10px;
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Number Format</th>
+                      <th>Date Format</th>
+                      <th>Prefix</th>
+                      <th>Postfix</th>
+                      <th>Order of Items</th>
+                      <th>Last Number</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="serializerTbody"></tbody>
+                </table>
+                <div
+                  id="serializerPagination"
+                  class="pagination justify-content-center"
+                ></div>
+              </div>
+
               <!-- main js -->
               <script src="../assets/js/script.js"></script>
               <script src="../assets/js/groups.js"></script>
@@ -1356,6 +1429,8 @@
               <script src="../assets/js/usersTable.js"></script>
               <script src="../assets/js/groupMemberships.js"></script>
               <script src="../assets/js/groupPermissions.js"></script>
+              <script src="../assets/js/lookups.js"></script>
+              <script src="../assets/js/serializer.js"></script>
 
               <script src="../assets/js/jstree.js"></script>
 

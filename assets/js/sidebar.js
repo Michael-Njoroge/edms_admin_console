@@ -24,6 +24,8 @@ $(document).ready(function () {
       $("#content").show();
     } else if (value === "7") {
       $("#categories").show();
+    } else if (value === "8") {
+      $("#serializerTableContainer").show();
     }
     // Add more conditions for other radio buttons
   });
