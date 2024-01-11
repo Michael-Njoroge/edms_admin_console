@@ -43,8 +43,8 @@ async function serialData(page = 1, itemsPerPage = 5) {
         serializer.last_number,
         `<td style="font-size:21px;">
           <center>
-            <a href="#" data-toggle="modal" data-target="#editForm" onclick="editSerializer(${serializer.id})" data-serializerid="${serializer.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
-            <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteSerializer(${serializer.id})" title="delete"><i class="fa fa-trash"></i></a>
+            <a href="#" data-toggle="modal" data-target="#" onclick="editSerializer(${serializer.id})" data-serializerid="${serializer.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
+            <a href="#" data-toggle="modal" data-target="#" onclick="prepareToDeleteSerializer(${serializer.id})" title="delete"><i class="fa fa-trash"></i></a>
           </center>
         </td>`,
       ])
