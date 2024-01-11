@@ -25,9 +25,6 @@ $(document).ready(function () {
         // Handle logout failure
         console.error(xhr.responseText);
 
-        // Optionally, display an error message
-        // $("#error-message").text("Logout failed. Please try again.");
-
         // Redirect to index.html even if logout fails (you may adjust this based on your requirements)
         window.location.href = "../index.html";
       },
