@@ -32,8 +32,12 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
     const photoUrl = user.photo ? user.photo : "../images/no_image.jpg";
 
     // Check the status and set the corresponding label and color
-    const statusLabel = user.is_active === "1" ? "Active" : "InActive";
-    const statusColor = user.is_active === "0" ? "green" : "red";
+    const statusLabel = user.is_active === 1 ? "Active" : "Inactive";
+    const statusColor = user.is_active === 1 ? "green" : "red";
+
+    // Determine the action buttons based on the user status
+    const activateButton = `<a href="#" onclick="performUserAction('${user.username}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>`;
+    const deactivateButton = `<a href="#" onclick="performUserAction('${user.username}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>`;
 
     // Add the row to DataTable
     usersTable.row
@@ -45,8 +49,7 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
         "stamp",
         "signature",
         `<span style="color: ${statusColor};">${statusLabel}</span>`,
-        `<a href="#" onclick="performUserAction('${user.username}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>
-           <a href="#" onclick="performUserAction('${user.username}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>`,
+        statusLabel === "Active" ? deactivateButton : activateButton,
       ])
       .draw(false);
   });
