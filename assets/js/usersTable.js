@@ -29,7 +29,11 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
   // Loop through each user and create a table row
   data.data.data.forEach((user, index) => {
     // Check if the user has a photo
-    const photoUrl = user.photo ? user.photo : "../images/no_image.jpg";
+    const photoUrl = user.user_profile
+      ? user.user_profile
+      : "../images/no_image.jpg";
+
+    console.log("Photo URL:", photoUrl);
 
     // Check the status and set the corresponding label and color
     const statusLabel = user.is_active === 1 ? "Active" : "Inactive";

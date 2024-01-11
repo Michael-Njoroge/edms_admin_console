@@ -522,13 +522,14 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      <form>
+                      <form id="uploadPhotoForm" enctype="multipart/form-data">
                         <div class="form-group">
                           <label for="photoFile">Select Photo:</label>
                           <input
                             type="file"
                             class="form-control-file"
                             id="photoFile"
+                            accept="image/*"
                           />
                         </div>
                       </form>
