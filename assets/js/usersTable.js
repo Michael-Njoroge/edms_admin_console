@@ -30,7 +30,7 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
   data.data.data.forEach((user, index) => {
     // Check if the user has a photo
     const photoUrl = user.user_profile
-      ? user.user_profile
+      ? `http://127.0.0.1:8000/storage/user_profiles/${user.user_profile}`
       : "../images/no_image.jpg";
 
     console.log("Photo URL:", photoUrl);
