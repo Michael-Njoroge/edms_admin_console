@@ -38,6 +38,12 @@
       <div class="container-fluid">
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="#"><i class="fa fa-bell-o"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-comment-o"></i></a>
+            </li>
             <li class="dropdown">
               <a
                 id="user-name"
@@ -47,8 +53,14 @@
                 role="button"
                 aria-haspopup="true"
                 aria-expanded="false"
-                >Loading...</a
               >
+                <img
+                  id="user-image"
+                  src=""
+                  alt="User Image"
+                  class="user-image"
+                />
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="#" data-toggle="modal" data-target="#profileModal"
@@ -85,12 +97,6 @@
                 <li role="separator" class="divider"></li>
                 <li><a href="#" id="logout">Logout</a></li>
               </ul>
-            </li>
-            <li>
-              <a href="#"><i class="fa fa-bell-o"></i></a>
-            </li>
-            <li>
-              <a href="#"><i class="fa fa-comment-o"></i></a>
             </li>
           </ul>
         </div>

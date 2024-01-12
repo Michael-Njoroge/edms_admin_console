@@ -47,9 +47,6 @@ $(document).ready(function () {
         // Hide the spinner after successful login
         $("#spinner").hide();
 
-        // Handle successful login
-        console.log(response);
-
         // Save token in localStorage
         localStorage.setItem("edms_token", response.access_token);
 

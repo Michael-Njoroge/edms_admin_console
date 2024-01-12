@@ -29,6 +29,7 @@
    display: none;
  }
 
+
  .msb .navbar-nav li label:hover {
    background-color: #f0f0f0;
    border-bottom: 3px solid #ffa600;
@@ -44,6 +45,7 @@
    left: 45px;
    padding: 2px;
  }
+
 
  .brand-name-wrapper:hover {
    border-bottom: 3px solid #ffa600;
@@ -67,7 +69,7 @@
 
  .navbar-default {
    margin-left: 1150px;
-   background: white !important;
+   background: transparent !important;
    border: none !important;
 
  }
@@ -83,11 +85,12 @@
    overflow-y: auto;
    white-space: nowrap;
    overflow-wrap: break-word;
-   height: 100%;
    z-index: 1;
+   height: 100vh;
    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
 
  }
+
 
  .nv {
    li {
@@ -112,7 +115,7 @@
 
    /*content view*/
    .cv {
-     margin-top: 5rem;
+     margin-top: 6rem;
      padding: 5px;
      padding-right: 20px;
      padding-left: 20px;

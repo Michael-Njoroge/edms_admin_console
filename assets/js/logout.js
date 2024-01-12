@@ -2,7 +2,6 @@ $(document).ready(function () {
   // HANDLE LOGOUT
   $("#logout").on("click", function (event) {
     event.preventDefault();
-    console.log("Logout button clicked");
 
     const bearerToken = localStorage.getItem("edms_token");
 
@@ -25,7 +24,7 @@ $(document).ready(function () {
         // Handle logout failure
         console.error(xhr.responseText);
 
-        // Redirect to index.html even if logout fails (you may adjust this based on your requirements)
+        // Redirect to index.html even if logout fails
         window.location.href = "../index.html";
       },
     });

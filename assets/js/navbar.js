@@ -74,8 +74,8 @@ function fetchUserInfoAndUpdateNavbar() {
   })
     .then((response) => response.json())
     .then((data) => {
-      // Update the user's name in the navigation bar
-      updateUserNameInNavbar(data.data.data.username);
+      // Update the user's photo in the navigation bar
+      updatePhotoInNavbar(data.data.data.user_profile);
 
       // Update the profile modal
       updateProfileModal(data.data.data);
@@ -88,12 +88,22 @@ function fetchUserInfoAndUpdateNavbar() {
     });
 }
 
-// FUNCTION TO UPDATE THE USER'S NAME IN THE NAVIGATION BAR
-function updateUserNameInNavbar(userName) {
-  // Update the user's name in the navigation bar
-  const userNameElement = document.getElementById("user-name");
-  if (userNameElement) {
-    userNameElement.innerText = userName;
+// FUNCTION TO UPDATE THE USER'S PHOTO IN THE NAVIGATION BAR
+function updatePhotoInNavbar(userPhoto) {
+  // Update the user's photo in the navigation bar
+  const userImageElement = document.getElementById("user-image");
+  if (userImageElement) {
+    const photoUrl = userPhoto
+      ? `http://127.0.0.1:8000/storage/user_profiles/${userPhoto}`
+      : "../images/no_image.jpg";
+
+    // Set the src attribute based on whether the user has a photo or not
+    userImageElement.src = photoUrl;
+
+    // Set the width and height of the image
+    userImageElement.style.width = "30px";
+    userImageElement.style.height = "30px";
+    userImageElement.style.borderRadius = "50%";
   }
 }
 
