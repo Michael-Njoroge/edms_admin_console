@@ -1,9 +1,37 @@
-// Function to handle file selection
+// FUNCTION TO DISPLAY SELECTED IMAGE IN THE PREVIEW
+function displaySelectedImage(files) {
+  if (files.length > 0) {
+    const selectedFile = files[0];
+
+    const imagePreview = document.getElementById("imagePreview");
+    const imagePreviewContainer = document.getElementById(
+      "imagePreviewContainer"
+    );
+
+    // Display the selected image in the preview container
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      imagePreview.src = e.target.result;
+      imagePreviewContainer.style.display = "block";
+    };
+    reader.readAsDataURL(selectedFile);
+  }
+}
+// Add an event listener to the file input to trigger the preview
+document
+  .getElementById("photoFile")
+  .addEventListener("change", function (event) {
+    displaySelectedImage(event.target.files);
+  });
+
+// FUNCTION TO HANDLE FILE SELECTION
 function handleFileSelect(event) {
   event.preventDefault();
 
+  // Display the selected image in the preview container
   const fileInput = document.getElementById("photoFile");
   const files = fileInput.files;
+  displaySelectedImage(files);
 
   if (files.length > 0) {
     const selectedFile = files[0];
@@ -79,12 +107,19 @@ function handleFileSelect(event) {
       });
   }
 }
-
-// Listen for the modal hidden event to reset the form
+// LISTEN FOR THE MODAL HIDDEN EVENT TO RESET THE FORM AND CLEAR THE PREVIEW
 $("#uploadPhotoModal").on("hidden.bs.modal", function () {
   // Clear the file input and reset the form
   $("#photoFile").val("");
   $("#uploadPhotoForm")[0].reset();
+
+  // Clear the image preview
+  const imagePreview = document.getElementById("imagePreview");
+  const imagePreviewContainer = document.getElementById(
+    "imagePreviewContainer"
+  );
+  imagePreview.src = "";
+  imagePreviewContainer.style.display = "none";
 });
 
 // FUNCTION TO FETCH USER INFORMATION BASED ON THE LOGGED-IN USER'S ID
