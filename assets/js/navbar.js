@@ -1,11 +1,8 @@
-// Add an event listener to the file input
-document
-  .getElementById("photoFile")
-  .addEventListener("change", handleFileSelect);
-
 // Function to handle file selection
 function handleFileSelect(event) {
-  const fileInput = event.target;
+  event.preventDefault();
+
+  const fileInput = document.getElementById("photoFile");
   const files = fileInput.files;
 
   if (files.length > 0) {
@@ -30,6 +27,14 @@ function handleFileSelect(event) {
     // Use userId to construct the update URL
     const updateUrl = `http://127.0.0.1:8000/api/users/update/${userId}`;
 
+    // Show spinner and disable the upload button during the upload
+    const uploadButton = $("#uploadButton");
+    const uploadSpinner = $("#uploadSpinner");
+    uploadButton
+      .prop("disabled", true)
+      .html('<i class="fa fa-spinner fa-spin"></i> Uploading...');
+    uploadSpinner.removeClass("d-none");
+
     // Use the Fetch API to send a POST request to the update endpoint with the FormData containing the file
     fetch(updateUrl, {
       method: "POST",
@@ -42,12 +47,45 @@ function handleFileSelect(event) {
       .then((data) => {
         console.log(data);
 
-        // Assuming you want to update the user information in the navbar and profile modal after a successful upload
+        // Close the upload photo modal
+        $("#uploadPhotoModal").modal("hide");
+
+        // Update the user information in the navbar and profile modal after a successful upload
         fetchUserInfoAndUpdateNavbar();
+
+        // Destroy the existing DataTable instance
+        const usersTable = $("#usersTable").DataTable({
+          bDestroy: true,
+        });
+
+        // Clear the existing table
+        usersTable.clear().draw();
+
+        // Fetch and update table data for the user using DataTables with bDestroy: true
+        populateUsersTable();
+
+        // Enable the upload button and revert the text
+        uploadButton.prop("disabled", false).html("Upload");
+        uploadSpinner.addClass("d-none");
+
+        toastr.success("Photo uploaded successfully");
       })
-      .catch((error) => console.error("Error uploading photo:", error));
+      .catch((error) => {
+        console.error("Error uploading photo:", error);
+
+        // Enable the upload button and revert the text
+        uploadButton.prop("disabled", false).html("Upload");
+        uploadSpinner.addClass("d-none");
+      });
   }
 }
+
+// Listen for the modal hidden event to reset the form
+$("#uploadPhotoModal").on("hidden.bs.modal", function () {
+  // Clear the file input and reset the form
+  $("#photoFile").val("");
+  $("#uploadPhotoForm")[0].reset();
+});
 
 // FUNCTION TO FETCH USER INFORMATION BASED ON THE LOGGED-IN USER'S ID
 function fetchUserInfoAndUpdateNavbar() {

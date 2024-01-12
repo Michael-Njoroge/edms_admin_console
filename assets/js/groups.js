@@ -212,7 +212,6 @@ $(document).ready(async function () {
 populateDropdowns();
 
 ///// FUNCTION TO SHOW EDIT MODAL BASED ON GROUP ID
-
 // Store the original values when the edit modal is opened
 let originalGroupName, originalGroupAdminId;
 
