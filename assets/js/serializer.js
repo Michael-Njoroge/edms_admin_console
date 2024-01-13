@@ -44,7 +44,7 @@ async function serialData(page = 1, itemsPerPage = 5) {
         `<td style="font-size:21px;">
           <center>
             <a href="#" data-toggle="modal" data-target="#editSerializerForm" onclick="editSerializer(${serializer.id})" data-serializerid="${serializer.id}" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
-            <a href="#" data-toggle="modal" data-target="#" onclick="prepareToDeleteSerializer(${serializer.id})" title="delete"><i class="fa fa-trash"></i></a>
+            <a href="#" data-toggle="modal" data-target="#confirmDeleteSerializerModal" onclick="prepareToDeleteSerializer(${serializer.id})" title="delete"><i class="fa fa-trash"></i></a>
           </center>
         </td>`,
       ])
@@ -246,5 +246,60 @@ function submitEditSerializerForm() {
 
       // Enable the submit button and revert the text
       submitButton.prop("disabled", false).html("Submit");
+    });
+}
+
+// FUNCTION TO PREPARE FOR SERIALIZER DELETION BY SETTING THE SERIALIZER ID TO BE DELETED
+function prepareToDeleteSerializer(serializerId) {
+  // Set the serializer ID to the global variable
+  serializerToDeleteId = serializerId;
+}
+
+// FUNCTION TO HANDLE SERIALIZER DELETION
+function deleteSerializer() {
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem("edms_token");
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    return;
+  }
+
+  // Disable the delete button and show loading text
+  const deleteButton = $("#deleteSerializerBtn");
+  deleteButton
+    .prop("disabled", true)
+    .html('<i class="fa fa-spinner fa-spin"></i> Deleting...');
+
+  // Make a DELETE request to delete the serializer
+  fetch(
+    `http://127.0.0.1:8000/api/serialisations/delete/${serializerToDeleteId}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      // Check the response and handle accordingly
+      if (data.success) {
+        // Call the function to initially populate the table
+        serialData();
+
+        toastr.success("Serializer deleted successfully");
+      } else {
+        console.error("Failed to delete serializer:", data.message);
+      }
+    })
+    .finally(() => {
+      // Enable the delete button and revert the text
+      deleteButton.prop("disabled", false).html("Delete");
+
+      // Hide the confirmation modal
+      $("#confirmDeleteSerializerModal").modal("hide");
     });
 }
