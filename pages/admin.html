@@ -1349,6 +1349,120 @@
                 </div>
               </div>
 
+              <!-- ******************************Edit Serializer modal********************************** -->
+              <div
+                class="modal fade"
+                id="editSerializerForm"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="editSerializerModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                      <h5 class="modal-title" id="editSerializerModalLabel">
+                        Edit Serializer
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form
+                      id="editSerializerForm"
+                      onsubmit="event.preventDefault(); submitEditSerializerForm();"
+                    >
+                      <div class="modal-body">
+                        <input
+                          type="hidden"
+                          class="form-control"
+                          id="edit_serializer_id"
+                        />
+                        <div class="form-group">
+                          <label for="edit_last_number">Last Number</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="edit_last_number"
+                            name="edit_last_number"
+                            placeholder="Enter Last Number"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="edit_order_of_items"
+                            >Order of Items</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="edit_order_of_items"
+                            name="edit_order_of_items"
+                            placeholder="Enter Order of Items"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="edit_prefix">Prefix</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="edit_prefix"
+                            name="edit_prefix"
+                            placeholder="Enter Prefix"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="edit_number_format">Number Format</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="edit_number_format"
+                            name="edit_number_format"
+                            placeholder="Enter Number Format"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="edit_postfix">Postfix</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="edit_postfix"
+                            name="edit_postfix"
+                            placeholder="Enter Postfix"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="edit_date_format">Date Format</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="edit_date_format"
+                            name="edit_date_format"
+                            placeholder="Enter Date Format"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="modal-footer border-top-0 d-flex justify-content-center"
+                      >
+                        <button
+                          type="submit"
+                          class="btn"
+                          id="editSerializerSubmitBtn"
+                          style="background: #355b11; color: white"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
               <!-- *******************Groups Table***************** -->
               <div id="groupsTableContainer" class="table-container">
                 <div class="card-header d-flex justify-content-between mb-3">
