@@ -78,3 +78,77 @@ async function serialData(page = 1, itemsPerPage = 5) {
 
 // Call the function to initially populate the table
 serialData();
+
+// FUNCTION TO HANDLE FORM SUBMISSION AND CREATE A NEW SERIALIZER
+function createSerializer() {
+  // Fetch form data
+  const lastNumber = $("#last_number").val();
+  const orderOfItems = $("#order_of_items").val();
+  const prefix = $("#prefix").val();
+  const numberFormat = $("#number_format").val();
+  const postfix = $("#postfix").val();
+  const dateFormat = $("#date_format").val();
+
+  // Validate required fields
+  if (!lastNumber || !orderOfItems) {
+    toastr.error("Please fill out all required fields.");
+    return;
+  }
+
+  // Disable the submit button and show loading text
+  const submitButton = $("#serializerSubmitBtn");
+  submitButton
+    .prop("disabled", true)
+    .html('<i class="fa fa-spinner fa-spin"></i> Loading...');
+
+  // Construct the request payload
+  const requestData = {
+    last_number: lastNumber,
+    order_of_items: orderOfItems,
+    prefix: prefix,
+    number_format: numberFormat,
+    postfix: postfix,
+    date_format: dateFormat,
+  };
+
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem("edms_token");
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    return;
+  }
+
+  // Make a POST request to create a new serializer
+  fetch("http://127.0.0.1:8000/api/serialisations/store", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // Close the modal after successful submission
+      $("#serializerForm").modal("hide");
+
+      // Clear the serializer form
+      $("#serializerCreateForm")[0].reset();
+
+      // Call the function to initially populate the table
+      serialData();
+
+      // Enable the submit button and revert the text
+      submitButton.prop("disabled", false).html("Submit");
+
+      toastr.success("Serializer created successfully");
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+
+      // Enable the submit button and revert the text
+      submitButton.prop("disabled", false).html("Submit");
+    });
+}

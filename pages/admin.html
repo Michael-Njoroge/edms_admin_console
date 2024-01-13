@@ -1242,6 +1242,116 @@
                 </div>
               </div>
 
+              <!-- ******************************Create Serializer modal********************************** -->
+              <div
+                class="modal fade"
+                id="serializerForm"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="serializerModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                      <h5 class="modal-title" id="serializerModalLabel">
+                        Create New Serializer
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form
+                      id="serializerCreateForm"
+                      onsubmit="event.preventDefault(); createSerializer();"
+                    >
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label for="last_number">Last Number</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="last_number"
+                            name="last_number"
+                            placeholder="Enter Last Number"
+                            required
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="order_of_items">Order of Items</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="order_of_items"
+                            name="order_of_items"
+                            placeholder="Enter Order of Items"
+                            required
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="prefix">Prefix</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="prefix"
+                            name="prefix"
+                            placeholder="Enter Prefix"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="number_format">Number Format</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="number_format"
+                            name="number_format"
+                            placeholder="Enter Number Format"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="postfix">Postfix</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="postfix"
+                            name="postfix"
+                            placeholder="Enter Postfix"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="date_format">Date Format</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="date_format"
+                            name="date_format"
+                            placeholder="Enter Date Format"
+                          />
+                        </div>
+                        <!-- Add more fields if needed -->
+                      </div>
+                      <div
+                        class="modal-footer border-top-0 d-flex justify-content-center"
+                      >
+                        <button
+                          type="submit"
+                          class="btn"
+                          id="serializerSubmitBtn"
+                          style="background: #355b11; color: white"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
               <!-- *******************Groups Table***************** -->
               <div id="groupsTableContainer" class="table-container">
                 <div class="card-header d-flex justify-content-between mb-3">
@@ -1471,7 +1581,7 @@
                   <button
                     type="button"
                     data-toggle="modal"
-                    data-target="#newNodeModal"
+                    data-target="#serializerForm"
                     class="btn btn-secondary"
                   >
                     New Serializer
