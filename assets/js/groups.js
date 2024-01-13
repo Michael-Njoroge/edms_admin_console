@@ -32,8 +32,8 @@ async function getData(page = 1, itemsPerPage = 5) {
 
   // Loop through each group and create a table row
   data.data.data.forEach((group, index) => {
-    const statusLabel = group.status === "active" ? "Active" : "InActive";
-    const statusColor = group.status === "active" ? "green" : "red";
+    const statusLabel = group.is_active === 1 ? "Active" : "InActive";
+    const statusColor = group.is_active === 1 ? "green" : "red";
 
     // Get usernames of group members
     const memberUsernames = group.users.map((user) => user.username).join(", ");

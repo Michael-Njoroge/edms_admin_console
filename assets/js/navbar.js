@@ -54,7 +54,7 @@ function handleFileSelect(event) {
 
     // Decode the JWT to extract the user ID
     const decodedToken = parseJwt(bearerToken);
-    const userId = decodedToken.sub; // Assuming 'sub' contains the user ID
+    const userId = decodedToken.sub;
 
     const formData = new FormData();
     formData.append("user_profile", selectedFile);
@@ -185,10 +185,10 @@ function handleStampFileSelect(event) {
 
   // Decode the JWT to extract the user ID
   const decodedToken = parseJwt(bearerToken);
-  const userId = decodedToken.sub; // Assuming 'sub' contains the user ID
+  const userId = decodedToken.sub;
 
   const formData = new FormData();
-  formData.append("stamp_image", selectedFile);
+  formData.append("user_stamp", selectedFile);
 
   // Use userId to construct the update URL
   const updateUrl = `http://127.0.0.1:8000/api/users/update/${userId}`;
@@ -312,10 +312,10 @@ function handleSignatureFileSelect(event) {
 
   // Decode the JWT to extract the user ID
   const decodedToken = parseJwt(bearerToken);
-  const userId = decodedToken.sub; // Assuming 'sub' contains the user ID
+  const userId = decodedToken.sub;
 
   const formData = new FormData();
-  formData.append("signature_image", selectedFile);
+  formData.append("user_signature", selectedFile);
 
   // Use userId to construct the update URL
   const updateUrl = `http://127.0.0.1:8000/api/users/update/${userId}`;
@@ -397,7 +397,7 @@ function fetchUserInfoAndUpdateNavbar() {
 
   // Decode the JWT to extract the user ID
   const decodedToken = parseJwt(bearerToken);
-  const userId = decodedToken.sub; // Assuming 'sub' contains the user ID
+  const userId = decodedToken.sub;
 
   // Make a GET request to fetch user information based on the user's ID
   fetch(`http://127.0.0.1:8000/api/user/show/${userId}`, {
