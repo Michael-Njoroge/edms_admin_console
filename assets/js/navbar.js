@@ -1,4 +1,4 @@
-// FUNCTION TO DISPLAY SELECTED IMAGE IN THE PREVIEW
+/////////////////////////// FUNCTION TO DISPLAY SELECTED IMAGE IN THE PREVIEW ///////////////////////////
 function displaySelectedImage(files) {
   if (files.length > 0) {
     const selectedFile = files[0];
@@ -129,7 +129,134 @@ $("#uploadPhotoModal").on("hidden.bs.modal", function () {
   imagePreviewContainer.style.display = "none";
 });
 
-// FUNCTION TO FETCH USER INFORMATION BASED ON THE LOGGED-IN USER'S ID
+///////////////// FUNCTION TO DISPLAY SELECTED STAMP IMAGE IN THE PREVIEW /////////////////////////
+function displaySelectedStamp(files) {
+  if (files.length > 0) {
+    const selectedFile = files[0];
+
+    const stampPreview = document.getElementById("stampPreview");
+    const stampPreviewContainer = document.getElementById(
+      "stampPreviewContainer"
+    );
+
+    // Display the selected stamp image in the preview container
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      stampPreview.src = e.target.result;
+      stampPreviewContainer.style.display = "block";
+    };
+    reader.readAsDataURL(selectedFile);
+  }
+}
+
+// Add an event listener to the stamp file input to trigger the preview
+document
+  .getElementById("stampFile")
+  .addEventListener("change", function (event) {
+    displaySelectedStamp(event.target.files);
+  });
+
+// FUNCTION TO HANDLE STAMP FILE SELECTION AND UPLOAD
+function handleStampFileSelect(event) {
+  event.preventDefault();
+
+  // Display the selected stamp image in the preview container
+  const stampFileInput = document.getElementById("stampFile");
+  const files = stampFileInput.files;
+
+  if (files.length === 0) {
+    // Display an error toast if no stamp image is selected
+    toastr.error("Please select a stamp image to upload");
+    return;
+  }
+
+  displaySelectedStamp(files);
+
+  const selectedFile = files[0];
+
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem("edms_token");
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    return;
+  }
+
+  // Decode the JWT to extract the user ID
+  const decodedToken = parseJwt(bearerToken);
+  const userId = decodedToken.sub; // Assuming 'sub' contains the user ID
+
+  const formData = new FormData();
+  formData.append("stamp_image", selectedFile);
+
+  // Use userId to construct the update URL
+  const updateUrl = `http://127.0.0.1:8000/api/users/update/${userId}`;
+
+  // Show spinner and disable the upload button during the upload
+  const uploadStampButton = $("#uploadStampButton");
+  const stampUploadSpinner = $("#stampUploadSpinner");
+  uploadStampButton
+    .prop("disabled", true)
+    .html('<i class="fa fa-spinner fa-spin"></i> Uploading...');
+  stampUploadSpinner.removeClass("d-none");
+
+  // Use the Fetch API to send a POST request to the update endpoint with the FormData containing the stamp image
+  fetch(updateUrl, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+
+      // Close the upload stamp modal
+      $("#uploadStampModal").modal("hide");
+
+      // Destroy the existing DataTable instance
+      const usersTable = $("#usersTable").DataTable({
+        bDestroy: true,
+      });
+
+      // Clear the existing table
+      usersTable.clear().draw();
+
+      // Fetch and update table data for the user using DataTables with bDestroy: true
+      populateUsersTable();
+
+      // Enable the upload button and revert the text
+      uploadStampButton.prop("disabled", false).html("Upload");
+      stampUploadSpinner.addClass("d-none");
+
+      toastr.success("Stamp image uploaded successfully");
+    })
+    .catch((error) => {
+      console.error("Error uploading stamp image:", error);
+
+      // Enable the upload button and revert the text
+      uploadStampButton.prop("disabled", false).html("Upload");
+      stampUploadSpinner.addClass("d-none");
+    });
+}
+// LISTEN FOR THE STAMP MODAL HIDDEN EVENT TO RESET THE FORM AND CLEAR THE PREVIEW
+$("#uploadStampModal").on("hidden.bs.modal", function () {
+  // Clear the stamp file input and reset the form
+  $("#stampFile").val("");
+  $("#uploadStampForm")[0].reset();
+
+  // Clear the stamp image preview
+  const stampPreview = document.getElementById("stampPreview");
+  const stampPreviewContainer = document.getElementById(
+    "stampPreviewContainer"
+  );
+  stampPreview.src = "";
+  stampPreviewContainer.style.display = "none";
+});
+
+/////////////////// FUNCTION TO FETCH USER INFORMATION BASED ON THE LOGGED-IN USER'S ID /////////////////////////
 function fetchUserInfoAndUpdateNavbar() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem("edms_token");
