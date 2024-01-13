@@ -91,7 +91,7 @@ function createSerializer() {
 
   // Validate required fields
   if (!lastNumber || !orderOfItems) {
-    toastr.error("Please fill out all required fields.");
+    toastr.error("Last Number and Order of items are required fields");
     return;
   }
 
