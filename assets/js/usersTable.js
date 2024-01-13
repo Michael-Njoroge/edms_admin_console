@@ -57,12 +57,16 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
     const activateButton = `<a href="#" onclick="performUserAction('${user.username}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>`;
     const deactivateButton = `<a href="#" onclick="performUserAction('${user.username}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>`;
 
+    // Get group names
+    const groupNames = user.groups.map((group) => group.group_name).join(", ");
+
     // Add the row to DataTable
     usersTable.row
       .add([
         index + 1,
         user.name,
         user.username,
+        groupNames,
         `<img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 40px; height: 40px; border-radius: 50%;" />`,
         `<img src="${stampUrl}" alt="User Stamp" class="user-stamp" style="width: 40px; height: 40px; border-radius: 50%;" />`,
         `<img src="${signatureUrl}" alt="User Signature" class="user-signature" style="width: 40px; height: 40px; border-radius: 50%;" />`,
