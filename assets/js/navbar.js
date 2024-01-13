@@ -256,6 +256,134 @@ $("#uploadStampModal").on("hidden.bs.modal", function () {
   stampPreviewContainer.style.display = "none";
 });
 
+/////////////////////// FUNCTION TO DISPLAY SELECTED SIGNATURE IMAGE IN THE PREVIEW /////////////////////
+function displaySelectedSignature(files) {
+  if (files.length > 0) {
+    const selectedFile = files[0];
+
+    const signaturePreview = document.getElementById("signaturePreview");
+    const signaturePreviewContainer = document.getElementById(
+      "signaturePreviewContainer"
+    );
+
+    // Display the selected signature image in the preview container
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      signaturePreview.src = e.target.result;
+      signaturePreviewContainer.style.display = "block";
+    };
+    reader.readAsDataURL(selectedFile);
+  }
+}
+
+// Add an event listener to the signature file input to trigger the preview
+document
+  .getElementById("signatureFile")
+  .addEventListener("change", function (event) {
+    displaySelectedSignature(event.target.files);
+  });
+
+// FUNCTION TO HANDLE SIGNATURE FILE SELECTION AND UPLOAD
+function handleSignatureFileSelect(event) {
+  event.preventDefault();
+
+  // Display the selected signature image in the preview container
+  const signatureFileInput = document.getElementById("signatureFile");
+  const files = signatureFileInput.files;
+
+  if (files.length === 0) {
+    // Display an error toast if no signature image is selected
+    toastr.error("Please select a signature image to upload");
+    return;
+  }
+
+  displaySelectedSignature(files);
+
+  const selectedFile = files[0];
+
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem("edms_token");
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    return;
+  }
+
+  // Decode the JWT to extract the user ID
+  const decodedToken = parseJwt(bearerToken);
+  const userId = decodedToken.sub; // Assuming 'sub' contains the user ID
+
+  const formData = new FormData();
+  formData.append("signature_image", selectedFile);
+
+  // Use userId to construct the update URL
+  const updateUrl = `http://127.0.0.1:8000/api/users/update/${userId}`;
+
+  // Show spinner and disable the upload button during the upload
+  const uploadSignatureButton = $("#uploadSignatureButton");
+  const signatureUploadSpinner = $("#signatureUploadSpinner");
+  uploadSignatureButton
+    .prop("disabled", true)
+    .html('<i class="fa fa-spinner fa-spin"></i> Uploading...');
+  signatureUploadSpinner.removeClass("d-none");
+
+  // Use the Fetch API to send a POST request to the update endpoint with the FormData containing the signature image
+  fetch(updateUrl, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+
+      // Close the upload signature modal
+      $("#uploadSignatureModal").modal("hide");
+
+      // Destroy the existing DataTable instance
+      const usersTable = $("#usersTable").DataTable({
+        bDestroy: true,
+      });
+
+      // Clear the existing table
+      usersTable.clear().draw();
+
+      // Fetch and update table data for the user using DataTables with bDestroy: true
+      populateUsersTable();
+
+      // Enable the upload button and revert the text
+      uploadSignatureButton.prop("disabled", false).html("Upload");
+      signatureUploadSpinner.addClass("d-none");
+
+      toastr.success("Signature image uploaded successfully");
+    })
+    .catch((error) => {
+      console.error("Error uploading signature image:", error);
+
+      // Enable the upload button and revert the text
+      uploadSignatureButton.prop("disabled", false).html("Upload");
+      signatureUploadSpinner.addClass("d-none");
+    });
+}
+
+// LISTEN FOR THE SIGNATURE MODAL HIDDEN EVENT TO RESET THE FORM AND CLEAR THE PREVIEW
+$("#uploadSignatureModal").on("hidden.bs.modal", function () {
+  // Clear the signature file input and reset the form
+  $("#signatureFile").val("");
+  $("#uploadSignatureForm")[0].reset();
+
+  // Clear the signature image preview
+  const signaturePreview = document.getElementById("signaturePreview");
+  const signaturePreviewContainer = document.getElementById(
+    "signaturePreviewContainer"
+  );
+  signaturePreview.src = "";
+  signaturePreviewContainer.style.display = "none";
+});
+
 /////////////////// FUNCTION TO FETCH USER INFORMATION BASED ON THE LOGGED-IN USER'S ID /////////////////////////
 function fetchUserInfoAndUpdateNavbar() {
   // Retrieve the Bearer token from localStorage

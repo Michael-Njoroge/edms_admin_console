@@ -42,6 +42,13 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
 
     console.log("Stamp URL:", stampUrl);
 
+    // Check if the user has a signature
+    const signatureUrl = user.user_signature
+      ? `http://127.0.0.1:8000/storage/user_signatures/${user.user_signature}`
+      : "../images/signature.png";
+
+    console.log("Signature URL:", signatureUrl);
+
     // Check the status and set the corresponding label and color
     const statusLabel = user.is_active === 1 ? "Active" : "Inactive";
     const statusColor = user.is_active === 1 ? "green" : "red";
@@ -58,7 +65,7 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
         user.username,
         `<img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 40px; height: 40px; border-radius: 50%;" />`,
         `<img src="${stampUrl}" alt="User Stamp" class="user-stamp" style="width: 40px; height: 40px; border-radius: 50%;" />`,
-        "signature",
+        `<img src="${signatureUrl}" alt="User Signature" class="user-signature" style="width: 40px; height: 40px; border-radius: 50%;" />`,
         `<span style="color: ${statusColor};">${statusLabel}</span>`,
         statusLabel === "Active" ? deactivateButton : activateButton,
       ])

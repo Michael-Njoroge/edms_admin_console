@@ -588,13 +588,27 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      <form>
+                      <form
+                        id="uploadSignatureForm"
+                        enctype="multipart/form-data"
+                      >
                         <div class="form-group">
                           <label for="signatureFile">Select Signature:</label>
                           <input
                             type="file"
                             class="form-control-file"
                             id="signatureFile"
+                          />
+                        </div>
+                        <!-- Signature image preview container -->
+                        <div
+                          id="signaturePreviewContainer"
+                          style="display: none"
+                        >
+                          <img
+                            id="signaturePreview"
+                            alt="Selected Signature"
+                            style="max-width: 100%; max-height: 200px"
                           />
                         </div>
                       </form>
@@ -604,7 +618,8 @@
                         type="button"
                         class="btn"
                         style="background: #355b11; color: white"
-                        onclick="uploadSignature()"
+                        onclick="handleSignatureFileSelect(event)"
+                        id="uploadSignatureButton"
                       >
                         Upload
                       </button>
