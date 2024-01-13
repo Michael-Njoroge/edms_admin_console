@@ -35,6 +35,9 @@ async function getData(page = 1, itemsPerPage = 5) {
     const statusLabel = group.status === "active" ? "Active" : "InActive";
     const statusColor = group.status === "active" ? "green" : "red";
 
+    // Get usernames of group members
+    const memberUsernames = group.users.map((user) => user.username).join(", ");
+
     // Check if the group is one of the seeded groups
     const isSeededGroup = index < 2;
 
@@ -45,6 +48,7 @@ async function getData(page = 1, itemsPerPage = 5) {
         group.group_name,
         group.admin.name,
         group.users.length,
+        memberUsernames,
         `<span style="color: ${statusColor};">${statusLabel}</span>`,
         `<td style="font-size:21px;">
         <center>
