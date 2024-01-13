@@ -31,6 +31,13 @@ function handleFileSelect(event) {
   // Display the selected image in the preview container
   const fileInput = document.getElementById("photoFile");
   const files = fileInput.files;
+
+  if (files.length === 0) {
+    // Display an error toast if no file is selected
+    toastr.error("Please select a file to upload");
+    return;
+  }
+
   displaySelectedImage(files);
 
   if (files.length > 0) {

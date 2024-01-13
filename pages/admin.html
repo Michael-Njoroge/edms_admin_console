@@ -638,13 +638,21 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      <form>
+                      <form id="uploadStampForm" enctype="multipart/form-data">
                         <div class="form-group">
                           <label for="stampFile">Select Stamp:</label>
                           <input
                             type="file"
                             class="form-control-file"
                             id="stampFile"
+                          />
+                        </div>
+                        <!-- Stamp image preview container -->
+                        <div id="stampPreviewContainer" style="display: none">
+                          <img
+                            id="stampPreview"
+                            alt="Selected Stamp"
+                            style="max-width: 100%; max-height: 200px"
                           />
                         </div>
                       </form>
@@ -654,7 +662,8 @@
                         type="button"
                         class="btn"
                         style="background: #355b11; color: white"
-                        onclick="uploadStamp()"
+                        onclick="handleStampFileSelect(event)"
+                        id="uploadStampButton"
                       >
                         Upload
                       </button>

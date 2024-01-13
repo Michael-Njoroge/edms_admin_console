@@ -35,6 +35,13 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
 
     console.log("Photo URL:", photoUrl);
 
+    // Check if the user has a stamp
+    const stampUrl = user.user_stamp
+      ? `http://127.0.0.1:8000/storage/user_stamps/${user.user_stamp}`
+      : "../images/stamp.jpg";
+
+    console.log("Stamp URL:", stampUrl);
+
     // Check the status and set the corresponding label and color
     const statusLabel = user.is_active === 1 ? "Active" : "Inactive";
     const statusColor = user.is_active === 1 ? "green" : "red";
@@ -50,7 +57,7 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
         user.name,
         user.username,
         `<img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 40px; height: 40px; border-radius: 50%;" />`,
-        "stamp",
+        `<img src="${stampUrl}" alt="User Stamp" class="user-stamp" style="width: 40px; height: 40px; border-radius: 50%;" />`,
         "signature",
         `<span style="color: ${statusColor};">${statusLabel}</span>`,
         statusLabel === "Active" ? deactivateButton : activateButton,
