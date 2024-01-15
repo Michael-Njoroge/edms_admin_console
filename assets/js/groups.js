@@ -35,6 +35,10 @@ async function getData(page = 1, itemsPerPage = 5) {
     const statusLabel = group.is_active === 1 ? "Active" : "InActive";
     const statusColor = group.is_active === 1 ? "green" : "red";
 
+    // Determine the action buttons based on the user status
+    const activateButton = `<a href="#" onclick="performUserAction('${group.group_name}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>`;
+    const deactivateButton = `<a href="#" onclick="performUserAction('${group.group_name}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>`;
+
     // Get usernames of group members
     const memberUsernames = group.users.map((user) => user.username).join(", ");
 
@@ -56,12 +60,13 @@ async function getData(page = 1, itemsPerPage = 5) {
             group.id
           })" data-groupid="${
           group.id
-        }" title="edit"><i class="fa fa-edit"></i></a> &nbsp;
+        }" title="edit"><i class="fa fa-edit"></i></a> &nbsp;&nbsp;
           ${
             group.id === 1 || group.id === 2
               ? `<i class="fa fa-trash" style="color: lightgrey; cursor: not-allowed;" title="Cannot delete this group" aria-disabled="true"></i>`
               : `<a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"><i class="fa fa-trash"></i></a>`
           }
+          ${statusLabel === "Active" ? deactivateButton : activateButton}
         </center>
       </td>`,
       ])
