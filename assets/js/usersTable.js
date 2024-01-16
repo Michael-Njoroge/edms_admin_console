@@ -36,9 +36,12 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
     console.log("Photo URL:", photoUrl);
 
     // Check if the user has a stamp
-    const stampUrl = user.user_stamp
-      ? `http://127.0.0.1:8000/storage/user_stamps/${user.user_stamp}`
-      : "../images/stamp.jpg";
+    const stampUrl =
+      user.user_stamps.length > 0
+        ? `http://127.0.0.1:8000/storage/user_stamps/${
+            user.user_stamps[user.user_stamps.length - 1].user_stamp
+          }`
+        : "../images/stamp.jpg";
 
     console.log("Stamp URL:", stampUrl);
 
