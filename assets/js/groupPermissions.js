@@ -463,7 +463,6 @@ $(document).on("change", "#folderSelect, #groupSelect", function () {
 $(document).ready(function () {
   populateCheckboxOptions();
 });
-
 // FUNCTION TO HANDLE THE FORM SUBMISSION AND CREATE GROUP PERMISSIONS
 function createPermission() {
   // Get the bearer token from local storage
@@ -478,14 +477,12 @@ function createPermission() {
   const folderId = folderSelect.value;
   const groupId = groupSelect.value;
 
-  // Get selected checkboxes
-  const selectedCheckboxes = [];
-  const checkboxes = checkboxContainer.querySelectorAll(
-    'input[type="checkbox"]:checked'
-  );
-  checkboxes.forEach(function (checkbox) {
-    selectedCheckboxes.push(checkbox.value);
-  });
+  // Get selected checkboxes excluding 'on'
+  const selectedCheckboxes = [
+    ...checkboxContainer.querySelectorAll('input[type="checkbox"]:checked'),
+  ]
+    .filter((checkbox) => checkbox.value !== "on")
+    .map((checkbox) => checkbox.value);
 
   // Select the submit button
   const submitButton = $("#createPermissionModal").find(".modal-footer button");
@@ -511,7 +508,11 @@ function createPermission() {
   const requestData = {
     group_id: groupId,
     folder_id: folderId,
-    permissions: selectedCheckboxes,
+    // Add individual permissions to the request data
+    ...selectedCheckboxes.reduce(
+      (acc, permission) => ({ ...acc, [permission]: 1 }),
+      {}
+    ),
   };
 
   // Make an AJAX request to store group permissions
