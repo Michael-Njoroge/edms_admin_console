@@ -1481,8 +1481,8 @@
                 ></div>
               </div>
 
-              <!-- *******************Group Permissions Table***************** -->
-              <div id="groupPermissionsTableContainer" class="table-container">
+              <!-- *******************Group Permissions Cards***************** -->
+              <div class="card-container" style="display: none">
                 <div class="card-header d-flex justify-content-between mb-3">
                   <!-- Breadcrumb -->
                   <nav aria-label="breadcrumb">
@@ -1495,40 +1495,9 @@
                   </nav>
                 </div>
                 <br />
-                <table
-                  id="permissionsTable"
-                  class="table table-hover table-bordered"
-                  cellspacing="3"
-                  style="
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    width: 100%;
-                    border-radius: 10px;
-                  "
-                >
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Group</th>
-                      <th>Folder</th>
-                      <th>User</th>
-                      <th>Group Membership</th>
-                      <th>Group Permission</th>
-                      <th>Document</th>
-                      <th>Field</th>
-                      <th>Docfield</th>
-                      <th>Workstep</th>
-                      <th>Possible Action</th>
-                      <th>Workstep Result</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-
-                  <tbody id="permissionsTbody"></tbody>
-                </table>
-                <div
-                  id="permissionsPagination"
-                  class="pagination justify-content-center"
-                ></div>
+                <div id="groupPermissionsCardContainer">
+                  <!-- Group permissions will be dynamically added here -->
+                </div>
               </div>
 
               <!-- *******************Users Table***************** -->

@@ -8,6 +8,7 @@ $(document).ready(function () {
 
     // Hide all tables and cards
     $(".table-container").hide();
+    $(".card-container").hide();
     $("#content").hide();
     $("#categories").hide();
 
@@ -17,7 +18,7 @@ $(document).ready(function () {
     } else if (value === "4") {
       $("#groupMembershipsTableContainer").show();
     } else if (value === "5") {
-      $("#groupPermissionsTableContainer").show();
+      $(".card-container").show();
     } else if (value === "6") {
       $("#usersTableContainer").show();
     } else if (value === "1") {

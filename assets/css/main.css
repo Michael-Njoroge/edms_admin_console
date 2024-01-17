@@ -397,3 +397,60 @@
  .tree .btn i {
    margin-right: 5px;
  }
+
+ /* CARD CSS */
+
+ .custom-flex-container {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-between;
+ }
+
+ .custom-card {
+   width: calc(25% - 20px);
+   margin-bottom: 20px;
+   border: 1px solid #ccc;
+   border-radius: 5px;
+   padding: 10px;
+   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+   transition: box-shadow 0.3s, transform 0.3s;
+   /* Add transition for smoother effect */
+ }
+
+ .custom-card:hover {
+   transform: scale(1.05);
+ }
+
+ .custom-card-header {
+   background-color: #355b11;
+   color: whitesmoke;
+   padding: 5px 5px;
+   border-radius: 5px;
+   text-align: center;
+ }
+
+ .custom-card-body {
+   padding: 10px;
+ }
+
+ .custom-card-footer {
+   display: flex;
+   justify-content: space-between;
+   padding: 5px;
+ }
+
+ .custom-btn {
+   padding: 5px 20px;
+   cursor: pointer;
+   border: none;
+   border-radius: 3px;
+ }
+
+ .custom-btn-primary:hover {
+   background-color: #ffa600;
+ }
+
+ .custom-btn-danger:hover {
+   background-color: #dc3545;
+   color: whitesmoke;
+ }
