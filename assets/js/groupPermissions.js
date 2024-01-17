@@ -485,7 +485,7 @@ function createPermission() {
     .map((checkbox) => checkbox.value);
 
   // Select the submit button
-  const submitButton = $("#createPermissionModal").find(".modal-footer button");
+  const submitButton = $("#createPermissionModalBtn");
 
   // Check if folder and group are selected
   if (!folderId || !groupId) {

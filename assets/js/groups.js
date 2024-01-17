@@ -36,8 +36,8 @@ async function getData(page = 1, itemsPerPage = 5) {
     const statusColor = group.is_active === 1 ? "green" : "red";
 
     // Determine the action buttons based on the user status
-    const activateButton = `<a href="#" onclick="performUserAction('${group.group_name}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>`;
-    const deactivateButton = `<a href="#" onclick="performUserAction('${group.group_name}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>`;
+    const activateButton = `<a href="#" onclick="performUserAction('${group.group_name}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 18px;"></i></a>`;
+    const deactivateButton = `<a href="#" onclick="performUserAction('${group.group_name}', 'deactivate')" style="margin-left: 20px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 18px; "></i></a>`;
 
     // Get usernames of group members
     const memberUsernames = group.users.map((user) => user.username).join(", ");
@@ -66,7 +66,10 @@ async function getData(page = 1, itemsPerPage = 5) {
               ? `<i class="fa fa-trash" style="color: lightgrey; cursor: not-allowed;" title="Cannot delete this group" aria-disabled="true"></i>`
               : `<a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"><i class="fa fa-trash"></i></a>`
           }
-          ${statusLabel === "Active" ? deactivateButton : activateButton}
+          ${
+            statusLabel === "Active" ? deactivateButton : activateButton
+          } &nbsp;&nbsp;
+          <a href="#" data-toggle="modal" data-target="#selectFolderModal" title="permissions"><i class="fa fa-users"></i></a>         
         </center>
       </td>`,
       ])
@@ -97,6 +100,108 @@ async function getData(page = 1, itemsPerPage = 5) {
     paginationElement.append(nextLink);
   }
 }
+
+// FUNCTION TO POPULATE THE FOLDERS DROPDOWN IN THE MODAL
+async function populateFoldersDropdown() {
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem("edms_token");
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    return;
+  }
+
+  // Make AJAX requests to fetch folder data
+  $.ajax({
+    url: "http://127.0.0.1:8000/api/folders/1",
+    type: "GET",
+    dataType: "json",
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+      "Content-Type": "application/json",
+    },
+    success: function (folderData) {
+      const folderSelect = document.getElementById("folderSelect");
+      folderSelect.innerHTML = "";
+
+      // Add a default option
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.text = "Select Folder";
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      folderSelect.appendChild(defaultOption);
+
+      // Check if there are folders in the response
+      if (folderData.data.data && folderData.data.data.length > 0) {
+        // Iterate over the folders and populate the dropdown
+        folderData.data.data.forEach(function (folder) {
+          const option = document.createElement("option");
+          option.value = folder.id;
+          option.text = folder.name;
+          folderSelect.appendChild(option);
+        });
+      } else {
+        // If no folders are found, you may want to handle this case
+        console.error("No folders found.");
+      }
+    },
+    error: function (error) {
+      console.error("Error fetching folder data:", error);
+    },
+  });
+}
+
+// Function to fetch group permissions based on the selected folder
+async function fetchGroupPermissions() {
+  const folderSelect = document.getElementById("folderSelect");
+  const selectedFolderId = folderSelect.value;
+
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem("edms_token");
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    return;
+  }
+
+  // Fetch the group details including permissions using the provided endpoint with the Bearer token in headers
+  const groupId = 1; // Replace with the actual group ID
+  const endpoint = `http://127.0.0.1:8000/api/group/show/${groupId}?folderId=${selectedFolderId}`;
+
+  try {
+    const response = await fetch(endpoint, {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const groupData = await response.json();
+
+    // Check if the response is successful
+    if (groupData.success) {
+      // Display the permissions for the group and selected folder
+      displayPermissionsForFolder(selectedFolderId, groupData.data.data);
+    } else {
+      // Handle the case where the API request is not successful
+      console.error("Error fetching group details:", groupData.message);
+    }
+  } catch (error) {
+    // Handle the case where there is an error with the API request
+    console.error("Error fetching group details:", error);
+  }
+
+  // Close the modal
+  $("#selectFolderModal").modal("hide");
+}
+
+// Call populateFoldersDropdown when the modal is shown
+$("#selectFolderModal").on("show.bs.modal", function (event) {
+  populateFoldersDropdown();
+});
 
 // FUNCTION TO HANDLE FORM SUBMISSION AND CREATE A NEW GROUP
 function createGroup() {

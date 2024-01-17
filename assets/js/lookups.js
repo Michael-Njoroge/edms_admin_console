@@ -1,44 +1,41 @@
 $.fn.extend({
-  treed: function (o) {
+  treed: function (data) {
     var openedClass = "glyphicon-minus-sign";
     var closedClass = "glyphicon-plus-sign";
 
-    if (typeof o != "undefined") {
-      if (typeof o.openedClass != "undefined") {
-        openedClass = o.openedClass;
-      }
-      if (typeof o.closedClass != "undefined") {
-        closedClass = o.closedClass;
-      }
+    // Function to build the tree recursively
+    function buildTree(data) {
+      var ul = $("<ul></ul>");
+      $.each(data, function (index, item) {
+        var li = $("<li class='branch'></li>").text(item.name);
+
+        if (item.children && item.children.length > 0) {
+          console.log("Adding children for:", item.name);
+          li.append(buildTree(item.children));
+        } else {
+          console.log("No children for:", item.name);
+        }
+
+        ul.append(li);
+      });
+      return ul;
     }
 
-    // Initialize each of the top levels
-    var tree = $(this);
+    var tree = buildTree(data.data.data);
     tree.addClass("tree");
 
-    // Traverse through each level
-    tree.find("ul").each(function () {
-      var level = $(this);
+    // Append the tree to the specified element
+    $(this).append(tree);
 
-      // Add "New" button after each level
-      var newButton = $(
-        "<li><button class='btn new-node-btn'><i class='glyphicon " +
-          closedClass +
-          "'></i> New</button></li>"
-      );
-      level.append(newButton);
-    });
-
-    // Handle the rest of the tree initialization
+    // Initialize the tree
     tree
       .find("li")
       .has("ul")
       .each(function () {
-        var branch = $(this); // li with children ul
+        var branch = $(this);
         branch.prepend(
           "<i class='indicator glyphicon " + closedClass + "'></i>"
         );
-        branch.addClass("branch");
         branch.on("click", function (e) {
           if (this == e.target) {
             var icon = $(this).children("i:first");
@@ -63,64 +60,34 @@ $.fn.extend({
         e.preventDefault();
       });
     });
-
-    // Fire event to open branch if the li contains a button instead of text
-    tree.find(".branch>button").each(function () {
-      $(this).on("click", function (e) {
-        $(this).closest("li").click();
-        e.preventDefault();
-      });
-    });
-
-    // Handle the "New" button click to show the input field
-    tree.find(".new-node-btn").on("click", function () {
-      var newInputField = $(
-        "<li><input type='text' class='new-node-input' placeholder='New Node' /><button class='btn submit-node-btn'>Submit</button></li>"
-      );
-      $(this).closest("ul").append(newInputField);
-
-      // Focus on the newly added input field
-      newInputField.find(".new-node-input").focus();
-    });
-
-    // Handle the "Submit" button click for the new node
-    tree.on("click", ".submit-node-btn", function () {
-      var newNodeName = $(this).prev(".new-node-input").val();
-      if (newNodeName.trim() !== "") {
-        $(this)
-          .closest("li")
-          .before(
-            "<li class='branch'><i class='indicator glyphicon " +
-              closedClass +
-              "'></i>" +
-              newNodeName +
-              "<ul></ul></li>"
-          );
-        $(this).closest("li").remove();
-      } else {
-        alert("Please enter a valid node name.");
-      }
-    });
-
-    // Clear the input field on clicking outside
-    $(document).on("click", function (e) {
-      if (
-        !$(e.target).closest(".new-node-btn").length &&
-        !$(e.target).closest(".new-node-input").length
-      ) {
-        $(".new-node-input").closest("li").remove();
-      }
-    });
-
-    // Clear the input field on modal hidden
-    $(document).on("hidden.bs.modal", function () {
-      $(".new-node-input").closest("li").remove();
-    });
   },
 });
 
-// Initialization of treeview
-$("#tree1").treed();
+// Retrieve the Bearer token from localStorage
+const bearerToken = localStorage.getItem("edms_token");
+
+// Check if the token is present in localStorage
+if (!bearerToken) {
+  console.error("Unauthorized");
+} else {
+  // Make an AJAX request to fetch data from the API with the Authorization header
+  $.ajax({
+    url: "http://127.0.0.1:8000/api/lookups",
+    method: "GET",
+    dataType: "json",
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+      "Content-Type": "application/json",
+    },
+    success: function (data) {
+      // Call the treed function to build and populate the tree
+      $("#tree1").treed(data);
+    },
+    error: function (error) {
+      console.error("Error fetching data from the API:", error);
+    },
+  });
+}
 
 // Enable Bootstrap tooltips
 $(document).ready(function () {

@@ -874,6 +874,7 @@
                         class="btn"
                         style="background: #355b11; color: white"
                         onclick="createPermission()"
+                        id="createPermissionModalBtn"
                       >
                         Assign Permission
                       </button>
@@ -991,205 +992,7 @@
                 <p style="font-weight: bold; cursor: pointer">Categories</p>
                 <div class="row">
                   <div class="col-md-8">
-                    <ul id="tree1">
-                      <ul>
-                        <li>
-                          Kenya
-                          <ul>
-                            <li>
-                              Nairobi
-                              <ul>
-                                <li>
-                                  Kasarani
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Westlands
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Lang'ata
-                                  <ul></ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li>
-                              Mombasa
-                              <ul>
-                                <li>
-                                  Nyali
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Changamwe
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Kisauni
-                                  <ul></ul>
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          Nigeria
-                          <ul>
-                            <li>
-                              Lagos
-                              <ul>
-                                <li>
-                                  Mainland
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Island
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Ikeja
-                                  <ul></ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li>
-                              Abuja
-                              <ul>
-                                <li>
-                                  Garki
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Wuse
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Asokoro
-                                  <ul></ul>
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          South Africa
-                          <ul>
-                            <li>
-                              Johannesburg
-                              <ul>
-                                <li>
-                                  Sandton
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Rosebank
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Pretoria
-                                  <ul></ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li>
-                              Cape Town
-                              <ul>
-                                <li>
-                                  City Bowl
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Southern Suburbs
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Atlantic Seaboard
-                                  <ul></ul>
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          Egypt
-                          <ul>
-                            <li>
-                              Cairo
-                              <ul>
-                                <li>
-                                  Giza
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Zamalek
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Heliopolis
-                                  <ul></ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li>
-                              Alexandria
-                              <ul>
-                                <li>
-                                  Montaza
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Al-Max
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  San Stefano
-                                  <ul></ul>
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          Ghana
-                          <ul>
-                            <li>
-                              Accra
-                              <ul>
-                                <li>
-                                  Osu
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Labone
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Madina
-                                  <ul></ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li>
-                              Kumasi
-                              <ul>
-                                <li>
-                                  Suame
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Danyame
-                                  <ul></ul>
-                                </li>
-                                <li>
-                                  Adum
-                                  <ul></ul>
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </ul>
+                    <ul id="tree1" class="tree"></ul>
                   </div>
                 </div>
               </div>
@@ -1512,6 +1315,54 @@
                         onclick="deleteSerializer()"
                       >
                         Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add this modal markup to your HTML body -->
+              <div
+                class="modal"
+                id="selectFolderModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="selectFolderModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="selectFolderModalLabel">
+                        Select Folder
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <label for="folderSelect">Choose a Folder:</label>
+                      <select class="form-control" id="folderSelect"></select>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        onclick="fetchGroupPermissions()"
+                      >
+                        Fetch Permissions
                       </button>
                     </div>
                   </div>
