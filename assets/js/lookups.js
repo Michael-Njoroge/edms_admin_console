@@ -18,7 +18,32 @@ $.fn.extend({
 
         ul.append(li);
       });
+
+      // Add a new node button for leaf nodes
+      ul.append(
+        $("<li class='branch'></li>").append(
+          $("<i class='indicator glyphicon " + closedClass + "'></i>"),
+          $("<span class='new-node'></span>")
+            .text("New")
+            .on("click", function (e) {
+              e.stopPropagation();
+              addNewNode($(this).closest("ul"));
+            })
+        )
+      );
+
       return ul;
+    }
+
+    function addNewNode(parentUl) {
+      var newNodeName = prompt("Enter the name for the new node:");
+      if (newNodeName) {
+        var newLi = $("<li class='branch'></li>").text(newNodeName);
+        // You can further customize the structure of the new node if needed
+
+        // Append the new node to the parent
+        parentUl.append(newLi);
+      }
     }
 
     var tree = buildTree(data.data.data);
