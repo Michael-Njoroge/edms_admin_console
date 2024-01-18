@@ -57,8 +57,8 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
     const statusColor = user.is_active === 1 ? "green" : "red";
 
     // Determine the action buttons based on the user status
-    const activateButton = `<a href="#" onclick="performUserAction('${user.username}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>`;
-    const deactivateButton = `<a href="#" onclick="performUserAction('${user.username}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>`;
+    const activateButton = `<a href="#" onclick="performUserAction('${user.id}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>`;
+    const deactivateButton = `<a href="#" onclick="performUserAction('${user.id}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>`;
 
     // Get group names
     const groupNames = user.groups.map((group) => group.group_name).join(", ");
@@ -102,4 +102,51 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
     }, ${itemsPerPage})" class="page-link">»</a>`;
     paginationElement.append(nextLink);
   }
+}
+
+// Function to perform user activation or deactivation
+function performUserAction(userId, action) {
+  // Set the user's ID in the modal
+  document.getElementById(`${action}UserId`).textContent = userId;
+
+  // Show the modal
+  $(`#${modalId}`).modal("show");
+
+  // Handle submission in the modal
+  document.getElementById(buttonId).addEventListener("click", async () => {
+    // Close the modal
+    $(`#${modalId}`).modal("hide");
+
+    // Retrieve the Bearer token from localStorage
+    const bearerToken = localStorage.getItem("edms_token");
+
+    // Check if the token is present in localStorage
+    if (!bearerToken) {
+      console.error("Unauthorized");
+      return;
+    }
+
+    // Perform the user activation or deactivation based on the action
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/users/update/${userId}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          is_active: action === "activate" ? 1 : 0,
+        }),
+      }
+    );
+
+    // Check if the action was successful
+    if (response.ok) {
+      // Reload or update the users table after the action
+      populateUsersTable();
+    } else {
+      console.error(`Failed to ${action} user.`);
+    }
+  });
 }

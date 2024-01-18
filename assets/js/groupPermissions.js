@@ -25,9 +25,10 @@ async function populateTable(permissionsData, page = 1, itemsPerPage = 5) {
     lengthMenu: [5, 10, 25, 50],
     bDestroy: true,
     dom: "Bfrtip",
+
     columnDefs: [
       {
-        targets: [0, 1, 2, 3],
+        targets: [0, 1, 2],
         className: "noVis",
       },
     ],
