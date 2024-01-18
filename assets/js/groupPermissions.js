@@ -1,58 +1,8 @@
 //********** ASYNC FUNCTION FOR GROUP PERMISSIONS *******************//
 
-// Use a for...of loop to handle async/await properly
-async function populateCards(permissionsData) {
-  const cardContainer = document.getElementById(
-    "groupPermissionsCardContainer"
-  );
-  const flexContainer = document.createElement("div");
-  flexContainer.classList.add("custom-flex-container");
-
-  // Use for...of loop to handle async/await correctly
-  for (const permission of permissionsData) {
-    const card = document.createElement("div");
-    card.classList.add("custom-card", "mb-3", "mx-2");
-
-    card.innerHTML = `
-      <div class="custom-card-header">
-        <h5 class="custom-card-title">Group: ${permission.group.group_name}</h5>
-        <p class="custom-card-text">Folder: ${await getFolderName(
-          permission.folder_id
-        )}</p>
-      </div>
-      <div class="custom-card-body">
-        
-        <p class="custom-card-text">User: ${
-          permission.view_users
-            ? ' <i class="fa fa-eye"></i>&nbsp; View'
-            : "No Access"
-        }</p>
-        <p class="custom-card-text">Group Membership: ${
-          permission.view_group_memberships ? "View" : "No Access"
-        }</p>
-        <!-- Add other permission details as needed -->
-      </div>
-      <div class="custom-card-footer">
-        <button type="button" class="custom-btn custom-btn-primary" onclick="editPermissions(${
-          permission.id
-        })"><i class="fa fa-edit"></i>&nbsp; Edit</button>
-        <button type="button" class="custom-btn custom-btn-danger" onclick="confirmDeletePermissionModal(${
-          permission.id
-        })"><i class="fa fa-trash"></i>&nbsp; Delete</button>
-      </div>
-    `;
-
-    flexContainer.appendChild(card);
-  }
-
-  cardContainer.appendChild(flexContainer);
-  cardContainer.style.display = "flex";
-}
-
-// Use Promise.all to handle all async operations in fetchData
 async function fetchData() {
+  // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem("edms_token");
-
   try {
     const response = await fetch("http://127.0.0.1:8000/api/grouppermissions", {
       method: "GET",
@@ -62,18 +12,201 @@ async function fetchData() {
       },
     });
     const responseData = await response.json();
-
-    // Use Promise.all to wait for all promises to resolve
-    await Promise.all(
-      responseData.data.data.map(async (permission) => {
-        permission.folderName = await getFolderName(permission.folder_id);
-      })
-    );
-
-    populateCards(responseData.data.data);
+    // Call the function to populate the table with the fetched data
+    populateTable(responseData.data.data);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
+}
+// FUNCTION TO POPULATE THE  GROUP PERMISSION TABLE WITH DATA
+async function populateTable(permissionsData) {
+  const permissionsTbody = document.getElementById("permissionsTbody");
+  await Promise.all(
+    permissionsData.map(async (permission, index) => {
+      const newRow = permissionsTbody.insertRow();
+      newRow.insertCell(0).textContent = index + 1;
+      newRow.insertCell(1).textContent = permission.group.group_name;
+      newRow.insertCell(2).textContent = await getFolderName(
+        permission.folder_id
+      );
+      newRow.insertCell(3).innerHTML = `<input type="checkbox" ${
+        permission.view_users ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(4).innerHTML = `<input type="checkbox" ${
+        permission.add_user ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(5).innerHTML = `<input type="checkbox" ${
+        permission.assign_user_group ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(6).innerHTML = `<input type="checkbox" ${
+        permission.view_user ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(7).innerHTML = `<input type="checkbox" ${
+        permission.update_user ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(8).innerHTML = `<input type="checkbox" ${
+        permission.delete_user ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(9).innerHTML = `<input type="checkbox" ${
+        permission.view_groups ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(10).innerHTML = `<input type="checkbox" ${
+        permission.add_group ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(11).innerHTML = `<input type="checkbox" ${
+        permission.view_group ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(12).innerHTML = `<input type="checkbox" ${
+        permission.update_group ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(13).innerHTML = `<input type="checkbox" ${
+        permission.delete_group ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(14).innerHTML = `<input type="checkbox" ${
+        permission.view_group_memberships ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(15).innerHTML = `<input type="checkbox" ${
+        permission.add_group_membership ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(16).innerHTML = `<input type="checkbox" ${
+        permission.view_group_membership ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(17).innerHTML = `<input type="checkbox" ${
+        permission.update_group_membership ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(18).innerHTML = `<input type="checkbox" ${
+        permission.delete_group_membership ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(19).innerHTML = `<input type="checkbox" ${
+        permission.view_group_permissions ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(20).innerHTML = `<input type="checkbox" ${
+        permission.add_group_permission ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(21).innerHTML = `<input type="checkbox" ${
+        permission.view_group_permission ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(22).innerHTML = `<input type="checkbox" ${
+        permission.update_group_permission ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(23).innerHTML = `<input type="checkbox" ${
+        permission.delete_group_permission ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(24).innerHTML = `<input type="checkbox" ${
+        permission.view_folders ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(25).innerHTML = `<input type="checkbox" ${
+        permission.create_folder ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(26).innerHTML = `<input type="checkbox" ${
+        permission.open_folder ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(27).innerHTML = `<input type="checkbox" ${
+        permission.update_folder ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(28).innerHTML = `<input type="checkbox" ${
+        permission.delete_folder ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(29).innerHTML = `<input type="checkbox" ${
+        permission.view_documents ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(30).innerHTML = `<input type="checkbox" ${
+        permission.add_document ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(31).innerHTML = `<input type="checkbox" ${
+        permission.view_document ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(32).innerHTML = `<input type="checkbox" ${
+        permission.update_document ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(33).innerHTML = `<input type="checkbox" ${
+        permission.delete_document ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(34).innerHTML = `<input type="checkbox" ${
+        permission.view_fields ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(35).innerHTML = `<input type="checkbox" ${
+        permission.add_field ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(36).innerHTML = `<input type="checkbox" ${
+        permission.view_field ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(37).innerHTML = `<input type="checkbox" ${
+        permission.update_field ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(38).innerHTML = `<input type="checkbox" ${
+        permission.delete_field ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(39).innerHTML = `<input type="checkbox" ${
+        permission.view_docfields ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(40).innerHTML = `<input type="checkbox" ${
+        permission.create_docfield ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(41).innerHTML = `<input type="checkbox" ${
+        permission.view_docfield ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(42).innerHTML = `<input type="checkbox" ${
+        permission.update_docfield ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(43).innerHTML = `<input type="checkbox" ${
+        permission.delete_docfield ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(44).innerHTML = `<input type="checkbox" ${
+        permission.view_worksteps ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(45).innerHTML = `<input type="checkbox" ${
+        permission.add_workstep ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(46).innerHTML = `<input type="checkbox" ${
+        permission.view_workstep ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(47).innerHTML = `<input type="checkbox" ${
+        permission.update_workstep ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(48).innerHTML = `<input type="checkbox" ${
+        permission.delete_workstep ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(49).innerHTML = `<input type="checkbox" ${
+        permission.view_possible_actions ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(50).innerHTML = `<input type="checkbox" ${
+        permission.add_possible_action ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(51).innerHTML = `<input type="checkbox" ${
+        permission.view_possible_action ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(52).innerHTML = `<input type="checkbox" ${
+        permission.update_possible_action ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(53).innerHTML = `<input type="checkbox" ${
+        permission.delete_possible_action ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(54).innerHTML = `<input type="checkbox" ${
+        permission.view_workstep_results ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(55).innerHTML = `<input type="checkbox" ${
+        permission.add_workstep_result ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(56).innerHTML = `<input type="checkbox" ${
+        permission.view_workstep_result ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(57).innerHTML = `<input type="checkbox" ${
+        permission.rewind_workstep_result ? "checked" : ""
+      } disabled>`;
+      newRow.insertCell(58).innerHTML = `<input type="checkbox" ${
+        permission.delete_workstep_result ? "checked" : ""
+      } disabled>`;
+      // Add an edit button
+      const editCell = newRow.insertCell();
+      editCell.innerHTML = `<button type="button" onclick="editPermissions(${permission.id})">Edit</button>`;
+      // Add a delete button
+      const deleteCell = newRow.insertCell();
+      deleteCell.innerHTML = `<button type="button" onclick="confirmDeletePermissionModal(${permission.id})">Delete</button>`;
+    })
+  );
+  // Show the permissions table container
+  $("#permissionsTableContainer").show();
 }
 
 // ASYNC FUNCTION TO FETCH THE FOLDER NAME BASED ON FOLDER ID
