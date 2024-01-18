@@ -104,13 +104,40 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
   }
 }
 
-// Function to perform user activation or deactivation
-function performUserAction(userId, action) {
+// Function to activate a user
+function activateUser() {
+  const userId = document.getElementById("activateUserId").textContent;
+  performUserAction(userId, "activate");
+}
+
+// Function to deactivate a user
+function deactivateUser() {
+  const userId = document.getElementById("deactivateUserId").textContent;
+  performUserAction(userId, "deactivate");
+}
+
+//Function to perform Activate or Deactivate user
+async function performUserAction(userId, action) {
+  // Set the modalId and buttonId based on the action
+  const modalId =
+    action === "activate" ? "confirmActivateModal" : "confirmDeactivateModal";
+  const buttonId =
+    action === "activate" ? "activateUserBtn" : "deactivateUserBtn";
+
   // Set the user's ID in the modal
   document.getElementById(`${action}UserId`).textContent = userId;
 
   // Show the modal
   $(`#${modalId}`).modal("show");
+
+  // Display loading spinner and message
+  const loadingSpinner = $(`#${modalId} .loading-spinner`);
+  const loadingMessage = $(`#${modalId} .loading-message`);
+
+  loadingSpinner.show();
+  loadingMessage.text(
+    ` ${action === "activate" ? "Activating" : "Deactivating"} user...`
+  );
 
   // Handle submission in the modal
   document.getElementById(buttonId).addEventListener("click", async () => {
@@ -126,27 +153,61 @@ function performUserAction(userId, action) {
       return;
     }
 
-    // Perform the user activation or deactivation based on the action
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/users/update/${userId}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          is_active: action === "activate" ? 1 : 0,
-        }),
-      }
-    );
+    try {
+      // Perform the user activation or deactivation based on the action
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/users/update/${userId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            is_active: action === "activate" ? 1 : 0,
+          }),
+        }
+      );
 
-    // Check if the action was successful
-    if (response.ok) {
-      // Reload or update the users table after the action
-      populateUsersTable();
-    } else {
-      console.error(`Failed to ${action} user.`);
+      // Check if the action was successful
+      if (response.ok) {
+        // Initialize DataTable
+        const usersTable = $("#usersTable").DataTable({
+          lengthMenu: [5, 10, 25, 50],
+          bDestroy: true,
+        });
+
+        // Clear existing rows from DataTable
+        usersTable.clear().draw();
+
+        // Reload or update the users table after the action
+        populateUsersTable();
+
+        // Display success message
+        toastr.success(
+          `${
+            action === "activate" ? "Activated" : "Deactivated"
+          } user successfully`
+        );
+      } else {
+        console.error(`Failed to ${action} user.`);
+        // Display error message
+        toastr.error(
+          `Failed to ${action === "activate" ? "activate" : "deactivate"} user.`
+        );
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      // Display error message
+      toastr.error(
+        `An error occurred while ${
+          action === "activate" ? "activating" : "deactivating"
+        } user.`
+      );
+    } finally {
+      // Hide loading spinner and reset message
+      loadingSpinner.hide();
+      loadingMessage.text("");
     }
   });
 }
