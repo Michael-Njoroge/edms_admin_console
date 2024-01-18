@@ -1,38 +1,17 @@
 //********** ASYNC FUNCTION FOR GROUP PERMISSIONS *******************//
-async function fetchData() {
-  // Retrieve the Bearer token from localStorage
-  const bearerToken = localStorage.getItem("edms_token");
 
-  try {
-    const response = await fetch("http://127.0.0.1:8000/api/grouppermissions", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-    const responseData = await response.json();
-
-    // Call the function to populate the card container with the fetched data
-    populateCards(responseData.data.data);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-}
-
-// Updated populateCards function
+// Use a for...of loop to handle async/await properly
 async function populateCards(permissionsData) {
   const cardContainer = document.getElementById(
     "groupPermissionsCardContainer"
   );
-
-  // Create a flex container for the cards
   const flexContainer = document.createElement("div");
   flexContainer.classList.add("custom-flex-container");
 
-  permissionsData.forEach(async (permission) => {
+  // Use for...of loop to handle async/await correctly
+  for (const permission of permissionsData) {
     const card = document.createElement("div");
-    card.classList.add("custom-card", "mb-3", "mx-2"); // Adjust spacing as needed
+    card.classList.add("custom-card", "mb-3", "mx-2");
 
     card.innerHTML = `
       <div class="custom-card-header">
@@ -44,7 +23,9 @@ async function populateCards(permissionsData) {
       <div class="custom-card-body">
         
         <p class="custom-card-text">User: ${
-          permission.view_users ? "View" : "No Access"
+          permission.view_users
+            ? ' <i class="fa fa-eye"></i>&nbsp; View'
+            : "No Access"
         }</p>
         <p class="custom-card-text">Group Membership: ${
           permission.view_group_memberships ? "View" : "No Access"
@@ -61,16 +42,38 @@ async function populateCards(permissionsData) {
       </div>
     `;
 
-    // Append the card to the flex container
     flexContainer.appendChild(card);
-  });
+  }
 
-  // Append the flex container to the card container
   cardContainer.appendChild(flexContainer);
+  cardContainer.style.display = "flex";
+}
 
-  // Show the card container
-  document.getElementById("groupPermissionsCardContainer").style.display =
-    "flex";
+// Use Promise.all to handle all async operations in fetchData
+async function fetchData() {
+  const bearerToken = localStorage.getItem("edms_token");
+
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/grouppermissions", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const responseData = await response.json();
+
+    // Use Promise.all to wait for all promises to resolve
+    await Promise.all(
+      responseData.data.data.map(async (permission) => {
+        permission.folderName = await getFolderName(permission.folder_id);
+      })
+    );
+
+    populateCards(responseData.data.data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 }
 
 // ASYNC FUNCTION TO FETCH THE FOLDER NAME BASED ON FOLDER ID
