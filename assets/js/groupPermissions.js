@@ -24,6 +24,19 @@ async function populateTable(permissionsData, page = 1, itemsPerPage = 5) {
   const permissionsTable = $("#permissionsTable").DataTable({
     lengthMenu: [5, 10, 25, 50],
     bDestroy: true,
+    dom: "Bfrtip",
+    columnDefs: [
+      {
+        targets: [0, 1, 2, 3],
+        className: "noVis",
+      },
+    ],
+    buttons: [
+      {
+        extend: "colvis",
+        columns: ":not(.noVis)",
+      },
+    ],
   });
 
   // Clear the existing table
