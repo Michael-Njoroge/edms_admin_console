@@ -3,7 +3,6 @@ $.fn.extend({
     var openedClass = "glyphicon-minus-sign";
     var closedClass = "glyphicon-plus-sign";
 
-    // Function to build the tree recursively
     function buildTree(data) {
       var ul = $("<ul></ul>");
       $.each(data, function (index, item) {
@@ -19,7 +18,7 @@ $.fn.extend({
         ul.append(li);
       });
 
-      // Add a new node button for leaf nodes
+      // Add a new node button at the bottom
       ul.append(
         $("<li class='branch'></li>").append(
           $("<i class='indicator glyphicon " + closedClass + "'></i>"),
@@ -34,16 +33,69 @@ $.fn.extend({
 
       return ul;
     }
+    function addNewNode(parentLi) {
+      // Remove existing new nodes to ensure only one is displayed at a time
+      parentLi.siblings().find(".new-node").closest("li").remove();
 
-    function addNewNode(parentUl) {
-      var newNodeName = prompt("Enter the name for the new node:");
-      if (newNodeName) {
-        var newLi = $("<li class='branch'></li>").text(newNodeName);
-        // You can further customize the structure of the new node if needed
+      // Create a new list item with an input field and error message
+      var newLi = $("<li class='branch'></li>").append(
+        $("<input type='text' class='new-node-input' placeholder='Enter New'>"),
+        $("<span class='error-message'></span>")
+          .text("Please enter a valid node name.")
+          .hide(),
+        "&nbsp;&nbsp;&nbsp;",
+        $(
+          "<button class='btn btn-sm save-node' style='background: none;'>Save</button>"
+        ).on("click", function (e) {
+          e.stopPropagation();
+          saveNewNode($(this).closest("li"));
+        }),
+        "&nbsp;&nbsp;&nbsp;",
+        $(
+          "<button class='btn btn-sm cancel-node' style='color: red;'>X</button>"
+        ).on("click", function (e) {
+          e.stopPropagation();
+          cancelNewNode($(this).closest("li"));
+        })
+      );
 
-        // Append the new node to the parent
-        parentUl.append(newLi);
+      // Append the new node as the last child of the parent node
+      parentLi.append(newLi);
+
+      // Trigger the input field when "New" button is clicked
+      newLi.find(".new-node-input").focus();
+    }
+
+    function saveNewNode(newLi) {
+      // Get the value from the input field
+      var newNodeName = newLi.find(".new-node-input").val();
+      var errorMessage = newLi.find(".error-message");
+
+      // Check if the input is not empty
+      if (newNodeName.trim() !== "") {
+        // Replace the input field with the entered value and add the + icon
+        newLi
+          .empty()
+          .text(newNodeName)
+          .prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
+        errorMessage.hide();
+      } else {
+        // Display error message and style it
+        errorMessage.show().css({
+          color: "red",
+          marginLeft: "5px", // Adjust spacing as needed
+        });
       }
+    }
+
+    function hideErrorMessage(newLi) {
+      // Hide the error message when the user starts typing
+      newLi.find(".error-message").hide();
+    }
+
+    function cancelNewNode(newLi) {
+      // Remove the input field and buttons, effectively canceling the new node creation
+      newLi.remove();
     }
 
     var tree = buildTree(data.data.data);
