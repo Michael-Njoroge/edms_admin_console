@@ -503,6 +503,7 @@ $(document).on("change", "#folderSelect, #groupSelect", function () {
 $(document).ready(function () {
   populateCheckboxOptions();
 });
+
 // FUNCTION TO HANDLE THE FORM SUBMISSION AND CREATE GROUP PERMISSIONS
 function createPermission() {
   // Get the bearer token from local storage
@@ -584,6 +585,7 @@ function createPermission() {
   });
   // Close the modal
   $("#createPermissionModal").modal("hide");
+  fetchData();
 }
 
 // FUNCTION TO HANDLE GROUP PERMISSION EDITING

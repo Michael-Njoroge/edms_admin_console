@@ -66,10 +66,7 @@ async function getData(page = 1, itemsPerPage = 5) {
               ? `<i class="fa fa-trash" style="color: lightgrey; cursor: not-allowed;" title="Cannot delete this group" aria-disabled="true"></i>`
               : `<a href="#" data-toggle="modal" data-target="#confirmDeleteModal" onclick="prepareToDeleteGroup(${group.id})" title="delete"><i class="fa fa-trash"></i></a>`
           }
-          ${
-            statusLabel === "Active" ? deactivateButton : activateButton
-          } &nbsp;&nbsp;
-          <a href="#" data-toggle="modal" data-target="#selectFolderModal" title="permissions"><i class="fa fa-users"></i></a>         
+           
         </center>
       </td>`,
       ])

@@ -33,6 +33,7 @@ $.fn.extend({
 
       return ul;
     }
+
     function addNewNode(parentLi) {
       // Remove existing new nodes to ensure only one is displayed at a time
       parentLi.siblings().find(".new-node").closest("li").remove();
@@ -40,9 +41,6 @@ $.fn.extend({
       // Create a new list item with an input field and error message
       var newLi = $("<li class='branch'></li>").append(
         $("<input type='text' class='new-node-input' placeholder='Enter New'>"),
-        $("<span class='error-message'></span>")
-          .text("Please enter a valid node name.")
-          .hide(),
         "&nbsp;&nbsp;&nbsp;",
         $(
           "<button class='btn btn-sm save-node' style='background: none;'>Save</button>"
@@ -56,11 +54,15 @@ $.fn.extend({
         ).on("click", function (e) {
           e.stopPropagation();
           cancelNewNode($(this).closest("li"));
-        })
+        }),
+        "&nbsp;&nbsp;&nbsp;",
+        $("<span class='error-message'></span>")
+          .text("Lookup name is required")
+          .hide()
       );
 
-      // Append the new node as the last child of the parent node
-      parentLi.append(newLi);
+      // Prepend the new node above the "New" button
+      parentLi.prepend(newLi);
 
       // Trigger the input field when "New" button is clicked
       newLi.find(".new-node-input").focus();
@@ -79,6 +81,8 @@ $.fn.extend({
           .text(newNodeName)
           .prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
         errorMessage.hide();
+
+        toastr.success("Lookup saved successfully!");
       } else {
         // Display error message and style it
         errorMessage.show().css({
@@ -86,11 +90,6 @@ $.fn.extend({
           marginLeft: "5px", // Adjust spacing as needed
         });
       }
-    }
-
-    function hideErrorMessage(newLi) {
-      // Hide the error message when the user starts typing
-      newLi.find(".error-message").hide();
     }
 
     function cancelNewNode(newLi) {
