@@ -7,7 +7,7 @@ $.fn.extend({
       var ul = $("<ul></ul>");
       $.each(data, function (index, item) {
         var li = $("<li class='branch'></li>").text(item.name);
-
+        console.log("Node:", item.id);
         if (item.children && item.children.length > 0) {
           console.log("Adding children for:", item.name);
           li.append(buildTree(item.children));
