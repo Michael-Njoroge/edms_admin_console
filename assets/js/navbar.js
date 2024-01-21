@@ -60,7 +60,7 @@ function handleFileSelect(event) {
     formData.append("user_profile", selectedFile);
 
     // Use userId to construct the update URL
-    const updateUrl = `http://127.0.0.1:8000/api/users/update/${userId}`;
+    const updateUrl = `${apiBaseUrl}/users/update/${userId}`;
 
     // Show spinner and disable the upload button during the upload
     const uploadButton = $("#uploadButton");
@@ -191,7 +191,7 @@ function handleStampFileSelect(event) {
   formData.append("user_stamp", selectedFile);
 
   // Use userId to construct the update URL
-  const updateUrl = `http://127.0.0.1:8000/api/users/update/${userId}`;
+  const updateUrl = `${apiBaseUrl}/users/update/${userId}`;
 
   // Show spinner and disable the upload button during the upload
   const uploadStampButton = $("#uploadStampButton");
@@ -318,7 +318,7 @@ function handleSignatureFileSelect(event) {
   formData.append("user_signature", selectedFile);
 
   // Use userId to construct the update URL
-  const updateUrl = `http://127.0.0.1:8000/api/users/update/${userId}`;
+  const updateUrl = `${apiBaseUrl}/users/update/${userId}`;
 
   // Show spinner and disable the upload button during the upload
   const uploadSignatureButton = $("#uploadSignatureButton");
@@ -400,7 +400,7 @@ function fetchUserInfoAndUpdateNavbar() {
   const userId = decodedToken.sub;
 
   // Make a GET request to fetch user information based on the user's ID
-  fetch(`http://127.0.0.1:8000/api/user/show/${userId}`, {
+  fetch(`${apiBaseUrl}/user/show/${userId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${bearerToken}`,

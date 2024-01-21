@@ -4,7 +4,7 @@ async function fetchData() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem("edms_token");
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/grouppermissions", {
+    const response = await fetch(apiBaseUrl + "/grouppermissions", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${bearerToken}`,
@@ -261,16 +261,13 @@ async function getFolderName(folderId) {
   const bearerToken = localStorage.getItem("edms_token");
 
   try {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/folder/show/${folderId}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${apiBaseUrl}/folder/show/${folderId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "application/json",
+      },
+    });
 
     const responseData = await response.json();
 
@@ -307,7 +304,7 @@ function populateFolderOptions() {
 
   // Make AJAX requests to fetch folder data
   $.ajax({
-    url: "http://127.0.0.1:8000/api/folders/1",
+    url: apiBaseUrl + "/folders/1",
     type: "GET",
     dataType: "json",
     headers: {
@@ -352,7 +349,7 @@ function populateGroupOptions() {
 
   // Make AJAX requests to fetch group data
   $.ajax({
-    url: "http://127.0.0.1:8000/api/groups",
+    url: apiBaseUrl + "/groups",
     type: "GET",
     dataType: "json",
     headers: {
@@ -393,7 +390,7 @@ function populateCheckboxOptions() {
 
   // Make an AJAX request to fetch permission data
   $.ajax({
-    url: "http://127.0.0.1:8000/api/grouppermissions",
+    url: apiBaseUrl + "/grouppermissions",
     type: "GET",
     dataType: "json",
     headers: {
@@ -558,7 +555,7 @@ function createPermission() {
 
   // Make an AJAX request to store group permissions
   $.ajax({
-    url: "http://127.0.0.1:8000/api/grouppermissions/store",
+    url: apiBaseUrl + "/grouppermissions/store",
     type: "POST",
     dataType: "json",
     headers: {
@@ -621,16 +618,13 @@ function deletePermission() {
     .html('<i class="fa fa-spinner fa-spin"></i> Deleting...');
 
   // Make a GET request to delete the permission
-  fetch(
-    `http://127.0.0.1:8000/api/grouppermissions/delete/${permissionToDeleteId}`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-        "Content-Type": "application/json",
-      },
-    }
-  )
+  fetch(`${apiBaseUrl}/grouppermissions/delete/${permissionToDeleteId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+      "Content-Type": "application/json",
+    },
+  })
     .then((response) => response.json())
     .then((data) => {
       // Check the response

@@ -10,7 +10,7 @@ async function serialData(page = 1, itemsPerPage = 5) {
   }
 
   // Fetch serialisation data with pagination parameters
-  const records = await fetch("http://127.0.0.1:8000/api/serialisations", {
+  const records = await fetch(apiBaseUrl + "/serialisations", {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
       "Content-Type": "application/json",
@@ -121,7 +121,7 @@ function createSerializer() {
   }
 
   // Make a POST request to create a new serializer
-  fetch("http://127.0.0.1:8000/api/serialisations/store", {
+  fetch(apiBaseUrl + "/serialisations/store", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${bearerToken}`,
@@ -158,7 +158,7 @@ function editSerializer(serializerId) {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem("edms_token");
   // Fetch serializer data based on the serializer ID
-  fetch(`http://127.0.0.1:8000/api/serialisation/show/${serializerId}`, {
+  fetch(`${apiBaseUrl}/serialisation/show/${serializerId}`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
       "Content-Type": "application/json",
@@ -220,7 +220,7 @@ function submitEditSerializerForm() {
   }
 
   // Make a POST request to update the serializer
-  fetch(`http://127.0.0.1:8000/api/serialisations/update/${serializerId}`, {
+  fetch(`${apiBaseUrl}/serialisations/update/${serializerId}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${bearerToken}`,
@@ -273,16 +273,13 @@ function deleteSerializer() {
     .html('<i class="fa fa-spinner fa-spin"></i> Deleting...');
 
   // Make a DELETE request to delete the serializer
-  fetch(
-    `http://127.0.0.1:8000/api/serialisations/delete/${serializerToDeleteId}`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-        "Content-Type": "application/json",
-      },
-    }
-  )
+  fetch(`${apiBaseUrl}/serialisations/delete/${serializerToDeleteId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+      "Content-Type": "application/json",
+    },
+  })
     .then((response) => response.json())
     .then((data) => {
       // Check the response and handle accordingly

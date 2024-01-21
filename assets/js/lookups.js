@@ -148,7 +148,7 @@ if (!bearerToken) {
 } else {
   // Make an AJAX request to fetch data from the API with the Authorization header
   $.ajax({
-    url: "http://127.0.0.1:8000/api/lookups",
+    url: apiBaseUrl + "/lookups",
     method: "GET",
     dataType: "json",
     headers: {

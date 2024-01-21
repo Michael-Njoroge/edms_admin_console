@@ -30,7 +30,7 @@ async function fetchDataAndPopulateCounts() {
 
   try {
     // Fetch data for users from the API endpoint
-    const usersResponse = await fetch("http://127.0.0.1:8000/api/users", {
+    const usersResponse = await fetch(apiBaseUrl + "/users", {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ async function fetchDataAndPopulateCounts() {
     document.getElementById("userCount").innerText = usersData.data.data.length;
 
     // Fetch data for groups from the API endpoint
-    const groupsResponse = await fetch("http://127.0.0.1:8000/api/groups", {
+    const groupsResponse = await fetch(apiBaseUrl + "/groups", {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
         "Content-Type": "application/json",
@@ -59,7 +59,7 @@ async function fetchDataAndPopulateCounts() {
       groupsData.data.data.length;
 
     // Fetch data for folders from the API endpoint
-    const foldersResponse = await fetch("http://127.0.0.1:8000/api/folders/1", {
+    const foldersResponse = await fetch(apiBaseUrl + "/folders/1", {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
         "Content-Type": "application/json",

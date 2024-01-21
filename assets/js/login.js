@@ -36,7 +36,7 @@ $(document).ready(function () {
 
     // Perform AJAX request to your login endpoint
     $.ajax({
-      url: "http://127.0.0.1:8000/api/auth/login",
+      url: apiBaseUrl + "/auth/login",
       type: "POST",
       dataType: "json",
       data: {

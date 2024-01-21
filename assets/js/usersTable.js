@@ -11,7 +11,7 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
   }
 
   // Fetch users with pagination parameters
-  const records = await fetch("http://127.0.0.1:8000/api/users", {
+  const records = await fetch(apiBaseUrl + "/users", {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
       "Content-Type": "application/json",
@@ -155,19 +155,16 @@ async function performUserAction(userId, action) {
 
     try {
       // Perform the user activation or deactivation based on the action
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/users/update/${userId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            is_active: action === "activate" ? 1 : 0,
-          }),
-        }
-      );
+      const response = await fetch(`${apiBaseUrl}/users/update/${userId}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          is_active: action === "activate" ? 1 : 0,
+        }),
+      });
 
       // Check if the action was successful
       if (response.ok) {

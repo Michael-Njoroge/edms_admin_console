@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     // Perform AJAX request to logout endpoint
     $.ajax({
-      url: "http://127.0.0.1:8000/api/auth/logout",
+      url: apiBaseUrl + "/auth/logout",
       type: "POST",
       headers: {
         Authorization: `Bearer ${bearerToken}`,

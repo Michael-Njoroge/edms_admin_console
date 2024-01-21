@@ -12,7 +12,7 @@ async function getData(page = 1, itemsPerPage = 5) {
   }
 
   // Fetch groups data with pagination parameters
-  const records = await fetch("http://127.0.0.1:8000/api/groups", {
+  const records = await fetch(apiBaseUrl + "/groups", {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
       "Content-Type": "application/json",
@@ -111,7 +111,7 @@ async function populateFoldersDropdown() {
 
   // Make AJAX requests to fetch folder data
   $.ajax({
-    url: "http://127.0.0.1:8000/api/folders/1",
+    url: apiBaseUrl + "/folders/1",
     type: "GET",
     dataType: "json",
     headers: {
@@ -166,7 +166,7 @@ async function fetchGroupPermissions() {
 
   // Fetch the group details including permissions using the provided endpoint with the Bearer token in headers
   const groupId = 1; // Replace with the actual group ID
-  const endpoint = `http://127.0.0.1:8000/api/group/show/${groupId}?folderId=${selectedFolderId}`;
+  const endpoint = `${apiBaseUrl}/group/show/${groupId}?folderId=${selectedFolderId}`;
 
   try {
     const response = await fetch(endpoint, {
@@ -235,7 +235,7 @@ function createGroup() {
   }
 
   // Make a POST request to create a new group
-  fetch("http://127.0.0.1:8000/api/groups/store", {
+  fetch(apiBaseUrl + "/groups/store", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${bearerToken}`,
@@ -288,7 +288,7 @@ function fetchAndPopulateUsersDropdown() {
   }
 
   // Fetch existing users from your API
-  fetch("http://127.0.0.1:8000/api/users", {
+  fetch(apiBaseUrl + "/users", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${bearerToken}`,
@@ -330,7 +330,7 @@ function editGroup(groupId) {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem("edms_token");
   // Fetch group data based on the group ID
-  fetch(`http://127.0.0.1:8000/api/group/show/${groupId}`, {
+  fetch(`${apiBaseUrl}/group/show/${groupId}`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
       "Content-Type": "application/json",
@@ -403,7 +403,7 @@ function submitEditForm() {
   }
 
   // Make a POST request to update the group
-  fetch(`http://127.0.0.1:8000/api/groups/update/${group_id}`, {
+  fetch(`${apiBaseUrl}/groups/update/${group_id}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${bearerToken}`,
@@ -447,7 +447,7 @@ function fetchAndPopulateEditUsersDropdown() {
   }
 
   // Fetch existing users from your API
-  fetch("http://127.0.0.1:8000/api/users", {
+  fetch(apiBaseUrl + "/users", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${bearerToken}`,
@@ -504,7 +504,7 @@ function deleteGroup() {
     .html('<i class="fa fa-spinner fa-spin"></i> Deleting...');
 
   // Make a DELETE request to delete the group
-  fetch(`http://127.0.0.1:8000/api/groups/delete/${groupToDeleteId}`, {
+  fetch(`${apiBaseUrl}/groups/delete/${groupToDeleteId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${bearerToken}`,
@@ -553,7 +553,7 @@ async function populateDropdowns() {
 
   try {
     // Fetch existing groups
-    const groupsResponse = await fetch("http://127.0.0.1:8000/api/groups", {
+    const groupsResponse = await fetch(apiBaseUrl + "/groups", {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
         "Content-Type": "application/json",
@@ -577,7 +577,7 @@ async function populateDropdowns() {
     });
 
     // Fetch existing users
-    const usersResponse = await fetch("http://127.0.0.1:8000/api/users", {
+    const usersResponse = await fetch(apiBaseUrl + "/users", {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
         "Content-Type": "application/json",

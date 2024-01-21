@@ -5,7 +5,7 @@ async function getGroupMembershipsData(page = 1, itemsPerPage = 5) {
 
   // Fetch group memberships data with pagination parameters
   const membershipsResponse = await fetch(
-    `http://127.0.0.1:8000/api/groupmemberships?page=${page}&itemsPerPage=${itemsPerPage}`,
+    `${apiBaseUrl}/groupmemberships?page=${page}&itemsPerPage=${itemsPerPage}`,
     {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
@@ -27,30 +27,24 @@ async function getGroupMembershipsData(page = 1, itemsPerPage = 5) {
 
   // Function to fetch user data based on user_id
   const fetchUserData = async (userId) => {
-    const userResponse = await fetch(
-      `http://127.0.0.1:8000/api/user/show/${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const userResponse = await fetch(`${apiBaseUrl}/user/show/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "application/json",
+      },
+    });
     const userData = await userResponse.json();
     return userData.data.data.username;
   };
 
   // Function to fetch group data based on group_id
   const fetchGroupData = async (groupId) => {
-    const groupResponse = await fetch(
-      `http://127.0.0.1:8000/api/group/show/${groupId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const groupResponse = await fetch(`${apiBaseUrl}/group/show/${groupId}`, {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "application/json",
+      },
+    });
     const groupData = await groupResponse.json();
     return groupData.data.data.group_name;
   };
@@ -127,7 +121,7 @@ function assignUsersToGroup() {
   const bearerToken = localStorage.getItem("edms_token");
 
   // Make a POST request to assign group to a group permissions
-  fetch("http://127.0.0.1:8000/api/groupmemberships/store", {
+  fetch(apiBaseUrl + "/groupmemberships/store", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${bearerToken}`,
@@ -180,7 +174,7 @@ async function deleteGroupMembership() {
     const bearerToken = localStorage.getItem("edms_token");
 
     // Perform the API call to delete the group membership
-    const apiUrl = `http://127.0.0.1:8000/api/groupmemberships/delete/${membershipId}`;
+    const apiUrl = `${apiBaseUrl}/groupmemberships/delete/${membershipId}`;
 
     const response = await fetch(apiUrl, {
       method: "GET",
