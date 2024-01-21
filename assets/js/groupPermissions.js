@@ -380,6 +380,88 @@ function populateGroupOptions() {
     },
   });
 }
+// Variables to keep track of the current page and permissions per page
+let currentPage = 1;
+const permissionsPerPage = 5;
+let permissionsList = [];
+
+// Function to create checkboxes for a specific page
+function createCheckboxes(pageNumber) {
+  // Calculate the start and end indices for the current page
+  const startIndex = (pageNumber - 1) * permissionsPerPage;
+  const endIndex = startIndex + permissionsPerPage;
+
+  // Get the permissions for the current page
+  const currentPagePermissions = permissionsList.slice(startIndex, endIndex);
+
+  // Clear existing checkboxes
+  $("#checkboxContainer").empty();
+
+  // Create checkboxes for the current page
+  currentPagePermissions.forEach((permission) => {
+    const checkbox = $(
+      '<div class="form-check"><input class="form-check-input" type="checkbox" value="' +
+        permission +
+        '"><label class="form-check-label">' +
+        permission +
+        "</label></div>"
+    );
+    $("#checkboxContainer").append(checkbox);
+  });
+}
+
+// Function to update pagination links
+function updatePagination() {
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(permissionsList.length / permissionsPerPage);
+
+  // Clear existing pagination links
+  $("#permissionsPagination").empty();
+
+  // Add "Previous" button
+  const prevButton = $(
+    '<button class="btn btn-secondary ml-auto">Previous</button>'
+  );
+  const prevButtonLi = $(
+    '<li id="prevButtonLi" class="page-item" style="list-style:none; float: left;"></li>'
+  ).append(prevButton);
+  // Initially hide the "Previous" button
+  prevButtonLi.hide();
+
+  prevButton.click(function (event) {
+    event.preventDefault(); // Prevent default button behavior
+    if (currentPage > 1) {
+      currentPage--;
+      createCheckboxes(currentPage);
+    }
+  });
+  $("#permissionsPagination").append(
+    $(
+      '<li class="page-item" style="list-style:none;float: left;"></li>'
+    ).append(prevButton)
+  );
+
+  // Add "Next" button
+  const nextButton = $('<button class="btn btn-secondary">Next</button>');
+  const nextButtonLi = $(
+    '<li id="nextButtonLi" class="page-item" style="list-style:none; float: right;"></li>'
+  ).append(nextButton);
+  // Initially hide the "Next" button
+  nextButtonLi.hide();
+
+  nextButton.click(function (event) {
+    event.preventDefault(); // Prevent default button behavior
+    if (currentPage < totalPages) {
+      currentPage++;
+      createCheckboxes(currentPage);
+    }
+  });
+  $("#permissionsPagination").append(
+    $(
+      '<li class="page-item" style="list-style:none; float: right;"></li>'
+    ).append(nextButton)
+  );
+}
 
 // FUNCTION TO POPULATE CHECKBOXES DYNAMICALLY
 function populateCheckboxOptions() {
@@ -399,6 +481,17 @@ function populateCheckboxOptions() {
     },
     success: function (permissionData) {
       checkboxContainer.innerHTML = "";
+      permissionsList = Object.keys(permissionData.data.data[0]).filter(
+        (key) =>
+          ![
+            "id",
+            "group",
+            "group_id",
+            "folder_id",
+            "created_at",
+            "updated_at",
+          ].includes(key)
+      );
 
       // Add a "Check All" checkbox
       const checkAllCheckbox = document.createElement("input");
@@ -414,43 +507,12 @@ function populateCheckboxOptions() {
       checkAllDiv.appendChild(checkAllLabel);
       checkboxContainer.appendChild(checkAllDiv);
 
-      // Take the first permission object assuming the permissions are the same for all
-      const permissions = permissionData.data.data[0];
-
       const heading = document.createElement("h4");
       heading.appendChild(document.createTextNode("Select Permissions:"));
       checkboxContainer.appendChild(heading);
 
-      Object.keys(permissions).forEach(function (key) {
-        // Skip certain properties like 'id', 'group', 'group_id', 'folder_id', etc.
-        if (
-          key !== "id" &&
-          key !== "group" &&
-          key !== "group_id" &&
-          key !== "folder_id" &&
-          key !== "created_at" &&
-          key !== "updated_at"
-        ) {
-          // Create a checkbox
-          const checkbox = document.createElement("input");
-          checkbox.type = "checkbox";
-          checkbox.value = key;
-          checkbox.id = `checkbox_${key}`; // Set a unique ID for each checkbox
-
-          // Create a label for the checkbox with a non-breaking space
-          const label = document.createElement("label");
-          label.htmlFor = `checkbox_${key}`;
-          label.innerHTML = `&nbsp;&nbsp;${key}`;
-
-          // Create a div to hold the checkbox and label
-          const checkboxDiv = document.createElement("div");
-          checkboxDiv.appendChild(checkbox);
-          checkboxDiv.appendChild(label);
-
-          // Append the checkbox div to the container
-          checkboxContainer.appendChild(checkboxDiv);
-        }
-      });
+      createCheckboxes(currentPage); // Show checkboxes for the first page
+      updatePagination(); // Create pagination links
 
       // Initially, hide the checkboxes
       checkboxContainer.style.display = "none";
