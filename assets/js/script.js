@@ -83,3 +83,28 @@ async function fetchDataAndPopulateCounts() {
 
 // Call the async function
 fetchDataAndPopulateCounts();
+
+$(document).ready(function () {
+  // Function to handle the click event on the notifications icon
+  $("#notifications").click(function (event) {
+    console.log("Thanks for visiting!");
+
+    // Toggle the "open" class on notifications container
+    $("#notificationsli").toggleClass("open");
+
+    // Prevent the default behavior of the anchor link
+    event.preventDefault();
+
+    // Stop the click event from propagating to the document
+    event.stopPropagation();
+  });
+
+  // Function to handle clicks on the document
+  $(document).click(function (event) {
+    // Check if the clicked element is not part of the notifications container
+    if (!$(event.target).closest("#notification-container").length) {
+      // Close the notifications container by removing the "open" class
+      $("#notificationsli").removeClass("open");
+    }
+  });
+});

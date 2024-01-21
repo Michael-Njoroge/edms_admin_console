@@ -46,12 +46,81 @@
       <div class="container-fluid">
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href="#"><i class="fa fa-bell-o"></i></a>
+            <li id="notificationsli">
+              <a href="#" id="notifications"
+                ><i class="fa fa-bell-o"></i
+                ><span
+                  class="noty-manager-bubble"
+                  style="margin-left: -2px; top: 10px; opacity: 1"
+                  >6</span
+                ></a
+              >
+              <div
+                id="notification-container"
+                class="dropdown-menu"
+                role="menu"
+                aria-labelledby="drop3"
+              >
+                <section class="panel">
+                  <header class="panel-heading">
+                    <strong>Notifications</strong>
+                  </header>
+                  <div id="notification-list" class="list-group list-group-alt">
+                    <div>
+                      <div
+                        class="noty-manager-list-item noty-manager-list-item-error"
+                      >
+                        <div class="activity-item">
+                          <i class="fa fa-user text-success"></i>
+                          <div class="activity">
+                            <a href="#">John Doe</a> created a new group
+                            <span>14 minutes ago</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div
+                        class="noty-manager-list-item noty-manager-list-item-error"
+                      >
+                        <div class="activity-item">
+                          <i class="fa fa-user text-success"></i>
+                          <div class="activity">
+                            <a href="#">Alice Johnson</a> updated user details
+                            <span>30 minutes ago</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div
+                        class="noty-manager-list-item noty-manager-list-item-error"
+                      >
+                        <div class="activity-item">
+                          <i class="fa fa-user text-success"></i>
+                          <div class="activity">
+                            <a href="#">Jane Smith</a> was assigned to the
+                            Marketing group
+                            <span>1 hour ago</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <footer class="panel-footer">
+                    <a href="#" class="pull-right"><i class="fa fa-cog"></i></a>
+                    <a
+                      href="#notes"
+                      data-toggle="class:show animated fadeInRight"
+                      >See all the notifications</a
+                    >
+                  </footer>
+                </section>
+              </div>
             </li>
-            <li>
-              <a href="#"><i class="fa fa-comment-o"></i></a>
-            </li>
+
             <li class="dropdown">
               <a
                 id="user-name"
@@ -955,6 +1024,7 @@
                 </div>
               </div>
 
+              <!-- Dashboard count -->
               <div class="content" id="content">
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
