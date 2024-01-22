@@ -25,6 +25,7 @@ async function populateTable(permissionsData, page = 1, itemsPerPage = 5) {
     lengthMenu: [5, 10, 25, 50],
     bDestroy: true,
     dom: "Bfrtip",
+    scrollX: true,
 
     columnDefs: [
       {

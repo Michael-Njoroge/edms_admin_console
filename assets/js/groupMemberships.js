@@ -150,6 +150,10 @@ function assignUsersToGroup() {
       submitButton.prop("disabled", false).html("Assign Users");
     });
 }
+// Reset the form when the modal is hidden
+$("#assignUsersModal").on("hidden.bs.modal", function () {
+  $("#assignUsersForm")[0].reset();
+});
 
 // FUNCTION TO HANDLE THE CLICK EVENT OF THE DELETE BUTTON IN EACH ROW
 function confirmDeleteGroupMembership(membershipId) {

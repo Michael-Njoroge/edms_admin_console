@@ -273,6 +273,10 @@ function createGroup() {
       submitButton.prop("disabled", false).html("Submit");
     });
 }
+// Clear the form when the modal is hidden
+$("#form").on("hidden.bs.modal", function () {
+  $("#createForm")[0].reset();
+});
 
 // Fetch existing users and populate the dropdown when the document is ready
 function fetchAndPopulateUsersDropdown() {
