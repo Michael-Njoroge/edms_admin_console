@@ -964,6 +964,77 @@
                   </div>
                 </div>
               </div>
+              <!-- Edit Group Permission Modal -->
+              <div
+                class="modal fade"
+                id="editPermissionModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="editPermissionModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="editPermissionModalLabel">
+                        Edit Group Permission
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form
+                        id="editPermissionForm"
+                        onsubmit="event.preventDefault(); submitEditPermissionsForm();"
+                      >
+                        <div class="form-group">
+                          <!-- Hidden input field to store the group permission ID -->
+                          <input
+                            type="hidden"
+                            class="form-control"
+                            id="editPermissionId"
+                          />
+                          <label for="editGroupSelect">Select Group:</label>
+                          <select class="form-control" id="editGroupSelect">
+                            <!-- Populate group options dynamically or set the selected group -->
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="editFolderSelect">Select Folder:</label>
+                          <select class="form-control" id="editFolderSelect">
+                            <!-- Populate folder options dynamically or set the selected folder -->
+                          </select>
+                        </div>
+                        <!-- Checkbox container for editing permissions -->
+                        <div id="editCheckboxContainer"></div>
+                        <!-- Pagination container for editing permissions -->
+                        <div
+                          id="editPermissionsPagination"
+                          class="pagination-container"
+                        ></div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-primary">
+                            Save Changes
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <!-- Delete Permission Modal -->
               <div

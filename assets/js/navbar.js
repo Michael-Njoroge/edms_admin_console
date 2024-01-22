@@ -436,8 +436,8 @@ function updatePhotoInNavbar(userPhoto) {
     userImageElement.src = photoUrl;
 
     // Set the width and height of the image
-    userImageElement.style.width = "20px";
-    userImageElement.style.height = "20px";
+    userImageElement.style.width = "30px";
+    userImageElement.style.height = "30px";
     userImageElement.style.borderRadius = "50%";
   }
 }

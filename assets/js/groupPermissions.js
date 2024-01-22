@@ -220,10 +220,12 @@ async function populateTable(permissionsData, page = 1, itemsPerPage = 5) {
           `<input type="checkbox" ${
             permission.delete_workstep_result ? "checked" : ""
           } disabled>`,
-          // Add an edit button
-          `<button type="button" onclick="editPermissions(${permission.id})">Edit</button>`,
           // Add a delete button
-          `<button type="button" onclick="confirmDeletePermissionModal(${permission.id})">Delete</button>`,
+          `<a
+            href="#"
+            onclick="event.preventDefault(); editPermissions(${permission.id})" data-toggle="modal" data-target="#editPermissionModal" title="edit"><i class="fa fa-edit"></i>
+          </a>&nbsp;&nbsp;
+          <a href="#" onclick="event.preventDefault(); confirmDeletePermissionModal(${permission.id})" title="delete"><i class="fa fa-trash"></i></a>`,
         ])
         .draw(false);
     })
@@ -259,6 +261,7 @@ async function populateTable(permissionsData, page = 1, itemsPerPage = 5) {
 // ASYNC FUNCTION TO FETCH THE FOLDER NAME BASED ON FOLDER ID
 async function getFolderName(folderId) {
   const bearerToken = localStorage.getItem("edms_token");
+  console.log(folderId);
 
   try {
     const response = await fetch(`${apiBaseUrl}/folder/show/${folderId}`, {
@@ -270,6 +273,8 @@ async function getFolderName(folderId) {
     });
 
     const responseData = await response.json();
+
+    console.log(responseData);
 
     if (response.ok) {
       const folderData = responseData.data.data;
@@ -380,88 +385,6 @@ function populateGroupOptions() {
     },
   });
 }
-// Variables to keep track of the current page and permissions per page
-let currentPage = 1;
-const permissionsPerPage = 5;
-let permissionsList = [];
-
-// Function to create checkboxes for a specific page
-function createCheckboxes(pageNumber) {
-  // Calculate the start and end indices for the current page
-  const startIndex = (pageNumber - 1) * permissionsPerPage;
-  const endIndex = startIndex + permissionsPerPage;
-
-  // Get the permissions for the current page
-  const currentPagePermissions = permissionsList.slice(startIndex, endIndex);
-
-  // Clear existing checkboxes
-  $("#checkboxContainer").empty();
-
-  // Create checkboxes for the current page
-  currentPagePermissions.forEach((permission) => {
-    const checkbox = $(
-      '<div class="form-check"><input class="form-check-input" type="checkbox" value="' +
-        permission +
-        '"><label class="form-check-label">' +
-        permission +
-        "</label></div>"
-    );
-    $("#checkboxContainer").append(checkbox);
-  });
-}
-
-// Function to update pagination links
-function updatePagination() {
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(permissionsList.length / permissionsPerPage);
-
-  // Clear existing pagination links
-  $("#permissionsPagination").empty();
-
-  // Add "Previous" button
-  const prevButton = $(
-    '<button class="btn btn-secondary ml-auto">Previous</button>'
-  );
-  const prevButtonLi = $(
-    '<li id="prevButtonLi" class="page-item" style="list-style:none; float: left;"></li>'
-  ).append(prevButton);
-  // Initially hide the "Previous" button
-  prevButtonLi.hide();
-
-  prevButton.click(function (event) {
-    event.preventDefault(); // Prevent default button behavior
-    if (currentPage > 1) {
-      currentPage--;
-      createCheckboxes(currentPage);
-    }
-  });
-  $("#permissionsPagination").append(
-    $(
-      '<li class="page-item" style="list-style:none;float: left;"></li>'
-    ).append(prevButton)
-  );
-
-  // Add "Next" button
-  const nextButton = $('<button class="btn btn-secondary">Next</button>');
-  const nextButtonLi = $(
-    '<li id="nextButtonLi" class="page-item" style="list-style:none; float: right;"></li>'
-  ).append(nextButton);
-  // Initially hide the "Next" button
-  nextButtonLi.hide();
-
-  nextButton.click(function (event) {
-    event.preventDefault(); // Prevent default button behavior
-    if (currentPage < totalPages) {
-      currentPage++;
-      createCheckboxes(currentPage);
-    }
-  });
-  $("#permissionsPagination").append(
-    $(
-      '<li class="page-item" style="list-style:none; float: right;"></li>'
-    ).append(nextButton)
-  );
-}
 
 // FUNCTION TO POPULATE CHECKBOXES DYNAMICALLY
 function populateCheckboxOptions() {
@@ -469,7 +392,6 @@ function populateCheckboxOptions() {
   const checkboxContainer = document.getElementById("checkboxContainer");
   const folderSelect = document.getElementById("folderSelect");
   const groupSelect = document.getElementById("groupSelect");
-
   // Make an AJAX request to fetch permission data
   $.ajax({
     url: apiBaseUrl + "/grouppermissions",
@@ -481,17 +403,6 @@ function populateCheckboxOptions() {
     },
     success: function (permissionData) {
       checkboxContainer.innerHTML = "";
-      permissionsList = Object.keys(permissionData.data.data[0]).filter(
-        (key) =>
-          ![
-            "id",
-            "group",
-            "group_id",
-            "folder_id",
-            "created_at",
-            "updated_at",
-          ].includes(key)
-      );
 
       // Add a "Check All" checkbox
       const checkAllCheckbox = document.createElement("input");
@@ -500,23 +411,52 @@ function populateCheckboxOptions() {
       const checkAllLabel = document.createElement("label");
       checkAllLabel.htmlFor = "checkbox_check_all";
       checkAllLabel.innerHTML = "&nbsp;Select All";
-
       const checkAllDiv = document.createElement("div");
       checkAllDiv.style.cursor = "pointer"; // Add pointer cursor style
       checkAllDiv.appendChild(checkAllCheckbox);
       checkAllDiv.appendChild(checkAllLabel);
       checkboxContainer.appendChild(checkAllDiv);
 
+      // Take the first permission object assuming the permissions are the same for all
+      const permissions = permissionData.data.data[0];
+
       const heading = document.createElement("h4");
       heading.appendChild(document.createTextNode("Select Permissions:"));
       checkboxContainer.appendChild(heading);
 
-      createCheckboxes(currentPage); // Show checkboxes for the first page
-      updatePagination(); // Create pagination links
+      Object.keys(permissions).forEach(function (key) {
+        // Skip certain properties like 'id', 'group', 'group_id', 'folder_id', etc.
+        if (
+          key !== "id" &&
+          key !== "group" &&
+          key !== "group_id" &&
+          key !== "folder_id" &&
+          key !== "created_at" &&
+          key !== "updated_at"
+        ) {
+          // Create a checkbox
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = key;
+          checkbox.id = `checkbox_${key}`; // Set a unique ID for each checkbox
+
+          // Create a label for the checkbox with a non-breaking space
+          const label = document.createElement("label");
+          label.htmlFor = `checkbox_${key}`;
+          label.innerHTML = `&nbsp;&nbsp;${key}`;
+
+          // Create a div to hold the checkbox and label
+          const checkboxDiv = document.createElement("div");
+          checkboxDiv.appendChild(checkbox);
+          checkboxDiv.appendChild(label);
+
+          // Append the checkbox div to the container
+          checkboxContainer.appendChild(checkboxDiv);
+        }
+      });
 
       // Initially, hide the checkboxes
       checkboxContainer.style.display = "none";
-
       // Add event listener for the "Check All" checkbox
       checkAllCheckbox.addEventListener("change", function () {
         const checkboxes = checkboxContainer.querySelectorAll(
@@ -537,20 +477,17 @@ function populateCheckboxOptions() {
 $("#createPermissionModal").on("hidden.bs.modal", function () {
   resetModalState();
 });
-
 // Call the function to populate folders and groups when the modal is shown
 $("#createPermissionModal").on("show.bs.modal", function () {
   populateFolderOptions();
   populateGroupOptions();
   populateCheckboxOptions();
 });
-
 // Show checkboxes when both folder and group are selected
 $(document).on("change", "#folderSelect, #groupSelect", function () {
   const folderSelect = document.getElementById("folderSelect");
   const groupSelect = document.getElementById("groupSelect");
   const checkboxContainer = document.getElementById("checkboxContainer");
-
   if (folderSelect.value && groupSelect.value) {
     checkboxContainer.style.display = "block"; // Display checkboxes
   } else {
@@ -630,7 +567,7 @@ function createPermission() {
       $("#createPermissionModal").modal("hide");
 
       toastr.success("Group permissions stored successfully");
-
+      fetchData();
       populateTable(response.data.data);
     },
     error: function (error) {
@@ -649,7 +586,222 @@ function createPermission() {
 
 // FUNCTION TO HANDLE GROUP PERMISSION EDITING
 function editPermissions(permissionId) {
-  console.log(`Editing permissions for ID: ${permissionId}`);
+  // Call the function to populate data in the modal based on the permissionId
+  populateEditPermissionModal(permissionId);
+}
+
+// FUNCTION TO POPULATE EDIT GROUP PERMISSION MODAL
+function populateEditPermissionModal(permissionId) {
+  const bearerToken = localStorage.getItem("edms_token");
+  const editGroupSelect = document.getElementById("editGroupSelect");
+  const editPermissionIdInput = document.getElementById("editPermissionId");
+
+  // Make AJAX request to fetch data for the given permissionId
+  $.ajax({
+    url: `${apiBaseUrl}/grouppermission/show/${permissionId}`,
+    type: "GET",
+    dataType: "json",
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+      "Content-Type": "application/json",
+    },
+    success: function (permissionData) {
+      const { group_id, folder_id, ...permissions } = permissionData.data.data;
+      // Fetch all groups and populate the group dropdown
+      fetchAllGroupsAndPopulateDropdown(editGroupSelect, group_id);
+
+      // Fetch all folders and populate the folder dropdown
+      fetchAllFoldersAndPopulateDropdown(editFolderSelect, folder_id);
+
+      // Populate checkboxes based on existing permissions
+      populateEditCheckboxOptions(permissions);
+
+      // Show the "Edit Group Permission" modal
+      $("#editPermissionModal").modal("show");
+
+      // Set the group permission ID in the hidden input field
+      editPermissionIdInput.value = permissionId;
+
+      // Other code to populate the modal...
+    },
+    error: function (error) {
+      console.error("Error fetching data for permissionId:", error);
+    },
+  });
+}
+
+// Function to fetch all groups and populate the dropdown
+function fetchAllGroupsAndPopulateDropdown(selectElement, selectedGroupId) {
+  const bearerToken = localStorage.getItem("edms_token");
+  $.ajax({
+    url: `${apiBaseUrl}/groups`,
+    type: "GET",
+    dataType: "json",
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+      "Content-Type": "application/json",
+    },
+    success: function (groupData) {
+      selectElement.innerHTML = "";
+
+      // Add a default option
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.text = "Select Group";
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      selectElement.appendChild(defaultOption);
+
+      groupData.data.data.forEach(function (group) {
+        const option = document.createElement("option");
+        option.value = group.id;
+        option.text = group.group_name;
+        selectElement.appendChild(option);
+      });
+
+      // Set the selected group based on the permission data
+      selectElement.value = selectedGroupId;
+    },
+    error: function (error) {
+      console.error("Error fetching group data:", error);
+    },
+  });
+}
+
+// Function to fetch all folders and populate the dropdown
+function fetchAllFoldersAndPopulateDropdown(selectElement, selectedFolderId) {
+  const bearerToken = localStorage.getItem("edms_token");
+  $.ajax({
+    url: `${apiBaseUrl}/folders/1`,
+    type: "GET",
+    dataType: "json",
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+      "Content-Type": "application/json",
+    },
+    success: function (folderData) {
+      selectElement.innerHTML = "";
+
+      // Add a default option
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.text = "Select Folder";
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      selectElement.appendChild(defaultOption);
+
+      // Iterate over the folders and populate the dropdown
+      folderData.data.data.forEach(function (folder) {
+        const option = document.createElement("option");
+        option.value = folder.id;
+        option.text = folder.name;
+        selectElement.appendChild(option);
+      });
+
+      // Set the selected folder based on the permission data
+      selectElement.value = selectedFolderId;
+    },
+    error: function (error) {
+      console.error("Error fetching folder data:", error);
+    },
+  });
+}
+
+// FUNCTION TO POPULATE CHECKBOXES DYNAMICALLY FOR EDITING GROUP PERMISSION
+function populateEditCheckboxOptions(permissions) {
+  const checkboxContainer = document.getElementById("editCheckboxContainer");
+
+  // Clear existing checkboxes
+  checkboxContainer.innerHTML = "";
+
+  const heading = document.createElement("h4");
+  heading.appendChild(document.createTextNode("Select Permissions:"));
+  checkboxContainer.appendChild(heading);
+
+  Object.entries(permissions).forEach(([permission, value]) => {
+    // Skip certain properties like 'id', 'group_id', 'folder_id', etc.
+    if (
+      permission !== "id" &&
+      permission !== "group" &&
+      permission !== "group_id" &&
+      permission !== "folder_id" &&
+      permission !== "created_at" &&
+      permission !== "updated_at"
+    ) {
+      // Create a checkbox
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.value = permission;
+      checkbox.id = `edit_checkbox_${permission}`; // Set a unique ID for each checkbox
+
+      // Check the checkbox if the permission is granted
+      checkbox.checked = value === 1;
+
+      // Create a label for the checkbox with a non-breaking space
+      const label = document.createElement("label");
+      label.htmlFor = `edit_checkbox_${permission}`;
+      label.innerHTML = `&nbsp;&nbsp;${permission}`;
+
+      // Create a div to hold the checkbox and label
+      const checkboxDiv = document.createElement("div");
+      checkboxDiv.appendChild(checkbox);
+      checkboxDiv.appendChild(label);
+
+      // Append the checkbox div to the container
+      checkboxContainer.appendChild(checkboxDiv);
+    }
+  });
+
+  // Keep the checkboxes visible
+  checkboxContainer.style.display = "block";
+}
+
+// FUNCTION TO SUBMIT THE EDIT PERMISSION FORM
+function submitEditPermissionsForm() {
+  // Fetch form data
+  const groupId = $("#editGroupSelect").val();
+  const folderId = $("#editFolderSelect").val();
+  const groupPermissionId = $("#editPermissionId").val();
+
+  // Fetch the selected checkboxes for permissions
+  const selectedPermissions = getSelectedPermissions();
+
+  // Construct the request payload
+  const requestData = {
+    group_id: groupId,
+    folder_id: folderId,
+    ...selectedPermissions,
+  };
+
+  // Make an AJAX request to update the group permission
+  $.ajax({
+    url: `${apiBaseUrl}/grouppermissions/update/${groupPermissionId}`,
+    type: "POST",
+    dataType: "json",
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify(requestData),
+    success: function (response) {
+      // Close the modal after successfully updating permissions
+      $("#editPermissionModal").modal("hide");
+      toastr.success("Group permission updated successfully");
+      fetchData();
+    },
+    error: function (error) {
+      console.error("Error updating group permission:", error);
+    },
+  });
+}
+
+// Helper function to get selected permissions from checkboxes
+function getSelectedPermissions() {
+  const selectedPermissions = {};
+  $("#editCheckboxContainer input[type='checkbox']:checked").each(function () {
+    selectedPermissions[this.value] = 1;
+  });
+  return selectedPermissions;
 }
 
 // GLOBAL VARIABLE TO STORE THE PERMISSION ID TO BE DELETED
