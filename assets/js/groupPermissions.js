@@ -549,6 +549,8 @@ function createPermission() {
         toastr.success("Group permissions stored successfully");
         fetchData();
         populateTable(response.data.data);
+        // Enable the submit button and revert the text
+        submitButton.prop("disabled", false).html("Assign Permission");
       })
       .catch(function (error) {
         // Handle error response
@@ -779,6 +781,8 @@ function submitEditPermissionsForm() {
         $("#editPermissionModal").modal("hide");
 
         toastr.success("Group permission updated successfully");
+        // Enable the submit button and revert the text
+        submitButton.prop("disabled", false).html("Save Changes");
         fetchData();
       })
       .catch(function (error) {

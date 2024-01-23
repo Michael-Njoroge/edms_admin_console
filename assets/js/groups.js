@@ -420,9 +420,10 @@ function submitEditForm() {
       // Close the modal after successful submission
       $("#editForm").modal("hide");
 
-      // Refresh the data by calling the getData() function
+      // Refresh the data functions
       getData();
       getGroupMembershipsData();
+      fetchData();
 
       // Update the dropdowns after editing the group
       populateDropdowns();
@@ -526,6 +527,7 @@ function deleteGroup() {
         getData();
 
         getGroupMembershipsData();
+        fetchData();
 
         fetchDataAndPopulateCounts();
 
