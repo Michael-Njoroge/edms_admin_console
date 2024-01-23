@@ -6,8 +6,12 @@ $.fn.extend({
     function buildTree(data) {
       var ul = $("<ul></ul>");
       $.each(data, function (index, item) {
-        var li = $("<li class='branch'></li>").text(item.name);
+        var li = $("<li class='branch'></li>")
+          .text(item.name)
+          .data("node-id", item.id);
+
         console.log("Node:", item.id);
+
         if (item.children && item.children.length > 0) {
           console.log("Adding children for:", item.name);
           li.append(buildTree(item.children));
@@ -71,18 +75,54 @@ $.fn.extend({
     function saveNewNode(newLi) {
       // Get the value from the input field
       var newNodeName = newLi.find(".new-node-input").val();
+      console.log(newNodeName);
       var errorMessage = newLi.find(".error-message");
 
       // Check if the input is not empty
       if (newNodeName.trim() !== "") {
-        // Replace the input field with the entered value and add the + icon
-        newLi
-          .empty()
-          .text(newNodeName)
-          .prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
-        errorMessage.hide();
+        // Get the parent lookup id from the data attribute of the parent li
+        var parentLookupId = newLi.parent().closest("li").data("node-id");
+        console.log(parentLookupId);
 
-        toastr.success("Lookup saved successfully!");
+        // If the parent lookup id is undefined, set it to 0
+        if (typeof parentLookupId === "undefined") {
+          parentLookupId = 0;
+        }
+
+        // Prepare the payload for the POST request
+        var postData = {
+          parent_lookup_id: parentLookupId,
+          name: newNodeName,
+        };
+
+        // Make an AJAX POST request to save the new node
+        $.ajax({
+          url: apiBaseUrl + "/lookups/store",
+          method: "POST",
+          dataType: "json",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+          data: JSON.stringify(postData),
+          success: function (response) {
+            // Replace the input field with the entered value and add the + icon
+            newLi
+              .empty()
+              .text(newNodeName)
+              .data("node-id", response.id) // Save the new node's ID in data attribute
+              .prepend(
+                "<i class='indicator glyphicon " + closedClass + "'></i>"
+              );
+            errorMessage.hide();
+
+            toastr.success("Lookup saved successfully!");
+          },
+          error: function (error) {
+            console.error("Error saving data to the API:", error);
+            errorMessage.show().text("Error saving data. Please try again.");
+          },
+        });
       } else {
         // Display error message and style it
         errorMessage.show().css({
@@ -98,6 +138,7 @@ $.fn.extend({
     }
 
     var tree = buildTree(data.data.data);
+    console.log(tree);
     tree.addClass("tree");
 
     // Append the tree to the specified element
