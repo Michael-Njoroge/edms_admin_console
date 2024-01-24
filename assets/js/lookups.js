@@ -10,13 +10,10 @@ $.fn.extend({
           .text(item.name)
           .data("node-id", item.id);
 
-        console.log("Node:", item.id);
-
         if (item.children && item.children.length > 0) {
-          console.log("Adding children for:", item.name);
           li.append(buildTree(item.children));
         } else {
-          console.log("No children for:", item.name);
+          console.log(item.name);
         }
 
         ul.append(li);
@@ -75,14 +72,12 @@ $.fn.extend({
     function saveNewNode(newLi) {
       // Get the value from the input field
       var newNodeName = newLi.find(".new-node-input").val();
-      console.log(newNodeName);
       var errorMessage = newLi.find(".error-message");
 
       // Check if the input is not empty
       if (newNodeName.trim() !== "") {
         // Get the parent lookup id from the data attribute of the parent li
         var parentLookupId = newLi.parent().closest("li").data("node-id");
-        console.log(parentLookupId);
 
         // If the parent lookup id is undefined, set it to 0
         if (typeof parentLookupId === "undefined") {
@@ -110,7 +105,7 @@ $.fn.extend({
             newLi
               .empty()
               .text(newNodeName)
-              .data("node-id", response.id) // Save the new node's ID in data attribute
+              .data("node-id", response.id)
               .prepend(
                 "<i class='indicator glyphicon " + closedClass + "'></i>"
               );
@@ -127,13 +122,13 @@ $.fn.extend({
         // Display error message and style it
         errorMessage.show().css({
           color: "red",
-          marginLeft: "5px", // Adjust spacing as needed
+          marginLeft: "5px",
         });
       }
     }
 
     function cancelNewNode(newLi) {
-      // Remove the input field and buttons, effectively canceling the new node creation
+      // Remove the input field and buttons
       newLi.remove();
     }
 
