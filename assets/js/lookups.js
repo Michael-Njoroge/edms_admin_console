@@ -7,24 +7,53 @@ $.fn.extend({
       var ul = $("<ul></ul>");
       $.each(data, function (index, item) {
         var li = $("<li class='branch'></li>")
-          .text(item.name)
+          .append($("<span class='tree-node'></span>").text(item.name))
           .data("node-id", item.id);
 
         if (item.children && item.children.length > 0) {
           li.append(buildTree(item.children));
         } else {
           console.log(item.name);
+
+          // Add a "New" button as a child of the node without children
+          li.append(
+            $("<ul>").append(
+              $("<li class='branch'></li>").append(
+                $("<span class='new-node'></span>")
+                  .append(
+                    $(
+                      "<i class='indicator glyphicon " + closedClass + "'></i>"
+                    ),
+                    $("<span class='tree-node'></span>").text("New")
+                  )
+                  .on("click", function (e) {
+                    e.stopPropagation();
+                    addNewNode($(this).closest("ul"));
+                  })
+              )
+            )
+          );
         }
 
         ul.append(li);
+
+        // Toggle tree node on click
+        li.on("click", function (e) {
+          e.stopPropagation();
+          var icon = $(this).children("i:first");
+          icon.toggleClass(openedClass + " " + closedClass);
+          $(this).children().children().toggle();
+        });
       });
 
-      // Add a new node button at the bottom
+      // Add a "New" button as the last child of the current level
       ul.append(
         $("<li class='branch'></li>").append(
-          $("<i class='indicator glyphicon " + closedClass + "'></i>"),
           $("<span class='new-node'></span>")
-            .text("New")
+            .append(
+              $("<i class='indicator glyphicon " + closedClass + "'></i>"),
+              $("<span class='tree-node'></span>").text("New")
+            )
             .on("click", function (e) {
               e.stopPropagation();
               addNewNode($(this).closest("ul"));

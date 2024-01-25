@@ -322,11 +322,13 @@
    margin: 0;
    padding: 0;
    list-style: none;
+
  }
 
  .tree ul {
    margin-left: 1em;
    position: relative;
+
  }
 
  .tree ul ul {
@@ -351,6 +353,18 @@
    color: black;
    position: relative;
    cursor: pointer;
+
+ }
+
+ .tree-node {
+   background-color: #428bca;
+   color: white;
+   border-radius: 5px;
+   padding: 4px 5px;
+   width: max-content;
+   text-align: center;
+   align-items: center;
+   cursor: pointer;
  }
 
  .tree ul li:before {
@@ -358,7 +372,7 @@
    display: block;
    width: 10px;
    height: 0;
-   border-top: 1px solid #afb1b4;
+   border-top: 1px solid black;
    margin-top: -1px;
    position: absolute;
    top: 1em;
@@ -374,6 +388,16 @@
 
  .indicator {
    margin-right: 5px;
+   background-color: #355B11;
+   color: white;
+   height: 22px;
+   width: 22px;
+   border-radius: 5px;
+   text-align: center;
+   justify-items: center;
+   align-items: center;
+   padding: 3px;
+
  }
 
  .tree li a,
@@ -550,13 +574,6 @@
    padding: 10px 5px;
    text-align: center;
  }
-
-
-
-
-
-
-
 
  .noty-manager-wrapper {
    position: relative;
