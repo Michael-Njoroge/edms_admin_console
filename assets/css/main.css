@@ -280,6 +280,7 @@
 
  .box:hover {
    background-color: #355B11;
+   color: white;
  }
 
  .data-info {
@@ -292,7 +293,7 @@
  }
 
  .box {
-   background-color: rgb(42, 45, 48);
+   background-color: #f0f0f0;
    height: 150px;
    flex-basis: 150px;
    flex-grow: 1;
@@ -300,7 +301,7 @@
    display: flex;
    align-items: center;
    justify-content: space-around;
-   color: #f0f0f0;
+   color: black;
    cursor: pointer;
  }
 
@@ -357,14 +358,22 @@
  }
 
  .tree-node {
-   background-color: #428bca;
-   color: white;
+   background-color: gainsboro;
+   margin: auto;
+   color: black;
    border-radius: 5px;
-   padding: 4px 5px;
-   width: max-content;
+   padding: 8px;
+   width: auto;
    text-align: center;
    align-items: center;
    cursor: pointer;
+ }
+
+
+ .tree-node:hover {
+   background-color: #355B11;
+   border-bottom: 3px solid #ffa600;
+   color: whitesmoke;
  }
 
  .tree ul li:before {
@@ -388,7 +397,7 @@
 
  .indicator {
    margin-right: 5px;
-   background-color: #355B11;
+   background-color: black;
    color: white;
    height: 22px;
    width: 22px;

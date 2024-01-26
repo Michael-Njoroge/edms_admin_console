@@ -72,12 +72,28 @@ async function fetchDataAndPopulateCounts() {
     // Update the folder count in the appropriate card
     document.getElementById("folderCount").innerText =
       foldersData.data.data.length;
+
+    // Fetch data for grouppermissions from the API endpoint
+    const permissionResponse = await fetch(apiBaseUrl + "/grouppermissions", {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    // Convert the response to JSON format
+    const permissionsData = await permissionResponse.json();
+
+    // Update the group count in the appropriate card
+    document.getElementById("permissionCount").innerText =
+      permissionsData.data.data.length;
   } catch (error) {
     console.error("Error fetching data:", error);
     // Handle errors, e.g., display an error message
     document.getElementById("userCount").innerText = "Error loading data";
     document.getElementById("groupCount").innerText = "Error loading data";
     document.getElementById("folderCount").innerText = "Error loading data";
+    document.getElementById("permissionCount").innerText = "Error loading data";
   }
 }
 
@@ -87,9 +103,7 @@ fetchDataAndPopulateCounts();
 $(document).ready(function () {
   // Function to handle the click event on the notifications icon
   $("#notifications").click(function (event) {
-    console.log("Thanks for visiting!");
-
-    // Toggle the "open" class on notifications container
+     // Toggle the "open" class on notifications container
     $("#notificationsli").toggleClass("open");
 
     // Prevent the default behavior of the anchor link

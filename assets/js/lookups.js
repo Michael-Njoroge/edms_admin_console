@@ -13,8 +13,6 @@ $.fn.extend({
         if (item.children && item.children.length > 0) {
           li.append(buildTree(item.children));
         } else {
-          console.log(item.name);
-
           // Add a "New" button as a child of the node without children
           li.append(
             $("<ul>").append(
@@ -24,7 +22,7 @@ $.fn.extend({
                     $(
                       "<i class='indicator glyphicon " + closedClass + "'></i>"
                     ),
-                    $("<span class='tree-node'></span>").text("New")
+                    $("<span class='tree-nodes'></span>").text("New")
                   )
                   .on("click", function (e) {
                     e.stopPropagation();
@@ -52,7 +50,7 @@ $.fn.extend({
           $("<span class='new-node'></span>")
             .append(
               $("<i class='indicator glyphicon " + closedClass + "'></i>"),
-              $("<span class='tree-node'></span>").text("New")
+              $("<span class='tree-nodes'></span>").text("New")
             )
             .on("click", function (e) {
               e.stopPropagation();
@@ -70,7 +68,9 @@ $.fn.extend({
 
       // Create a new list item with an input field and error message
       var newLi = $("<li class='branch'></li>").append(
-        $("<input type='text' class='new-node-input' placeholder='Enter New'>"),
+        $(
+          "<input type='text' class='new-node-input' placeholder='Enter New Lookup'>"
+        ),
         "&nbsp;&nbsp;&nbsp;",
         $(
           "<button class='btn btn-sm save-node' style='background: none;'>Save</button>"
@@ -162,7 +162,6 @@ $.fn.extend({
     }
 
     var tree = buildTree(data.data.data);
-    console.log(tree);
     tree.addClass("tree");
 
     // Append the tree to the specified element
@@ -211,7 +210,7 @@ const bearerToken = localStorage.getItem("edms_token");
 if (!bearerToken) {
   console.error("Unauthorized");
 } else {
-  // Make an AJAX request to fetch data from the API with the Authorization header
+  // Make an AJAX request to fetch data from the API
   $.ajax({
     url: apiBaseUrl + "/lookups",
     method: "GET",
