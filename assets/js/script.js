@@ -103,7 +103,7 @@ fetchDataAndPopulateCounts();
 $(document).ready(function () {
   // Function to handle the click event on the notifications icon
   $("#notifications").click(function (event) {
-     // Toggle the "open" class on notifications container
+    // Toggle the "open" class on notifications container
     $("#notificationsli").toggleClass("open");
 
     // Prevent the default behavior of the anchor link
@@ -122,3 +122,10 @@ $(document).ready(function () {
     }
   });
 });
+
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}

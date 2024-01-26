@@ -119,60 +119,58 @@
               </div>
             </li>
 
-            <li class="dropdown">
-              <a
-                id="user-name"
-                href="#"
-                class="dropdown-toggle"
-                data-toggle="dropdown"
-                role="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
+            <li>
+              <a id="user-name" href="#">
                 <img
+                  onclick="openNav()"
                   id="user-image"
                   src=""
                   alt="User Image"
                   class="user-image"
                 />
               </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="#" data-toggle="modal" data-target="#profileModal"
-                    >Profile</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    id="uploadPhotoBtn"
-                    data-toggle="modal"
-                    data-target="#uploadPhotoModal"
-                    >Upload Photo</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    id="uploadSignatureBtn"
-                    data-toggle="modal"
-                    data-target="#uploadSignatureModal"
-                    >Upload Signature</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    id="uploadStampBtn"
-                    data-toggle="modal"
-                    data-target="#uploadStampModal"
-                    >Upload Stamp</a
-                  >
-                </li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#" id="logout">Logout</a></li>
-              </ul>
             </li>
+            <div id="mySidenav" class="sidenav">
+              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
+                >&times;</a
+              >
+
+              <a href="#" data-toggle="modal" data-target="#profileModal"
+                ><i class="fa fa-user"></i>
+                <span class="menu-text"></span>Profile</a
+              >
+
+              <a
+                href="#"
+                id="uploadPhotoBtn"
+                data-toggle="modal"
+                data-target="#uploadPhotoModal"
+                ><i class="fa fa-camera"></i>
+                <span class="menu-text"></span>Upload Photo</a
+              >
+
+              <a
+                href="#"
+                id="uploadSignatureBtn"
+                data-toggle="modal"
+                data-target="#uploadSignatureModal"
+                ><i class="fa fa-pencil"></i>
+                <span class="menu-text"></span>Upload Signature</a
+              >
+
+              <a
+                href="#"
+                id="uploadStampBtn"
+                data-toggle="modal"
+                data-target="#uploadStampModal"
+                ><i class="fa fa-certificate"></i>
+                <span class="menu-text"></span>Upload Stamp</a
+              >
+              <a href="#" id="logout"
+                ><i class="fa fa-sign-out"></i>
+                <span class="menu-text"></span>Logout</a
+              >
+            </div>
           </ul>
         </div>
       </div>
