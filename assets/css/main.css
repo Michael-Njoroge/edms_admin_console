@@ -9,6 +9,12 @@
 
  }
 
+ .username {
+   margin: 25%;
+   font-weight: 800;
+   font-family: Arial, Helvetica, sans-serif;
+ }
+
  .msb .navbar-nav li label {
    text-decoration: none;
    padding: 10px;
@@ -628,7 +634,7 @@
    color: black;
    display: block;
    transition: 0.3s;
-   font-weight: bold;
+   font-weight: 200;
    margin: 8px;
  }
 

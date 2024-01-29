@@ -280,8 +280,6 @@ $("#form").on("hidden.bs.modal", function () {
 
 // Fetch existing users and populate the dropdown when the document is ready
 function fetchAndPopulateUsersDropdown() {
-  const adminSelect = $("#adminSelect");
-
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem("edms_token");
 
@@ -301,16 +299,22 @@ function fetchAndPopulateUsersDropdown() {
   })
     .then((response) => response.json())
     .then((data) => {
-      const assignUserDropdown = $("#adminSelect");
-      assignUserDropdown.empty();
-      // Add default "Select" option
-      assignUserDropdown.append(
-        '<option value="" disabled selected>Select Admin</option>'
-      );
+      const options = data.data.data.map((user) => {
+        return {
+          value: user.id,
+          text: user.name,
+        };
+      });
 
-      // Populate the dropdown with existing users
-      data.data.data.forEach((user) => {
-        adminSelect.append(`<option value="${user.id}">${user.name}</option>`);
+      // Initialize Tom Select with fetched options
+      new TomSelect("#adminSelect", {
+        create: false, // Disable the option to create new items
+        placeholder: "Select Admin", // Placeholder text
+        options: options, // Set options
+        sortField: {
+          field: "text",
+          direction: "asc",
+        },
       });
     })
     .catch((error) => {

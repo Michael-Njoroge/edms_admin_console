@@ -282,7 +282,7 @@ function resetModalState() {
   checkboxContainer.style.display = "none";
 }
 
-// FUNCTION TO POPULATE FOLDERS DYNAMICALLY
+// FUNCTION TO POPULATE FOLDERS DYNAMICALLY AND INITIATE TOM SELECT
 function populateFolderOptions() {
   const bearerToken = localStorage.getItem("edms_token");
 
@@ -299,27 +299,31 @@ function populateFolderOptions() {
       const folderSelect = document.getElementById("folderSelect");
       folderSelect.innerHTML = "";
 
-      // Add a default option
-      const defaultOption = document.createElement("option");
-      defaultOption.value = "";
-      defaultOption.text = "Select Folder";
-      defaultOption.disabled = true;
-      defaultOption.selected = true;
-      folderSelect.appendChild(defaultOption);
+      // Create an array to hold the folder options for Tom Select
+      const folderOptions = [];
 
       // Check if there are folders in the response
       if (folderData.data.data && folderData.data.data.length > 0) {
         // Iterate over the folders and populate the dropdown
         folderData.data.data.forEach(function (folder) {
-          const option = document.createElement("option");
-          option.value = folder.id;
-          option.text = folder.name;
-          folderSelect.appendChild(option);
+          const option = { value: folder.id, text: folder.name };
+          folderOptions.push(option);
         });
       } else {
         // If no folders are found, you may want to handle this case
         console.error("No folders found.");
       }
+
+      // Initialize Tom Select with fetched options
+      new TomSelect("#folderSelect", {
+        create: false, // Disable the option to create new items
+        placeholder: "Select Folder", // Placeholder text
+        options: folderOptions, // Set options
+        sortField: {
+          field: "text",
+          direction: "asc",
+        },
+      });
     },
     error: function (error) {
       console.error("Error fetching folder data:", error);
@@ -327,7 +331,7 @@ function populateFolderOptions() {
   });
 }
 
-// FUNCTION TO POPULATE GROUPS DYNAMICALLY
+// FUNCTION TO POPULATE GROUPS DYNAMICALLY AND INITIATE TOM SELECT
 function populateGroupOptions() {
   const bearerToken = localStorage.getItem("edms_token");
 
@@ -344,6 +348,9 @@ function populateGroupOptions() {
       const groupSelect = document.getElementById("groupSelect");
       groupSelect.innerHTML = "";
 
+      // Create an array to hold the group options for Tom Select
+      const groupOptions = [];
+
       // Add a default option
       const defaultOption = document.createElement("option");
       defaultOption.value = "";
@@ -352,11 +359,27 @@ function populateGroupOptions() {
       defaultOption.selected = true;
       groupSelect.appendChild(defaultOption);
 
-      groupData.data.data.forEach(function (group) {
-        const option = document.createElement("option");
-        option.value = group.id;
-        option.text = group.group_name;
-        groupSelect.appendChild(option);
+      // Check if there are groups in the response
+      if (groupData.data.data && groupData.data.data.length > 0) {
+        // Iterate over the groups and populate the dropdown
+        groupData.data.data.forEach(function (group) {
+          const option = { value: group.id, text: group.group_name };
+          groupOptions.push(option);
+        });
+      } else {
+        // If no groups are found, you may want to handle this case
+        console.error("No groups found.");
+      }
+
+      // Initialize Tom Select with fetched options
+      new TomSelect("#groupSelect", {
+        create: false, // Disable the option to create new items
+        placeholder: "Select Group", // Placeholder text
+        options: groupOptions, // Set options
+        sortField: {
+          field: "text",
+          direction: "asc",
+        },
       });
     },
     error: function (error) {

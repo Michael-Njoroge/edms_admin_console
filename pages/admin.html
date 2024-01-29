@@ -36,6 +36,9 @@
 
     <!-- Toast -->
     <link rel="stylesheet" href="../assets/toastr/toastr.min.css" />
+
+    <!-- Tom select search -->
+    <link rel="stylesheet" href="../assets/css/tom-select.min.css" />
   </head>
 
   <body
@@ -87,7 +90,8 @@
                         <div class="activity-item">
                           <i class="fa fa-user text-success"></i>
                           <div class="activity">
-                            <a href="#">Alice Johnson</a> updated user details
+                            <a href="#">Alice Johnson</a>
+                            updated user details
                             <span>30 minutes ago</span>
                           </div>
                         </div>
@@ -120,7 +124,7 @@
             </li>
 
             <li>
-              <a id="user-name" href="#">
+              <a href="#">
                 <img
                   onclick="openNav()"
                   id="user-image"
@@ -131,13 +135,14 @@
               </a>
             </li>
             <div id="mySidenav" class="sidenav">
-              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
-                >&times;</a
-              >
+              <div class="user-info">
+                <span class="username" id="profile-name"></span>
+              </div>
+              <a href="#" class="closebtn" onclick="closeNav()">&times;</a>
 
               <a href="#" data-toggle="modal" data-target="#profileModal"
-                ><i class="fa fa-user"></i>
-                <span class="menu-text"></span>Profile</a
+                ><i class="fa fa-user"></i> <span class="menu-text"></span>Your
+                Profile</a
               >
 
               <a
@@ -329,11 +334,7 @@
                           />
                         </div>
                         <label for="adminSelect">Group Admin</label>
-                        <select
-                          id="adminSelect"
-                          name="adminSelect"
-                          class="form-control"
-                        >
+                        <select id="adminSelect" name="adminSelect">
                           <!-- Populate dropdown with existing users -->
                         </select>
                       </div>
@@ -927,13 +928,13 @@
                       <form>
                         <div class="form-group">
                           <label for="groupSelect">Select Group:</label>
-                          <select class="form-control" id="groupSelect">
+                          <select id="groupSelect">
                             <!-- Group options will be populated dynamically -->
                           </select>
                         </div>
                         <div class="form-group">
                           <label for="folderSelect">Select Folder:</label>
-                          <select class="form-control" id="folderSelect">
+                          <select id="folderSelect">
                             <!-- Folder options will be populated dynamically -->
                           </select>
                         </div>
@@ -1077,7 +1078,9 @@
               <div class="content" id="content">
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item">
+                      <a href="#">Home</a>
+                    </li>
                     <li class="breadcrumb-item active" aria-current="page">
                       Dashboard
                     </li>
@@ -1150,7 +1153,9 @@
                 <!-- Breadcrumb -->
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item">
+                      <a href="#">Home</a>
+                    </li>
                     <li class="breadcrumb-item active" aria-current="page">
                       Lookups
                     </li>
@@ -1552,7 +1557,9 @@
                   <!-- Breadcrumb -->
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item">
+                        <a href="#">Home</a>
+                      </li>
                       <li class="breadcrumb-item active" aria-current="page">
                         Groups
                       </li>
@@ -1616,7 +1623,9 @@
                   <!-- Breadcrumb -->
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item">
+                        <a href="#">Home</a>
+                      </li>
                       <li class="breadcrumb-item active" aria-current="page">
                         Memberships
                       </li>
@@ -1656,7 +1665,9 @@
                   <!-- Breadcrumb -->
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item">
+                        <a href="#">Home</a>
+                      </li>
                       <li class="breadcrumb-item active" aria-current="page">
                         Permissions
                       </li>
@@ -1764,7 +1775,9 @@
                   <!-- Breadcrumb -->
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item">
+                        <a href="#">Home</a>
+                      </li>
                       <li class="breadcrumb-item active" aria-current="page">
                         Users
                       </li>
@@ -1812,7 +1825,9 @@
                   <!-- Breadcrumb -->
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item">
+                        <a href="#">Home</a>
+                      </li>
                       <li class="breadcrumb-item active" aria-current="page">
                         Serializer
                       </li>
@@ -1876,6 +1891,7 @@
               <script src="../assets/js/jquery.waypoints.min.js"></script>
               <script src="../assets/DataTables/datatables.min.js"></script>
               <script src="../assets/js/jstree.js"></script>
+              <script src="../assets/js/tom-select.complete.min.js"></script>
 
               <script src="../assets/DataTables/jquery.dataTables.min.js"></script>
               <script src="../assets/DataTables/dataTables.buttons.min.js"></script>
