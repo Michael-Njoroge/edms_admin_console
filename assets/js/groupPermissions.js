@@ -3,6 +3,12 @@
 async function fetchData() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem("edms_token");
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
+    return;
+  }
   try {
     const response = await fetch(apiBaseUrl + "/userpermissions", {
       method: "GET",
@@ -193,6 +199,12 @@ function resetModalState() {
 // FUNCTION TO POPULATE USERS DYNAMICALLY AND INITIATE TOM SELECT
 function populateUserOptions() {
   const bearerToken = localStorage.getItem("edms_token");
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
+    return;
+  }
 
   // Make AJAX requests to fetch folder data
   $.ajax({
@@ -240,6 +252,13 @@ function populateUserOptions() {
 function populateCheckboxOptions() {
   const bearerToken = localStorage.getItem("edms_token");
   const checkboxContainer = document.getElementById("checkboxContainer");
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
+    return;
+  }
 
   // Make an AJAX request to fetch permission data
   $.ajax({
@@ -351,6 +370,12 @@ function createPermission() {
   try {
     // Get the bearer token from local storage
     const bearerToken = localStorage.getItem("edms_token");
+    // Check if the token is present in localStorage
+    if (!bearerToken) {
+      console.error("Unauthorized");
+      toastr.error("Unauthorized access!");
+      return;
+    }
 
     // Get references to HTML elements
     const userSelect = document.getElementById("userSelect");
@@ -444,6 +469,13 @@ function populateEditPermissionModal(permissionId) {
   const editUserSelect = document.getElementById("editUserSelect");
   const editPermissionIdInput = document.getElementById("editPermissionId");
 
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
+    return;
+  }
+
   // Make AJAX request to fetch data for the given permissionId
   $.ajax({
     url: `${apiBaseUrl}/userpermission/show/${permissionId}`,
@@ -476,6 +508,13 @@ function populateEditPermissionModal(permissionId) {
 // Function to fetch all users and populate the dropdown
 function fetchAllUsersAndPopulateDropdown(selectElement, selectedUserId) {
   const bearerToken = localStorage.getItem("edms_token");
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
+    return;
+  }
   $.ajax({
     url: `${apiBaseUrl}/users`,
     type: "GET",
@@ -646,6 +685,7 @@ function deletePermission() {
   // Check if the token is present in localStorage
   if (!bearerToken) {
     console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
     return;
   }
 

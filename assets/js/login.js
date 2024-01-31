@@ -6,6 +6,7 @@ $(document).ready(function () {
   if (token) {
     window.location.href = "../pages/admin.html";
   }
+
   // Handle form submission
   $("#login-form").submit(function (event) {
     event.preventDefault();

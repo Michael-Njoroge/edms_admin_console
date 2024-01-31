@@ -8,6 +8,7 @@ async function getData(page = 1, itemsPerPage = 5) {
   // Check if the token is present in localStorage
   if (!bearerToken) {
     console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
     return;
   }
 
@@ -106,6 +107,7 @@ async function populateFoldersDropdown() {
   // Check if the token is present in localStorage
   if (!bearerToken) {
     console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
     return;
   }
 
@@ -161,6 +163,7 @@ async function fetchGroupPermissions() {
   // Check if the token is present in localStorage
   if (!bearerToken) {
     console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
     return;
   }
 
@@ -231,6 +234,7 @@ function createGroup() {
   // Check if the token is present in localStorage
   if (!bearerToken) {
     console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
     return;
   }
 
@@ -286,6 +290,7 @@ function fetchAndPopulateUsersDropdown() {
   // Check if the token is present in localStorage
   if (!bearerToken) {
     console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
     return;
   }
 
@@ -337,6 +342,14 @@ let originalGroupName, originalGroupAdminId;
 function editGroup(groupId) {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem("edms_token");
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized.");
+    toastr.error("Unauthorized access!");
+    return;
+  }
+
   // Fetch group data based on the group ID
   fetch(`${apiBaseUrl}/group/show/${groupId}`, {
     headers: {
@@ -406,7 +419,8 @@ function submitEditForm() {
 
   // Check if the token is present in localStorage
   if (!bearerToken) {
-    toastr.error("Unauthorized.");
+    console.error("Unauthorized.");
+    toastr.error("Unauthorized access!");
     return;
   }
 
@@ -451,7 +465,7 @@ function fetchAndPopulateEditUsersDropdown() {
 
   // Check if the token is present in localStorage
   if (!bearerToken) {
-    toastr.error("Unauthorized.");
+    toastr.error("Unauthorized access!");
     return;
   }
 
@@ -503,6 +517,7 @@ function deleteGroup() {
   // Check if the token is present in localStorage
   if (!bearerToken) {
     console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
     return;
   }
 
@@ -560,6 +575,13 @@ $(document).ready(async function () {
 async function populateDropdowns() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem("edms_token");
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    toastr.error("Unauthorized access!");
+    return;
+  }
 
   try {
     // Fetch existing groups
