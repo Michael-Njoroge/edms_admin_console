@@ -74,7 +74,7 @@ async function fetchDataAndPopulateCounts() {
       foldersData.data.data.length;
 
     // Fetch data for grouppermissions from the API endpoint
-    const permissionResponse = await fetch(apiBaseUrl + "/grouppermissions", {
+    const permissionResponse = await fetch(apiBaseUrl + "/userpermissions", {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
         "Content-Type": "application/json",

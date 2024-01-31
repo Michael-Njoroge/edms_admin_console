@@ -913,7 +913,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="createPermissionModalLabel">
-                        Assign Permissions to Group
+                        Assign User Permissions
                       </h5>
                       <button
                         type="button"
@@ -927,17 +927,12 @@
                     <div class="modal-body">
                       <form>
                         <div class="form-group">
-                          <label for="groupSelect">Select Group:</label>
-                          <select id="groupSelect">
+                          <label for="groupSelect">Select User:</label>
+                          <select id="userSelect">
                             <!-- Group options will be populated dynamically -->
                           </select>
                         </div>
-                        <div class="form-group">
-                          <label for="folderSelect">Select Folder:</label>
-                          <select id="folderSelect">
-                            <!-- Folder options will be populated dynamically -->
-                          </select>
-                        </div>
+
                         <!-- Checkbox container -->
                         <div id="checkboxContainer"></div>
                         <!-- Pagination container -->
@@ -999,17 +994,12 @@
                             class="form-control"
                             id="editPermissionId"
                           />
-                          <label for="editGroupSelect">Select Group:</label>
-                          <select class="form-control" id="editGroupSelect">
+                          <label for="editUserSelect">Select User</label>
+                          <select class="form-control" id="editUserSelect">
                             <!-- Populate group options dynamically or set the selected group -->
                           </select>
                         </div>
-                        <div class="form-group">
-                          <label for="editFolderSelect">Select Folder:</label>
-                          <select class="form-control" id="editFolderSelect">
-                            <!-- Populate folder options dynamically or set the selected folder -->
-                          </select>
-                        </div>
+
                         <!-- Checkbox container for editing permissions -->
                         <div id="editCheckboxContainer"></div>
                         <!-- Pagination container for editing permissions -->
@@ -1696,64 +1686,39 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Group</th>
-                      <th>Folder</th>
+                      <th>User</th>
+
                       <th>View Users</th>
                       <th>Add User</th>
                       <th>Assign User Group</th>
                       <th>View User</th>
                       <th>Update User</th>
                       <th>Delete User</th>
+
                       <th>View Groups</th>
                       <th>Add Group</th>
                       <th>View Group</th>
                       <th>Update Group</th>
                       <th>Delete Group</th>
+
                       <th>View Group Memberships</th>
                       <th>Add Group Membership</th>
                       <th>View Group Membership</th>
                       <th>Update Group Membership</th>
                       <th>Delete Group Membership</th>
+
+                      <th>View User Permissions</th>
+                      <th>Add User Permission</th>
+                      <th>View User Permission</th>
+                      <th>Update User Permission</th>
+                      <th>Delete User Permission</th>
+
                       <th>View Group Permissions</th>
                       <th>Add Group Permission</th>
                       <th>View Group Permission</th>
                       <th>Update Group Permission</th>
                       <th>Delete Group Permission</th>
-                      <th>View Folders</th>
-                      <th>Create Folder</th>
-                      <th>Open Folder</th>
-                      <th>Update Folder</th>
-                      <th>Delete Folder</th>
-                      <th>View Documents</th>
-                      <th>Add Document</th>
-                      <th>View Document</th>
-                      <th>Update Document</th>
-                      <th>Delete Document</th>
-                      <th>View Fields</th>
-                      <th>Add Field</th>
-                      <th>View Field</th>
-                      <th>Update Field</th>
-                      <th>Delete Field</th>
-                      <th>View Docfields</th>
-                      <th>Create Docfield</th>
-                      <th>View Docfield</th>
-                      <th>Update Docfield</th>
-                      <th>Delete Docfield</th>
-                      <th>View Worksteps</th>
-                      <th>Add Workstep</th>
-                      <th>View Workstep</th>
-                      <th>Update Workstep</th>
-                      <th>Delete Workstep</th>
-                      <th>View Possible Actions</th>
-                      <th>Add Possible Action</th>
-                      <th>View Possible Action</th>
-                      <th>Update Possible Action</th>
-                      <th>Delete Possible Action</th>
-                      <th>View Workstep Results</th>
-                      <th>Add Workstep Result</th>
-                      <th>View Workstep Result</th>
-                      <th>Rewind Workstep Result</th>
-                      <th>Delete Workstep Result</th>
+
                       <th>Action</th>
                     </tr>
                   </thead>

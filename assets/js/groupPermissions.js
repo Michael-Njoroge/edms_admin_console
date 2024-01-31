@@ -4,7 +4,7 @@ async function fetchData() {
   // Retrieve the Bearer token from localStorage
   const bearerToken = localStorage.getItem("edms_token");
   try {
-    const response = await fetch(apiBaseUrl + "/grouppermissions", {
+    const response = await fetch(apiBaseUrl + "/userpermissions", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${bearerToken}`,
@@ -54,8 +54,7 @@ async function populateTable(permissionsData, page = 1, itemsPerPage = 5) {
         .add([
           // Add data for each column in the permissions table
           index + 1,
-          permission.group.group_name,
-          permission.folder.name,
+          permission.user.username,
           `<input type="checkbox" ${
             permission.view_users ? "checked" : ""
           } disabled>`,
@@ -105,6 +104,21 @@ async function populateTable(permissionsData, page = 1, itemsPerPage = 5) {
             permission.delete_group_membership ? "checked" : ""
           } disabled>`,
           `<input type="checkbox" ${
+            permission.view_user_permissions ? "checked" : ""
+          } disabled>`,
+          `<input type="checkbox" ${
+            permission.add_user_permission ? "checked" : ""
+          } disabled>`,
+          `<input type="checkbox" ${
+            permission.view_user_permission ? "checked" : ""
+          } disabled>`,
+          `<input type="checkbox" ${
+            permission.update_user_permission ? "checked" : ""
+          } disabled>`,
+          `<input type="checkbox" ${
+            permission.delete_user_permission ? "checked" : ""
+          } disabled>`,
+          `<input type="checkbox" ${
             permission.view_group_permissions ? "checked" : ""
           } disabled>`,
           `<input type="checkbox" ${
@@ -119,111 +133,7 @@ async function populateTable(permissionsData, page = 1, itemsPerPage = 5) {
           `<input type="checkbox" ${
             permission.delete_group_permission ? "checked" : ""
           } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_folders ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.create_folder ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.open_folder ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.update_folder ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.delete_folder ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_documents ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.add_document ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_document ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.update_document ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.delete_document ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_fields ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.add_field ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_field ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.update_field ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.delete_field ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_docfields ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.create_docfield ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_docfield ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.update_docfield ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.delete_docfield ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_worksteps ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.add_workstep ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_workstep ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.update_workstep ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.delete_workstep ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_possible_actions ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.add_possible_action ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_possible_action ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.update_possible_action ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.delete_possible_action ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_workstep_results ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.add_workstep_result ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.view_workstep_result ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.rewind_workstep_result ? "checked" : ""
-          } disabled>`,
-          `<input type="checkbox" ${
-            permission.delete_workstep_result ? "checked" : ""
-          } disabled>`,
+
           // Add a delete button
           `<a
           href="#"
@@ -270,55 +180,50 @@ async function populateTable(permissionsData, page = 1, itemsPerPage = 5) {
 
 // Function to reset modal state
 function resetModalState() {
-  const folderSelect = document.getElementById("folderSelect");
-  const groupSelect = document.getElementById("groupSelect");
+  const userSelect = document.getElementById("userSelect");
   const checkboxContainer = document.getElementById("checkboxContainer");
 
   // Reset selected values in dropdowns
-  folderSelect.value = "";
-  groupSelect.value = "";
+  userSelect.value = "";
 
   // Hide checkboxes
   checkboxContainer.style.display = "none";
 }
 
-// FUNCTION TO POPULATE FOLDERS DYNAMICALLY AND INITIATE TOM SELECT
-function populateFolderOptions() {
+// FUNCTION TO POPULATE USERS DYNAMICALLY AND INITIATE TOM SELECT
+function populateUserOptions() {
   const bearerToken = localStorage.getItem("edms_token");
 
   // Make AJAX requests to fetch folder data
   $.ajax({
-    url: apiBaseUrl + "/folders/1",
+    url: apiBaseUrl + "/users",
     type: "GET",
     dataType: "json",
     headers: {
       Authorization: `Bearer ${bearerToken}`,
       "Content-Type": "application/json",
     },
-    success: function (folderData) {
-      const folderSelect = document.getElementById("folderSelect");
-      folderSelect.innerHTML = "";
-
+    success: function (usersData) {
       // Create an array to hold the folder options for Tom Select
-      const folderOptions = [];
+      const userOptions = [];
 
       // Check if there are folders in the response
-      if (folderData.data.data && folderData.data.data.length > 0) {
+      if (usersData.data.data && usersData.data.data.length > 0) {
         // Iterate over the folders and populate the dropdown
-        folderData.data.data.forEach(function (folder) {
-          const option = { value: folder.id, text: folder.name };
-          folderOptions.push(option);
+        usersData.data.data.forEach(function (user) {
+          const option = { value: user.id, text: user.name };
+          userOptions.push(option);
         });
       } else {
         // If no folders are found, you may want to handle this case
-        console.error("No folders found.");
+        console.error("No users found.");
       }
 
       // Initialize Tom Select with fetched options
-      new TomSelect("#folderSelect", {
+      new TomSelect("#userSelect", {
         create: false, // Disable the option to create new items
-        placeholder: "Select Folder", // Placeholder text
-        options: folderOptions, // Set options
+        placeholder: "Select User", // Placeholder text
+        options: userOptions, // Set options
         sortField: {
           field: "text",
           direction: "asc",
@@ -326,64 +231,7 @@ function populateFolderOptions() {
       });
     },
     error: function (error) {
-      console.error("Error fetching folder data:", error);
-    },
-  });
-}
-
-// FUNCTION TO POPULATE GROUPS DYNAMICALLY AND INITIATE TOM SELECT
-function populateGroupOptions() {
-  const bearerToken = localStorage.getItem("edms_token");
-
-  // Make AJAX requests to fetch group data
-  $.ajax({
-    url: apiBaseUrl + "/groups",
-    type: "GET",
-    dataType: "json",
-    headers: {
-      Authorization: `Bearer ${bearerToken}`,
-      "Content-Type": "application/json",
-    },
-    success: function (groupData) {
-      const groupSelect = document.getElementById("groupSelect");
-      groupSelect.innerHTML = "";
-
-      // Create an array to hold the group options for Tom Select
-      const groupOptions = [];
-
-      // Add a default option
-      const defaultOption = document.createElement("option");
-      defaultOption.value = "";
-      defaultOption.text = "Select Group";
-      defaultOption.disabled = true;
-      defaultOption.selected = true;
-      groupSelect.appendChild(defaultOption);
-
-      // Check if there are groups in the response
-      if (groupData.data.data && groupData.data.data.length > 0) {
-        // Iterate over the groups and populate the dropdown
-        groupData.data.data.forEach(function (group) {
-          const option = { value: group.id, text: group.group_name };
-          groupOptions.push(option);
-        });
-      } else {
-        // If no groups are found, you may want to handle this case
-        console.error("No groups found.");
-      }
-
-      // Initialize Tom Select with fetched options
-      new TomSelect("#groupSelect", {
-        create: false, // Disable the option to create new items
-        placeholder: "Select Group", // Placeholder text
-        options: groupOptions, // Set options
-        sortField: {
-          field: "text",
-          direction: "asc",
-        },
-      });
-    },
-    error: function (error) {
-      console.error("Error fetching group data:", error);
+      console.error("Error fetching user data:", error);
     },
   });
 }
@@ -392,11 +240,10 @@ function populateGroupOptions() {
 function populateCheckboxOptions() {
   const bearerToken = localStorage.getItem("edms_token");
   const checkboxContainer = document.getElementById("checkboxContainer");
-  const folderSelect = document.getElementById("folderSelect");
-  const groupSelect = document.getElementById("groupSelect");
+
   // Make an AJAX request to fetch permission data
   $.ajax({
-    url: apiBaseUrl + "/grouppermissions",
+    url: apiBaseUrl + "/userpermissions",
     type: "GET",
     dataType: "json",
     headers: {
@@ -427,13 +274,11 @@ function populateCheckboxOptions() {
       checkboxContainer.appendChild(heading);
 
       Object.keys(permissions).forEach(function (key) {
-        // Skip certain properties like 'id', 'group', 'group_id', 'folder_id', etc.
+        // Skip certain properties like 'id'
         if (
           key !== "id" &&
-          key !== "group" &&
-          key !== "folder" &&
-          key !== "group_id" &&
-          key !== "folder_id" &&
+          key !== "user" &&
+          key !== "user_id" &&
           key !== "created_at" &&
           key !== "updated_at"
         ) {
@@ -482,16 +327,14 @@ $("#createPermissionModal").on("hidden.bs.modal", function () {
 });
 // Call the function to populate folders and groups when the modal is shown
 $("#createPermissionModal").on("show.bs.modal", function () {
-  populateFolderOptions();
-  populateGroupOptions();
+  populateUserOptions();
   populateCheckboxOptions();
 });
 // Show checkboxes when both folder and group are selected
-$(document).on("change", "#folderSelect, #groupSelect", function () {
-  const folderSelect = document.getElementById("folderSelect");
-  const groupSelect = document.getElementById("groupSelect");
+$(document).on("change", "#userSelect", function () {
+  const userSelect = document.getElementById("userSelect");
   const checkboxContainer = document.getElementById("checkboxContainer");
-  if (folderSelect.value && groupSelect.value) {
+  if (userSelect.value) {
     checkboxContainer.style.display = "block"; // Display checkboxes
   } else {
     checkboxContainer.style.display = "none"; // Hide checkboxes if either folder or group is not selected
@@ -510,13 +353,11 @@ function createPermission() {
     const bearerToken = localStorage.getItem("edms_token");
 
     // Get references to HTML elements
-    const folderSelect = document.getElementById("folderSelect");
-    const groupSelect = document.getElementById("groupSelect");
+    const userSelect = document.getElementById("userSelect");
     const checkboxContainer = document.getElementById("checkboxContainer");
 
     // Get selected values from dropdowns
-    const folderId = folderSelect.value;
-    const groupId = groupSelect.value;
+    const userId = userSelect.value;
 
     // Get selected checkboxes excluding 'on'
     const selectedCheckboxes = [
@@ -525,9 +366,9 @@ function createPermission() {
       .filter((checkbox) => checkbox.value !== "on")
       .map((checkbox) => checkbox.value);
 
-    // Check if folder and group are selected
-    if (!folderId || !groupId) {
-      toastr.error("Please select both a folder and a group.");
+    // Check if user is selected
+    if (!userId) {
+      toastr.error("Please select user");
       return;
     }
 
@@ -545,8 +386,7 @@ function createPermission() {
 
     // Prepare data for the AJAX request
     const requestData = {
-      group_id: groupId,
-      folder_id: folderId,
+      user_id: userId,
       // Add individual permissions to the request data
       ...selectedCheckboxes.reduce(
         (acc, permission) => ({ ...acc, [permission]: 1 }),
@@ -556,7 +396,7 @@ function createPermission() {
 
     // Make an AJAX request to store group permissions
     $.ajax({
-      url: apiBaseUrl + "/grouppermissions/store",
+      url: apiBaseUrl + "/userpermission/store",
       type: "POST",
       dataType: "json",
       headers: {
@@ -569,7 +409,7 @@ function createPermission() {
         // Close the modal after successfully storing permissions
         $("#createPermissionModal").modal("hide");
 
-        toastr.success("Group permissions stored successfully");
+        toastr.success("User assigned permission successfully");
         fetchData();
         populateTable(response.data.data);
         // Enable the submit button and revert the text
@@ -577,7 +417,7 @@ function createPermission() {
       })
       .catch(function (error) {
         // Handle error response
-        console.error("Error storing group permissions:", error);
+        console.error("Error storing user permissions:", error);
       })
       .finally(function () {
         // Enable the submit button and revert the text
@@ -601,12 +441,12 @@ function editPermissions(permissionId) {
 // FUNCTION TO POPULATE EDIT GROUP PERMISSION MODAL
 function populateEditPermissionModal(permissionId) {
   const bearerToken = localStorage.getItem("edms_token");
-  const editGroupSelect = document.getElementById("editGroupSelect");
+  const editUserSelect = document.getElementById("editUserSelect");
   const editPermissionIdInput = document.getElementById("editPermissionId");
 
   // Make AJAX request to fetch data for the given permissionId
   $.ajax({
-    url: `${apiBaseUrl}/grouppermission/show/${permissionId}`,
+    url: `${apiBaseUrl}/userpermission/show/${permissionId}`,
     type: "GET",
     dataType: "json",
     headers: {
@@ -614,23 +454,18 @@ function populateEditPermissionModal(permissionId) {
       "Content-Type": "application/json",
     },
     success: function (permissionData) {
-      const { group_id, folder_id, ...permissions } = permissionData.data.data;
-      // Fetch all groups and populate the group dropdown
-      fetchAllGroupsAndPopulateDropdown(editGroupSelect, group_id);
-
-      // Fetch all folders and populate the folder dropdown
-      fetchAllFoldersAndPopulateDropdown(editFolderSelect, folder_id);
+      const { user_id, ...permissions } = permissionData.data.data;
+      // Fetch all users and populate the user dropdown
+      fetchAllUsersAndPopulateDropdown(editUserSelect, user_id);
 
       // Populate checkboxes based on existing permissions
       populateEditCheckboxOptions(permissions);
 
-      // Show the "Edit Group Permission" modal
+      // Show the "Edit User Permission" modal
       $("#editPermissionModal").modal("show");
 
       // Set the group permission ID in the hidden input field
       editPermissionIdInput.value = permissionId;
-
-      // Other code to populate the modal...
     },
     error: function (error) {
       console.error("Error fetching data for permissionId:", error);
@@ -638,84 +473,45 @@ function populateEditPermissionModal(permissionId) {
   });
 }
 
-// Function to fetch all groups and populate the dropdown
-function fetchAllGroupsAndPopulateDropdown(selectElement, selectedGroupId) {
+// Function to fetch all users and populate the dropdown
+function fetchAllUsersAndPopulateDropdown(selectElement, selectedUserId) {
   const bearerToken = localStorage.getItem("edms_token");
   $.ajax({
-    url: `${apiBaseUrl}/groups`,
+    url: `${apiBaseUrl}/users`,
     type: "GET",
     dataType: "json",
     headers: {
       Authorization: `Bearer ${bearerToken}`,
       "Content-Type": "application/json",
     },
-    success: function (groupData) {
+    success: function (userData) {
       selectElement.innerHTML = "";
 
       // Add a default option
       const defaultOption = document.createElement("option");
       defaultOption.value = "";
-      defaultOption.text = "Select Group";
+      defaultOption.text = "Select User";
       defaultOption.disabled = true;
       defaultOption.selected = true;
       selectElement.appendChild(defaultOption);
 
-      groupData.data.data.forEach(function (group) {
+      userData.data.data.forEach(function (user) {
         const option = document.createElement("option");
-        option.value = group.id;
-        option.text = group.group_name;
+        option.value = user.id;
+        option.text = user.name;
         selectElement.appendChild(option);
       });
 
-      // Set the selected group based on the permission data
-      selectElement.value = selectedGroupId;
+      // Set the selected user based on the permission data
+      selectElement.value = selectedUserId;
     },
     error: function (error) {
-      console.error("Error fetching group data:", error);
+      console.error("Error fetching User data:", error);
     },
   });
 }
 
-// Function to fetch all folders and populate the dropdown
-function fetchAllFoldersAndPopulateDropdown(selectElement, selectedFolderId) {
-  const bearerToken = localStorage.getItem("edms_token");
-  $.ajax({
-    url: `${apiBaseUrl}/folders/1`,
-    type: "GET",
-    dataType: "json",
-    headers: {
-      Authorization: `Bearer ${bearerToken}`,
-      "Content-Type": "application/json",
-    },
-    success: function (folderData) {
-      selectElement.innerHTML = "";
-
-      // Add a default option
-      const defaultOption = document.createElement("option");
-      defaultOption.value = "";
-      defaultOption.text = "Select Folder";
-      defaultOption.disabled = true;
-      defaultOption.selected = true;
-      selectElement.appendChild(defaultOption);
-
-      // Iterate over the folders and populate the dropdown
-      folderData.data.data.forEach(function (folder) {
-        const option = document.createElement("option");
-        option.value = folder.id;
-        option.text = folder.name;
-        selectElement.appendChild(option);
-      });
-
-      // Set the selected folder based on the permission data
-      selectElement.value = selectedFolderId;
-    },
-    error: function (error) {
-      console.error("Error fetching folder data:", error);
-    },
-  });
-}
-
-// FUNCTION TO POPULATE CHECKBOXES DYNAMICALLY FOR EDITING GROUP PERMISSION
+// FUNCTION TO POPULATE CHECKBOXES DYNAMICALLY FOR EDITING User PERMISSION
 function populateEditCheckboxOptions(permissions) {
   const checkboxContainer = document.getElementById("editCheckboxContainer");
 
@@ -730,10 +526,8 @@ function populateEditCheckboxOptions(permissions) {
     // Skip certain properties like 'id', 'group_id', 'folder_id', etc.
     if (
       permission !== "id" &&
-      permission !== "group" &&
-      permission !== "folder" &&
-      permission !== "group_id" &&
-      permission !== "folder_id" &&
+      permission !== "user_id" &&
+      permission !== "user" &&
       permission !== "created_at" &&
       permission !== "updated_at"
     ) {
@@ -764,12 +558,12 @@ function populateEditCheckboxOptions(permissions) {
   // Keep the checkboxes visible
   checkboxContainer.style.display = "block";
 }
+
 // FUNCTION TO SUBMIT THE EDIT PERMISSION FORM
 function submitEditPermissionsForm() {
   try {
     // Fetch form data
-    const groupId = $("#editGroupSelect").val();
-    const folderId = $("#editFolderSelect").val();
+    const userId = $("#editUserSelect").val();
     const groupPermissionId = $("#editPermissionId").val();
 
     // Fetch the selected checkboxes for permissions
@@ -783,14 +577,13 @@ function submitEditPermissionsForm() {
 
     // Construct the request payload
     const requestData = {
-      group_id: groupId,
-      folder_id: folderId,
+      user_id: userId,
       ...selectedPermissions,
     };
 
     // Make an AJAX request to update the group permission
     $.ajax({
-      url: `${apiBaseUrl}/grouppermissions/update/${groupPermissionId}`,
+      url: `${apiBaseUrl}/userpermission/update/${groupPermissionId}`,
       type: "POST",
       dataType: "json",
       headers: {
@@ -803,7 +596,7 @@ function submitEditPermissionsForm() {
         // Close the modal after successfully updating permissions
         $("#editPermissionModal").modal("hide");
 
-        toastr.success("Group permission updated successfully");
+        toastr.success("User permission updated successfully");
         // Enable the submit button and revert the text
         submitButton.prop("disabled", false).html("Save Changes");
         fetchData();
@@ -863,7 +656,7 @@ function deletePermission() {
     .html('<i class="fa fa-spinner fa-spin"></i> Deleting...');
 
   // Make a GET request to delete the permission
-  fetch(`${apiBaseUrl}/grouppermissions/delete/${permissionToDeleteId}`, {
+  fetch(`${apiBaseUrl}/userpermission/delete/${permissionToDeleteId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${bearerToken}`,
