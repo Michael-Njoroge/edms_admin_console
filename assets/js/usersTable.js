@@ -1,4 +1,17 @@
 ///////// FUNCTION TO POPULATE THE USERS TABLE WITH FETCHED USER DATA //////////
+// Function to parse a JWT
+function parseJwt(token) {
+  const base64Url = token.split(".")[1];
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split("")
+      .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+      .join("")
+  );
+
+  return JSON.parse(jsonPayload);
+}
 
 async function populateUsersTable(page = 1, itemsPerPage = 5) {
   // Retrieve the Bearer token from localStorage
@@ -9,6 +22,11 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
     console.error("Unauthorized");
     return;
   }
+
+  // Decode the JWT to extract the user ID
+  const decodedToken = parseJwt(bearerToken);
+  const loggedInUserId = decodedToken.sub;
+  const loggedInUser = parseInt(loggedInUserId);
 
   // Fetch users with pagination parameters
   const records = await fetch(apiBaseUrl + "/users", {
@@ -33,8 +51,6 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
       ? `http://127.0.0.1:8000/storage/user_profiles/${user.user_profile}`
       : "../images/no_image.jpg";
 
-    console.log("Photo URL:", photoUrl);
-
     // Check if the user has a stamp
     const stampUrl =
       user.user_stamps.length > 0
@@ -43,25 +59,34 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
           }`
         : "../images/stamp.jpg";
 
-    console.log("Stamp URL:", stampUrl);
-
     // Check if the user has a signature
     const signatureUrl = user.user_signature
       ? `http://127.0.0.1:8000/storage/user_signatures/${user.user_signature}`
       : "../images/signature.png";
 
-    console.log("Signature URL:", signatureUrl);
-
     // Check the status and set the corresponding label and color
     const statusLabel = user.is_active === 1 ? "Active" : "Inactive";
     const statusColor = user.is_active === 1 ? "green" : "red";
 
+    // Check if the user ID matches the logged-in user's ID
+    const userId = parseInt(user.id);
+    const isCurrentUser = userId === loggedInUser;
+
     // Determine the action buttons based on the user status
     const activateButton = `<a href="#" onclick="performUserAction('${user.id}', 'activate')" style="margin-left: 20px;"><i class="fa fa-check" title="Activate" style="color: green; font-size: 24px;"></i></a>`;
-    const deactivateButton = `<a href="#" onclick="performUserAction('${user.id}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>`;
+    let deactivateButton = `<a href="#" onclick="performUserAction('${user.id}', 'deactivate')" style="margin-left: 40px;"><i class="fa fa-ban" title="Deactivate" style="color: red; font-size: 24px; "></i></a>`;
+
+    // Disable the deactivate button if the user is the logged-in user
+    if (isCurrentUser) {
+      deactivateButton = `<a href="#" onclick="return false;" style="margin-left: 40px; pointer-events: none;"><i class="fa fa-ban" title="Deactivate" style="color: gray; font-size: 24px; "></i></a>`;
+    }
 
     // Get group names
     const groupNames = user.groups.map((group) => group.group_name).join(", ");
+    // Concatenate the action buttons and the permissions icon
+    const actionButtonsHtml =
+      statusLabel === "Active" ? deactivateButton : activateButton;
+    const permissionsIconHtml = `<a href="#" onclick="showUserPermissions(${user.id})"><i class="fa fa-users" title="View Permissions" style="font-size: 21px;"></i></a>`;
 
     // Add the row to DataTable
     usersTable.row
@@ -74,7 +99,7 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
         `<img src="${stampUrl}" alt="User Stamp" class="user-stamp" style="width: 40px; height: 40px; border-radius: 50%;" />`,
         `<img src="${signatureUrl}" alt="User Signature" class="user-signature" style="width: 40px; height: 40px; border-radius: 50%;" />`,
         `<span style="color: ${statusColor};">${statusLabel}</span>`,
-        statusLabel === "Active" ? deactivateButton : activateButton,
+        `${actionButtonsHtml}&nbsp;&nbsp;&nbsp;&nbsp${permissionsIconHtml}`,
       ])
       .draw(false);
   });
@@ -207,4 +232,70 @@ async function performUserAction(userId, action) {
       loadingMessage.text("");
     }
   });
+}
+
+//Permissions for specific user
+// Function to open the user permissions side panel
+function openUserPermissionsSidePanel() {
+  document.getElementById("userPermissionsSidePanel").style.width = "300px";
+}
+
+// Function to close the user permissions side panel
+function closeUserPermissionsSidePanel() {
+  document.getElementById("userPermissionsSidePanel").style.width = "0";
+}
+
+// Function to show user permissions in the side panel
+function showUserPermissions(userId) {
+  // Open the user permissions side panel
+  openUserPermissionsSidePanel();
+
+  // Fetch user permissions based on the user ID and populate the table
+  fetchUserPermissions(userId);
+}
+
+// Function to fetch user permissions and populate the table
+function fetchUserPermissions(userId) {
+  // Retrieve the Bearer token from localStorage
+  const bearerToken = localStorage.getItem("edms_token");
+
+  // Check if the token is present in localStorage
+  if (!bearerToken) {
+    console.error("Unauthorized");
+    return;
+  }
+
+  // Fetch user details
+  fetch(`${apiBaseUrl}/user/show/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const userPermissions = data.data.data.user_permissions;
+
+      // Get the tbody element to populate the permissions table
+      const userPermissionsBody = document.getElementById(
+        "userPermissionsBody"
+      );
+      userPermissionsBody.innerHTML = ""; // Clear previous content
+
+      // Loop through the permissions object and create table rows
+      for (const permission in userPermissions) {
+        const backgroundColor = userPermissions[permission] ? "green" : "red";
+        const permissionRow = `<tr>
+                                  <td>${permission}</td>
+                                 <td style="background-color: ${backgroundColor}; color: white;">
+                                ${
+                                  userPermissions[permission]
+                                    ? "Granted"
+                                    : "Rejected"
+                                }
+                              </td>
+                                </tr>`;
+        userPermissionsBody.innerHTML += permissionRow;
+      }
+    })
+    .catch((error) => console.error("Error fetching user permissions:", error));
 }

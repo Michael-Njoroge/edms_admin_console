@@ -1541,6 +1541,32 @@
                 </div>
               </div>
 
+              <!-- user permission sidepanel -->
+              <div id="userPermissionsSidePanel" class="sidenav">
+                <div class="user-info">
+                  <h5>User Permissions</h5>
+                  <button
+                    class="closebtn"
+                    onclick="closeUserPermissionsSidePanel()"
+                  >
+                    &times;
+                  </button>
+                </div>
+                <div class="menu">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Permission</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="userPermissionsBody">
+                      <!-- Permissions will be populated here -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
               <!-- *******************Groups Table***************** -->
               <div id="groupsTableContainer" class="table-container">
                 <div class="card-header d-flex justify-content-between mb-3">
@@ -1847,7 +1873,7 @@
               <script src="../assets/js/navbar.js"></script>
               <script src="../assets/js/usersTable.js"></script>
               <script src="../assets/js/groupMemberships.js"></script>
-              <script src="../assets/js/groupPermissions.js"></script>
+              <script src="../assets/js/userPermissions.js"></script>
               <script src="../assets/js/lookups.js"></script>
               <script src="../assets/js/serializer.js"></script>
 
