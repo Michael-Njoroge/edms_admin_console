@@ -86,7 +86,7 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
     // Concatenate the action buttons and the permissions icon
     const actionButtonsHtml =
       statusLabel === "Active" ? deactivateButton : activateButton;
-    const permissionsIconHtml = `<a href="#" onclick="showUserPermissions(${user.id})"><i class="fa fa-users" title="View Permissions" style="font-size: 21px;"></i></a>`;
+    const permissionsIconHtml = `<a href="#" data-toggle="modal" data-target="#userPermissionsModal"  onclick="showUserPermissions(${user.id})"><i class="fa fa-users" title="View Permissions" style="font-size: 21px;"></i></a>`;
 
     // Add the row to DataTable
     usersTable.row
@@ -235,21 +235,9 @@ async function performUserAction(userId, action) {
 }
 
 //Permissions for specific user
-// Function to open the user permissions side panel
-function openUserPermissionsSidePanel() {
-  document.getElementById("userPermissionsSidePanel").style.width = "300px";
-}
-
-// Function to close the user permissions side panel
-function closeUserPermissionsSidePanel() {
-  document.getElementById("userPermissionsSidePanel").style.width = "0";
-}
 
 // Function to show user permissions in the side panel
 function showUserPermissions(userId) {
-  // Open the user permissions side panel
-  openUserPermissionsSidePanel();
-
   // Fetch user permissions based on the user ID and populate the table
   fetchUserPermissions(userId);
 }
@@ -277,24 +265,36 @@ function fetchUserPermissions(userId) {
 
       // Get the tbody element to populate the permissions table
       const userPermissionsBody = document.getElementById(
-        "userPermissionsBody"
+        "userPermissionsModalBody"
       );
-      userPermissionsBody.innerHTML = ""; // Clear previous content
+      userPermissionsBody.innerHTML = "";
+
+      // Exclude properties like 'id', 'user', 'user_id', 'created_at', 'updated_at'
+      const excludedProperties = [
+        "id",
+        "user",
+        "user_id",
+        "created_at",
+        "updated_at",
+      ];
 
       // Loop through the permissions object and create table rows
       for (const permission in userPermissions) {
-        const backgroundColor = userPermissions[permission] ? "green" : "red";
-        const permissionRow = `<tr>
-                                  <td>${permission}</td>
-                                 <td style="background-color: ${backgroundColor}; color: white;">
-                                ${
-                                  userPermissions[permission]
-                                    ? "Granted"
-                                    : "Rejected"
-                                }
-                              </td>
-                                </tr>`;
-        userPermissionsBody.innerHTML += permissionRow;
+        // Check if the permission should be excluded
+        if (!excludedProperties.includes(permission)) {
+          const backgroundColor = userPermissions[permission] ? "green" : "red";
+          const permissionRow = `<tr>
+                                    <td>${permission}</td>
+                                   <td style="background-color: ${backgroundColor}; color: white;">
+                                  ${
+                                    userPermissions[permission]
+                                      ? "Granted"
+                                      : "Rejected"
+                                  }
+                                </td>
+                                  </tr>`;
+          userPermissionsBody.innerHTML += permissionRow;
+        }
       }
     })
     .catch((error) => console.error("Error fetching user permissions:", error));

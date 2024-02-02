@@ -900,7 +900,7 @@
                 </div>
               </div>
 
-              <!-- Assign group permissions modal -->
+              <!-- Assign user permissions modal -->
               <div
                 class="modal fade"
                 id="createPermissionModal"
@@ -932,9 +932,11 @@
                             <!-- Group options will be populated dynamically -->
                           </select>
                         </div>
-
                         <!-- Checkbox container -->
-                        <div id="checkboxContainer"></div>
+                        <div
+                          id="checkboxContainer"
+                          style="max-height: 300px; overflow-y: auto"
+                        ></div>
                         <!-- Pagination container -->
                         <div
                           id="permissionsPagination"
@@ -942,8 +944,6 @@
                         ></div>
                       </form>
                     </div>
-                    <br />
-                    <br />
                     <div class="modal-footer">
                       <button
                         type="button"
@@ -958,7 +958,8 @@
                   </div>
                 </div>
               </div>
-              <!-- Edit Group Permission Modal -->
+
+              <!-- Edit user Permission Modal -->
               <div
                 class="modal fade"
                 id="editPermissionModal"
@@ -971,7 +972,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="editPermissionModalLabel">
-                        Edit Group Permission
+                        Edit User Permission
                       </h5>
                       <button
                         type="button"
@@ -994,14 +995,23 @@
                             class="form-control"
                             id="editPermissionId"
                           />
-                          <label for="editUserSelect">Select User</label>
-                          <select class="form-control" id="editUserSelect">
+                          <label for="editUserSelect">User</label>
+
+                          <select
+                            class="form-control"
+                            id="editUserSelect"
+                            style="max-height: 400px; overflow-y: auto"
+                            disabled
+                          >
                             <!-- Populate group options dynamically or set the selected group -->
                           </select>
                         </div>
 
                         <!-- Checkbox container for editing permissions -->
-                        <div id="editCheckboxContainer"></div>
+                        <div
+                          id="editCheckboxContainer"
+                          style="max-height: 300px; overflow-y: auto"
+                        ></div>
                         <!-- Pagination container for editing permissions -->
                         <div
                           id="editPermissionsPagination"
@@ -1541,29 +1551,43 @@
                 </div>
               </div>
 
-              <!-- user permission sidepanel -->
-              <div id="userPermissionsSidePanel" class="sidenav">
-                <div class="user-info">
-                  <h5>User Permissions</h5>
-                  <button
-                    class="closebtn"
-                    onclick="closeUserPermissionsSidePanel()"
-                  >
-                    &times;
-                  </button>
-                </div>
-                <div class="menu">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Permission</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody id="userPermissionsBody">
-                      <!-- Permissions will be populated here -->
-                    </tbody>
-                  </table>
+              <!-- User Permissions Modal -->
+              <div id="userPermissionsModal" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-right">
+                  <!-- Modal content -->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">User Permissions</h4>
+                      <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                      </button>
+                    </div>
+                    <div
+                      class="modal-body"
+                      style="max-height: 400px; overflow-y: auto"
+                    >
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Permission</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody id="userPermissionsModalBody">
+                          <!-- User permissions will be populated here -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 

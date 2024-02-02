@@ -152,52 +152,6 @@ async function populateFoldersDropdown() {
   });
 }
 
-// Function to fetch group permissions based on the selected folder
-async function fetchGroupPermissions() {
-  const folderSelect = document.getElementById("folderSelect");
-  const selectedFolderId = folderSelect.value;
-
-  // Retrieve the Bearer token from localStorage
-  const bearerToken = localStorage.getItem("edms_token");
-
-  // Check if the token is present in localStorage
-  if (!bearerToken) {
-    console.error("Unauthorized");
-    toastr.error("Unauthorized access!");
-    return;
-  }
-
-  // Fetch the group details including permissions using the provided endpoint with the Bearer token in headers
-  const groupId = 1; // Replace with the actual group ID
-  const endpoint = `${apiBaseUrl}/group/show/${groupId}?folderId=${selectedFolderId}`;
-
-  try {
-    const response = await fetch(endpoint, {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const groupData = await response.json();
-
-    // Check if the response is successful
-    if (groupData.success) {
-      // Display the permissions for the group and selected folder
-      displayPermissionsForFolder(selectedFolderId, groupData.data.data);
-    } else {
-      // Handle the case where the API request is not successful
-      console.error("Error fetching group details:", groupData.message);
-    }
-  } catch (error) {
-    // Handle the case where there is an error with the API request
-    console.error("Error fetching group details:", error);
-  }
-
-  // Close the modal
-  $("#selectFolderModal").modal("hide");
-}
-
 // Call populateFoldersDropdown when the modal is shown
 $("#selectFolderModal").on("show.bs.modal", function (event) {
   populateFoldersDropdown();
@@ -313,9 +267,9 @@ function fetchAndPopulateUsersDropdown() {
 
       // Initialize Tom Select with fetched options
       new TomSelect("#adminSelect", {
-        create: false, // Disable the option to create new items
-        placeholder: "Select Admin", // Placeholder text
-        options: options, // Set options
+        create: false,
+        placeholder: "Select Admin",
+        options: options,
         sortField: {
           field: "text",
           direction: "asc",

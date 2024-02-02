@@ -206,7 +206,7 @@ function populateUserOptions() {
     return;
   }
 
-  // Make AJAX requests to fetch folder data
+  // Make AJAX requests to fetch user data
   $.ajax({
     url: apiBaseUrl + "/users",
     type: "GET",
@@ -216,26 +216,28 @@ function populateUserOptions() {
       "Content-Type": "application/json",
     },
     success: function (usersData) {
-      // Create an array to hold the folder options for Tom Select
-      const userOptions = [];
+      const userSelect = document.getElementById("userSelect");
+      userSelect.innerHTML = "";
 
-      // Check if there are folders in the response
+      // Check if there are users in the response
       if (usersData.data.data && usersData.data.data.length > 0) {
-        // Iterate over the folders and populate the dropdown
+        // Iterate over the users and populate the dropdown
         usersData.data.data.forEach(function (user) {
-          const option = { value: user.id, text: user.name };
-          userOptions.push(option);
+          const option = document.createElement("option");
+          option.value = user.id;
+          option.text = user.name;
+          userSelect.appendChild(option);
         });
       } else {
-        // If no folders are found, you may want to handle this case
+        // If no users are found, you may want to handle this case
         console.error("No users found.");
       }
 
       // Initialize Tom Select with fetched options
       new TomSelect("#userSelect", {
-        create: false, // Disable the option to create new items
-        placeholder: "Select User", // Placeholder text
-        options: userOptions, // Set options
+        create: false,
+        placeholder: "Select User",
+        options: userSelect,
         sortField: {
           field: "text",
           direction: "asc",
@@ -344,19 +346,19 @@ function populateCheckboxOptions() {
 $("#createPermissionModal").on("hidden.bs.modal", function () {
   resetModalState();
 });
-// Call the function to populate folders and groups when the modal is shown
+// Call the function to populate users
 $("#createPermissionModal").on("show.bs.modal", function () {
   populateUserOptions();
   populateCheckboxOptions();
 });
-// Show checkboxes when both folder and group are selected
+// Show checkboxes when both user
 $(document).on("change", "#userSelect", function () {
   const userSelect = document.getElementById("userSelect");
   const checkboxContainer = document.getElementById("checkboxContainer");
   if (userSelect.value) {
     checkboxContainer.style.display = "block"; // Display checkboxes
   } else {
-    checkboxContainer.style.display = "none"; // Hide checkboxes if either folder or group is not selected
+    checkboxContainer.style.display = "none"; // Hide checkboxes if either user or group is not selected
   }
 });
 
@@ -558,11 +560,11 @@ function populateEditCheckboxOptions(permissions) {
   checkboxContainer.innerHTML = "";
 
   const heading = document.createElement("h4");
-  heading.appendChild(document.createTextNode("Select Permissions:"));
+  heading.appendChild(document.createTextNode("Edit Permissions:"));
   checkboxContainer.appendChild(heading);
 
   Object.entries(permissions).forEach(([permission, value]) => {
-    // Skip certain properties like 'id', 'group_id', 'folder_id', etc.
+    // Skip certain properties like 'id', 'group_id', 'user_id', etc.
     if (
       permission !== "id" &&
       permission !== "user_id" &&

@@ -668,23 +668,31 @@
    width: 0;
    position: absolute;
    z-index: 1;
-   top: 0;
+   top: 10%;
    background-color: whitesmoke;
    overflow-x: hidden;
    border-left: 1px solid #dedede;
    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
-   padding-top: 60px;
    transition: 0.5s;
    right: 0;
  }
 
- .close {
+
+
+ .table thead {
+   position: sticky;
+   top: 0;
+   background-color: #f5f5f5;
+ }
+
+
+ .modal-dialog.modal-dialog-right {
+   right: 0;
+   margin-right: 0;
+   margin-left: auto;
+   width: 300px;
+   z-index: 1;
+   height: 100%;
+   top: 0;
    position: absolute;
-   top: 20px;
-   right: 25px;
-   font-size: 31px;
-   margin-left: 50px;
-   background-color: transparent !important;
-   border-bottom: none !important;
-   color: black !important;
  }
