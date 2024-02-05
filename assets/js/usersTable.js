@@ -48,20 +48,20 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
   data.data.data.forEach((user, index) => {
     // Check if the user has a photo
     const photoUrl = user.user_profile
-      ? `http://127.0.0.1:8000/storage/user_profiles/${user.user_profile}`
+      ? `${baseUrl}/storage/user_profiles/${user.user_profile}`
       : "../images/no_image.jpg";
 
     // Check if the user has a stamp
     const stampUrl =
       user.user_stamps.length > 0
-        ? `http://127.0.0.1:8000/storage/user_stamps/${
+        ? `${baseUrl}/storage/user_stamps/${
             user.user_stamps[user.user_stamps.length - 1].user_stamp
           }`
         : "../images/stamp.jpg";
 
     // Check if the user has a signature
     const signatureUrl = user.user_signature
-      ? `http://127.0.0.1:8000/storage/user_signatures/${user.user_signature}`
+      ? `${baseUrl}/storage/user_signatures/${user.user_signature}`
       : "../images/signature.png";
 
     // Check the status and set the corresponding label and color
