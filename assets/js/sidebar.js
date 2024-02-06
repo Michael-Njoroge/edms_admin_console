@@ -3,6 +3,14 @@ $(document).ready(function () {
   $('input[name="sidebar_tab1"]').on("change", function () {
     var value = $(this).val();
 
+    // Show loading line
+    $(".loading-line").css("width", "100%");
+
+    // Reset loading line width after a delay
+    setTimeout(function () {
+      $(".loading-line").css("width", "0");
+    }, 1000); // Adjust delay duration as needed
+
     // Store the selected tab in localStorage
     localStorage.setItem("lastSelectedTab", value);
 

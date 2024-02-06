@@ -59,7 +59,7 @@ $(document).ready(function () {
         // Hide the error message
         setTimeout(function () {
           $("#error-message").empty();
-        }, 6000);
+        }, 9000);
       },
     });
   });
@@ -103,7 +103,7 @@ function checkUserStatus(bearerToken) {
       // Hide the error message
       setTimeout(function () {
         $("#error-message").empty();
-      }, 6000);
+      }, 9000);
     },
   });
 }

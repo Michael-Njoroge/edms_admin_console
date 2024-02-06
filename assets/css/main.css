@@ -696,3 +696,15 @@
    top: 0;
    position: absolute;
  }
+
+ .loading-line {
+   height: 4px;
+   background-color: #355B11;
+   border-bottom: #dc3545;
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 0;
+   z-index: 9999;
+   transition: width 0.3s ease;
+ }
