@@ -43,21 +43,6 @@ async function fetchDataAndPopulateCounts() {
     // Update the user count in the first card
     document.getElementById("userCount").innerText = usersData.data.data.length;
 
-    // Fetch data for groups from the API endpoint
-    const groupsResponse = await fetch(apiBaseUrl + "/groups", {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    // Convert the response to JSON format
-    const groupsData = await groupsResponse.json();
-
-    // Update the group count in the appropriate card
-    document.getElementById("groupCount").innerText =
-      groupsData.data.data.length;
-
     // Fetch data for folders from the API endpoint
     const foldersResponse = await fetch(apiBaseUrl + "/folders/1", {
       headers: {
@@ -91,7 +76,6 @@ async function fetchDataAndPopulateCounts() {
     console.error("Error fetching data:", error);
     // Handle errors, e.g., display an error message
     document.getElementById("userCount").innerText = "Error loading data";
-    document.getElementById("groupCount").innerText = "Error loading data";
     document.getElementById("folderCount").innerText = "Error loading data";
     document.getElementById("permissionCount").innerText = "Error loading data";
   }
