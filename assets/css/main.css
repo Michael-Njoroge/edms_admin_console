@@ -708,3 +708,13 @@
    z-index: 9999;
    transition: width 0.3s ease;
  }
+
+ .table-container {
+   max-width: 100%;
+   overflow-x: auto;
+   padding: 0 15px;
+ }
+
+ #permissionsTable {
+   width: 100%;
+ }

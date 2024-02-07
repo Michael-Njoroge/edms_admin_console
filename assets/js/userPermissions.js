@@ -24,7 +24,8 @@ async function fetchData() {
     console.error("Error fetching data:", error);
   }
 }
-// FUNCTION TO POPULATE THE  GROUP PERMISSION TABLE WITH DATA
+
+// FUNCTION TO POPULATE THE GROUP PERMISSION TABLE WITH DATA
 async function populateTable(permissionsData, page = 1, itemsPerPage = 5) {
   // Initialize DataTable for permissions
   const permissionsTable = $("#permissionsTable").DataTable({
@@ -32,10 +33,13 @@ async function populateTable(permissionsData, page = 1, itemsPerPage = 5) {
     bDestroy: true,
     dom: "Bfrtip",
     scrollX: true,
-
+    scrollCollapse: true,
+    fixedColumns: {
+      leftColumns: 2,
+    },
     columnDefs: [
       {
-        targets: [0, 1, 2],
+        targets: [2],
         className: "noVis",
       },
     ],

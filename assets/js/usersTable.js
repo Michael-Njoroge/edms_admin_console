@@ -94,12 +94,13 @@ async function populateUsersTable(page = 1, itemsPerPage = 5) {
         index + 1,
         user.name,
         user.username,
-        groupNames,
+        // groupNames,
         `<img src="${photoUrl}" alt="User Photo" class="user-photo" style="width: 40px; height: 40px; border-radius: 50%;" />`,
-        `<img src="${stampUrl}" alt="User Stamp" class="user-stamp" style="width: 40px; height: 40px; border-radius: 50%;" />`,
-        `<img src="${signatureUrl}" alt="User Signature" class="user-signature" style="width: 40px; height: 40px; border-radius: 50%;" />`,
+        // `<img src="${stampUrl}" alt="User Stamp" class="user-stamp" style="width: 40px; height: 40px; border-radius: 50%;" />`,
+        // `<img src="${signatureUrl}" alt="User Signature" class="user-signature" style="width: 40px; height: 40px; border-radius: 50%;" />`,
         `<span style="color: ${statusColor};">${statusLabel}</span>`,
-        `${actionButtonsHtml}&nbsp;&nbsp;&nbsp;&nbsp${permissionsIconHtml}`,
+        `${actionButtonsHtml}`,
+        // &nbsp;&nbsp;&nbsp;&nbsp${permissionsIconHtml}`,
       ])
       .draw(false);
   });

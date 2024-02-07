@@ -429,7 +429,7 @@ function updatePhotoInNavbar(userPhoto) {
   const userImageElement = document.getElementById("user-image");
   if (userImageElement) {
     const photoUrl = userPhoto
-      ? `http://127.0.0.1:8000/storage/user_profiles/${userPhoto}`
+      ? `${baseUrl}/storage/user_profiles/${userPhoto}`
       : "../images/no_image.jpg";
 
     // Set the src attribute based on whether the user has a photo or not
