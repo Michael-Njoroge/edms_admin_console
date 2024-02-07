@@ -143,6 +143,27 @@ async function populateTable(permissionsData, page = 1, itemsPerPage = 5) {
           `<input type="checkbox" ${
             permission.delete_group_permission ? "checked" : ""
           } disabled>`,
+          `<input type="checkbox" ${
+            permission.view_serialisers ? "checked" : ""
+          } disabled>`,
+          `<input type="checkbox" ${
+            permission.add_serialisation ? "checked" : ""
+          } disabled>`,
+          `<input type="checkbox" ${
+            permission.view_serialisation ? "checked" : ""
+          } disabled>`,
+          `<input type="checkbox" ${
+            permission.update_serialisation ? "checked" : ""
+          } disabled>`,
+          `<input type="checkbox" ${
+            permission.delete_serialisers ? "checked" : ""
+          } disabled>`,
+          `<input type="checkbox" ${
+            permission.view_lookups ? "checked" : ""
+          } disabled>`,
+          `<input type="checkbox" ${
+            permission.add_lookup ? "checked" : ""
+          } disabled>`,
 
           // Add a delete button
           `<a
@@ -427,7 +448,7 @@ function createPermission() {
 
     // Make an AJAX request to store group permissions
     $.ajax({
-      url: apiBaseUrl + "/userpermission/store",
+      url: apiBaseUrl + "/userpermissions/store",
       type: "POST",
       dataType: "json",
       headers: {
@@ -628,7 +649,7 @@ function submitEditPermissionsForm() {
 
     // Make an AJAX request to update the group permission
     $.ajax({
-      url: `${apiBaseUrl}/userpermission/update/${groupPermissionId}`,
+      url: `${apiBaseUrl}/userpermissions/update/${groupPermissionId}`,
       type: "POST",
       dataType: "json",
       headers: {
@@ -702,7 +723,7 @@ function deletePermission() {
     .html('<i class="fa fa-spinner fa-spin"></i> Deleting...');
 
   // Make a GET request to delete the permission
-  fetch(`${apiBaseUrl}/userpermission/delete/${permissionToDeleteId}`, {
+  fetch(`${apiBaseUrl}/userpermissions/delete/${permissionToDeleteId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${bearerToken}`,

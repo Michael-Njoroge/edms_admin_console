@@ -26,6 +26,11 @@ $(document).ready(function () {
       return;
     }
 
+    $(".forgot-password").click(function (event) {
+      event.preventDefault();
+      $("#error-message").html("Contact the Administrator for password reset.");
+    });
+
     // Perform AJAX request to your login endpoint
     $.ajax({
       url: apiBaseUrl + "/auth/login",

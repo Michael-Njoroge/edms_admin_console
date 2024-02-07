@@ -1,3 +1,5 @@
+var nodeState = {};
+
 $.fn.extend({
   treed: function (data) {
     var openedClass = "glyphicon-minus-sign";
@@ -12,6 +14,9 @@ $.fn.extend({
 
         if (item.children && item.children.length > 0) {
           li.append(buildTree(item.children));
+          if (nodeState[item.id] === "expanded") {
+            li.addClass("open");
+          }
         } else {
           // Add a "New" button as a child of the node without children
           li.append(
@@ -41,6 +46,11 @@ $.fn.extend({
           var icon = $(this).children("i:first");
           icon.toggleClass(openedClass + " " + closedClass);
           $(this).children().children().toggle();
+          if (icon.hasClass(openedClass)) {
+            nodeState[item.id] = "expanded";
+          } else {
+            nodeState[item.id] = "collapsed";
+          }
         });
       });
 
@@ -130,15 +140,26 @@ $.fn.extend({
           },
           data: JSON.stringify(postData),
           success: function (response) {
-            // Replace the input field with the entered value and add the + icon
-            newLi
-              .empty()
-              .text(newNodeName)
-              .data("node-id", response.id)
-              .prepend(
-                "<i class='indicator glyphicon " + closedClass + "'></i>"
-              );
-            errorMessage.hide();
+            // Fetch updated data from the API
+            $.ajax({
+              url: apiBaseUrl + "/lookups",
+              method: "GET",
+              dataType: "json",
+              headers: {
+                Authorization: `Bearer ${bearerToken}`,
+                "Content-Type": "application/json",
+              },
+              success: function (data) {
+                // Clear existing tree
+                $("#tree1").empty();
+
+                // Rebuild the tree with the updated data
+                $("#tree1").treed(data);
+              },
+              error: function (error) {
+                console.error("Error fetching data from the API:", error);
+              },
+            });
 
             toastr.success("Lookup saved successfully!");
           },
